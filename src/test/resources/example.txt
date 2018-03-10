@@ -3,3 +3,4 @@ timestamp   long
 sender      string
 receiver    string
 price       double
+category    string

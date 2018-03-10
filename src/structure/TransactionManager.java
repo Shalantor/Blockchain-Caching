@@ -3,8 +3,7 @@ package structure;
 import java.io.BufferedReader;;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /*Class that represents the transaction structure*/
 public class TransactionManager {
@@ -63,7 +62,45 @@ public class TransactionManager {
             ex.printStackTrace();
         }
 
+    }
+
+    /*Return all the keys from the hashmap*/
+    public List<String>  getKeys(){
+        return new ArrayList<String>(transactionFields.keySet());
+    }
+
+    public HashMap<String, Object> getTransactionFields() {
+        return transactionFields;
+    }
+
+    /*This is for testing purposes*/
+    public HashMap<String,Object> createRandomTransaction() {
+
+        HashMap<String,Object> transaction = new HashMap<>();
+        Object value;
+        Random generator = new Random();
+
+        for(Map.Entry entry : transactionFields.entrySet()){
+            value = entry.getValue();
+            if(value instanceof Double){
+                transaction.put(entry.getKey().toString(),generator.nextDouble());
+            }
+            else if(value instanceof Long){
+                transaction.put(entry.getKey().toString(),generator.nextLong());
+            }
+            else if(value instanceof Integer){
+                transaction.put(entry.getKey().toString(),generator.nextInt());
+            }
+            else if(value instanceof String){
+                transaction.put(entry.getKey().toString(),"AAABBBAAA");
+            }
+
+            System.out.println(transaction);
+        }
+
+        return transaction;
 
     }
+
 
 }

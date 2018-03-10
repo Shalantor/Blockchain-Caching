@@ -6,6 +6,6 @@
 
 # A transaction has the following structure:
 #
-# <key>     <variable type>
+# <key>     <variable type>     <acceptable values> ...
 
 # Thus far supported types are integer, double, string, long
