@@ -1,7 +1,7 @@
-import structure.Transaction;
+import structure.TransactionManager;
 
 public class Main {
     public static void main(String[] args) {
-        Transaction transaction = new Transaction();
+        TransactionManager transaction = new TransactionManager();
     }
 }

@@ -25,4 +25,4 @@ hs_err_pid*
 out/
 
 # intellij workspace
-.idea/*
+.idea/
