@@ -1,0 +1,5 @@
+id          string
+timestamp   long
+sender      string
+receiver    string
+price       double

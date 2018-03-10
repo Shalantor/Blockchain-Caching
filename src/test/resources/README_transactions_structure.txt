@@ -7,3 +7,5 @@
 # A transaction has the following structure:
 #
 # <key>     <variable type>
+
+# Thus far supported types are integer, double, string, long
