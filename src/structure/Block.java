@@ -49,7 +49,7 @@ public class Block {
             System.exit(1);
         }
 
-        /*First create array of hashes*/
+        /*First create array of hashes of transactions*/
         StringBuilder hashInput = new StringBuilder();
         ArrayList<String> initialHashes = new ArrayList<>();
         byte[] hash;
@@ -61,6 +61,28 @@ public class Block {
             hash = digest.digest(hashInput.toString().getBytes(StandardCharsets.UTF_8));
             initialHashes.add(DatatypeConverter.printHexBinary(hash));
         }
+
+        /*Now calculate the root of the merkle tree from the hashes*/
+        int pos;
+        String combinedHash = "";
+        while(initialHashes.size() > 1){
+            pos = 0;
+            for(int i =0; i < initialHashes.size(); i = i+2 ){
+                if(i == initialHashes.size() - 1){
+                    combinedHash = initialHashes.get(i) + initialHashes.get(i);
+                }
+                else{
+                    combinedHash = initialHashes.get(i) + initialHashes.get(i+1);
+                }
+                hash = digest.digest(combinedHash.getBytes(StandardCharsets.UTF_8));
+                initialHashes.set(pos,DatatypeConverter.printHexBinary(hash));
+                pos++;
+            }
+
+            initialHashes.subList(pos,initialHashes.size()).clear();
+        }
+
+        transactionHash = initialHashes.get(0);
 
 
         timestamp = System.currentTimeMillis();

@@ -3,7 +3,6 @@ import structure.TransactionManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,6 +15,6 @@ public class Main {
             transactions.add(transaction.createRandomTransaction());
         }
         Block block = new Block(1,"qwe",transactions);
-
+        Block block2 = new Block(1,"qwe",transactions);
     }
 }
