@@ -95,7 +95,6 @@ public class TransactionManager {
                 transaction.put(entry.getKey().toString(),"AAABBBAAA");
             }
 
-            System.out.println(transaction);
         }
 
         return transaction;
