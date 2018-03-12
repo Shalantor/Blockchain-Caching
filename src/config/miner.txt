@@ -1,0 +1,3 @@
+min_block_sze           1000
+max_block_size          2000
+group_content           true

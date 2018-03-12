@@ -134,4 +134,9 @@ public class Block {
         return size;
     }
 
+    /*Used to calculate previous hash*/
+    public String getHeaderAsString(){
+        return index + timestamp + transactionHash + previousBlockHash + blockSize;
+    }
+
 }
