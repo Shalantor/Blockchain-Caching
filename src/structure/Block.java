@@ -1,6 +1,6 @@
-package structures;
+package structure;
 
-/*The data structures for the block*/
+/*The data structure for the block*/
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;

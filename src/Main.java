@@ -1,10 +1,8 @@
-import nodes.NormalNode;
-import structures.Block;
-import structures.TransactionManager;
+import structure.Block;
+import structure.TransactionManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,12 +16,5 @@ public class Main {
         }
         Block block = new Block(1,"qwe",transactions);
         Block block2 = new Block(1,"qwe",transactions);
-
-        /*Test normal node*/
-        List<String> testList = new ArrayList<>();
-        for(int i =0; i < 10; i ++){
-            testList.add("AA");
-        }
-        NormalNode node = new NormalNode(testList,5);
     }
 }
