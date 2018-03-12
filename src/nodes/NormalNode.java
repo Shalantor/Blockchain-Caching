@@ -1,6 +1,7 @@
 package nodes;
 
 import structures.Block;
+import structures.Interest;
 import structures.TransactionManager;
 
 import java.util.*;
@@ -9,25 +10,30 @@ import java.util.*;
 public class NormalNode {
 
     /*value indicating no cache size limit*/
-    private static final int NO_CACHE_LIMIT = -1;
+    public static final int NO_LIMIT = -1;
 
     /*Does the node have a maximum cache size?*/
-    private long maxCacheSize = NO_CACHE_LIMIT;
+    private long maxCacheSize = NO_LIMIT;
+    private long timeRestraint = NO_LIMIT;
 
     /*List of this nodes interests*/
-    private Map<String,List<Block>> interestingBlocks = new HashMap<>();
+    private List<Interest> interests = new ArrayList<>();
 
 
     /*The constructor as of now*/
+    /*TODO:Change default weight*/
     public NormalNode(List<String> interests){
         for(String interest: interests){
-            interestingBlocks.put(interest,new ArrayList<>());
+            this.interests.add(new Interest(interest,1));
         }
     }
 
-    public NormalNode(List<String> interests,long maxCacheSize){
+    public NormalNode(List<String> interests,long maxCacheSize, long timeRestraint){
         this(interests);
         this.maxCacheSize = maxCacheSize;
+        this.timeRestraint = timeRestraint;
     }
+
+
 
 }

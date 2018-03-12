@@ -24,6 +24,6 @@ public class Main {
         for(int i =0; i < 10; i ++){
             testList.add("AA");
         }
-        NormalNode node = new NormalNode(testList,5);
+        NormalNode node = new NormalNode(testList,NormalNode.NO_LIMIT,NormalNode.NO_LIMIT);
     }
 }
