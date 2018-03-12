@@ -18,6 +18,7 @@ public class NormalNode {
 
     /*List of this nodes interests*/
     private List<Interest> interests = new ArrayList<>();
+    private List<String> interestNames;
 
 
     /*The constructor as of now*/
@@ -26,6 +27,7 @@ public class NormalNode {
         for(String interest: interests){
             this.interests.add(new Interest(interest,1));
         }
+        this.interestNames = interests;
     }
 
     public NormalNode(List<String> interests,long maxCacheSize, long timeRestraint){
@@ -34,6 +36,19 @@ public class NormalNode {
         this.timeRestraint = timeRestraint;
     }
 
-
+    /*TODO:This is the main point that needs testing to see efficiency of different algorithms*/
+    /*Inspect block to add it to interests or not*/
+    public void inspectBlock(Block block){
+        for(HashMap<String,Object> transaction : block.transactions){
+            for(Map.Entry entry : transaction.entrySet()){
+                for(int i=0; i < interestNames.size(); i++){
+                    if(entry.getKey().toString().equals(interestNames.get(i))){
+                        interests.get(i).addBlock(block);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
 }
