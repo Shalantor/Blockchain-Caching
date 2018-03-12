@@ -30,7 +30,7 @@ public class Block {
 
         /*Assign values that do not need calculation*/
         this.index = index + 1;
-        this.previousBlockHash = previousBlockHash;
+        this.previousBlockHash = previousBlockHash;/*TODO:Generate previous block hash!!!*/
         this.transactions = transactions;
         numTransactions = transactions.size();
 
