@@ -42,6 +42,7 @@ public class Interest {
 
     public void addBlock(Block block){
         blocks.add(block);
+        size += block.blockSize;
     }
 
     public void removeBlock(int index){
@@ -51,4 +52,5 @@ public class Interest {
     public String getName(){
         return name;
     }
+
 }

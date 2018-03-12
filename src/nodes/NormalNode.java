@@ -17,17 +17,17 @@ public class NormalNode {
     private long timeRestraint = NO_LIMIT;
 
     /*List of this nodes interests*/
-    private List<Interest> interests = new ArrayList<>();
-    private List<String> interestNames;
+    private Map<String,Interest> interests = new HashMap<>();
 
+    /*Size in bytes of interests*/
+    private long size;
 
     /*The constructor as of now*/
     /*TODO:Change default weight*/
     public NormalNode(List<String> interests){
         for(String interest: interests){
-            this.interests.add(new Interest(interest,1));
+            this.interests.put(interest,new Interest(interest,1));
         }
-        this.interestNames = interests;
     }
 
     public NormalNode(List<String> interests,long maxCacheSize, long timeRestraint){
@@ -36,19 +36,22 @@ public class NormalNode {
         this.timeRestraint = timeRestraint;
     }
 
-    /*TODO:This is the main point that needs testing to see efficiency of different algorithms*/
-    /*Inspect block to add it to interests or not*/
+    /*TODO: This is the main point that needs testing to see efficiency of different algorithms*/
+    /*TODO: Check dynamic method changing depending on configuration*/
+    /*Inspect block to add it to interests or not. Only in case of no max cache size and no time limit*/
     public void inspectBlock(Block block){
         for(HashMap<String,Object> transaction : block.transactions){
             for(Map.Entry entry : transaction.entrySet()){
-                for(int i=0; i < interestNames.size(); i++){
-                    if(entry.getKey().toString().equals(interestNames.get(i))){
-                        interests.get(i).addBlock(block);
-                        break;
-                    }
+                Interest interest = interests.get(entry.getKey().toString());
+                if(interest != null){    /*key exists,add block*/
+                    interest.addBlock(block);
+                    break;
                 }
             }
         }
     }
+
+
+
 
 }
