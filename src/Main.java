@@ -1,8 +1,10 @@
+import nodes.FullNode;
 import nodes.NormalNode;
 import structures.Block;
 import structures.TransactionManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,14 +18,24 @@ public class Main {
         for(int i =0; i < 10; i ++){
             transactions.add(manager.createRandomTransaction());
         }
-        Block block = new Block(1,"qwe",transactions);
-        Block block2 = new Block(1,"qwe",transactions);
 
-        /*Test normal node*/
-        List<String> testList = new ArrayList<>();
+        /*Test full node*/
+        FullNode fullNode = new FullNode(new Block(0,"qwe",transactions));
+
         for(int i =0; i < 10; i ++){
-            testList.add("AA");
+            fullNode.addBlock(new Block(i+1,"",transactions));
         }
-        NormalNode node = new NormalNode(testList,NormalNode.NO_LIMIT,NormalNode.NO_LIMIT);
+
+        ArrayList<Integer> indices = new ArrayList<>();
+        indices.add(0);
+        indices.add(4);
+        indices.add(8);
+        indices.add(8);
+
+        List<Block> blocks =  fullNode.getBlocksInIntervals(indices);
+
+        for(Block block: blocks){
+            System.out.println(block.index);
+        }
     }
 }

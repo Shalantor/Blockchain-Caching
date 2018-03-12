@@ -1,6 +1,8 @@
 package nodes;
 
 import structures.Block;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,8 +21,8 @@ public class FullNode {
     }
 
     /*Some node wants separate blocks*/
-    public List<Block> getSeparateBlocks(List<Integer> indexes){
-        List<Block> blocks = new LinkedList<>();
+    public ArrayList<Block> getSeparateBlocks(List<Integer> indexes){
+        ArrayList<Block> blocks = new ArrayList<>();
         for(Integer index: indexes){
             blocks.add(blockChain.get(index));
         }
@@ -28,12 +30,16 @@ public class FullNode {
     }
 
     /*Some node wants block in intervals*/
-    public List<Block> getBlocksInIntervals(List<Integer> indexes){
-        List<Block> blocks = new LinkedList<>();
+    public ArrayList<Block> getBlocksInIntervals(List<Integer> indexes){
+        ArrayList<Block> blocks = new ArrayList<>();
         for(int i=0; i < indexes.size(); i += 2){
-            blocks.addAll(blockChain.subList(indexes.get(i),indexes.get(i+2)));
+            blocks.addAll(blockChain.subList(indexes.get(i),indexes.get(i+1)+1 ));
         }
         return blocks;
+    }
+
+    public int getSize(){
+        return blockChain.size();
     }
 
 }

@@ -29,7 +29,7 @@ public class Block {
                  List<HashMap<String,Object>> transactions){
 
         /*Assign values that do not need calculation*/
-        this.index = index + 1;
+        this.index = index;
         this.previousBlockHash = previousBlockHash;/*TODO:Generate previous block hash!!!*/
         this.transactions = transactions;
         numTransactions = transactions.size();
@@ -86,7 +86,7 @@ public class Block {
 
         blockSize = calculateSize();
 
-        System.out.println(blockSize);
+        //System.out.println(blockSize);
     }
 
     /*TODO: Make this dynamic based on object variables, without any prior knowledge*/
