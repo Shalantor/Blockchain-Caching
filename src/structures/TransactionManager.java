@@ -1,11 +1,11 @@
-package structure;
+package structures;
 
 import java.io.BufferedReader;;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-/*Class that represents the transaction structure*/
+/*Class that represents the transaction structures*/
 public class TransactionManager {
 
     /*Configurations*/
