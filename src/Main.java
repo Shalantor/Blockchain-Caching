@@ -37,12 +37,14 @@ public class Main {
 
         for(Block block: blocks){
             System.out.println(block.index);
-        }*/
+        }
         MinerNode miner = new MinerNode(new Block(0,"genesis",transactions),
                 "src/config/miner.txt",manager.getKeys());
 
         for(int i =0; i < 50; i ++){
             miner.addTransaction(transactions.get(0));
-        }
+        }*/
+        NormalNode normal = new NormalNode("src/config/normal_node_config.txt",
+                "src/config/normal_node_interests.txt");
     }
 }
