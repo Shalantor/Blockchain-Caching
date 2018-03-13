@@ -86,7 +86,7 @@ public class MinerNode {
         pendingTransactions.add(transaction);
         sizeInBytes += Block.calculateSingleTransactionSize(transaction);
         if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
-            System.out.println("SIZE IS " + sizeInBytes);
+            //System.out.println("SIZE IS " + sizeInBytes);
             lastBlock = generateNewBlock();
         }
     }
@@ -103,7 +103,7 @@ public class MinerNode {
             /*clear list of previous transactions*/
             pendingTransactions.clear();
             sizeInBytes = lastBlock.getHeaderSize();
-            System.out.println("Generated new block with size " + block.blockSize);
+            //System.out.println("Generated new block with size " + block.blockSize);
 
             return block;
         }
