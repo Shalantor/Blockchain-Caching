@@ -69,6 +69,7 @@ public class TransactionManager {
     }
 
     /*This is for testing purposes*/
+    /*A transaction is a hashmap of names of fields and the corresponding field values*/
     public HashMap<String,Object> createRandomTransaction() {
 
         HashMap<String,Object> transaction = new HashMap<>();

@@ -38,7 +38,8 @@ public class Main {
         for(Block block: blocks){
             System.out.println(block.index);
         }*/
-        MinerNode miner = new MinerNode(new Block(0,"genesis",transactions),"src/config/miner.txt");
+        MinerNode miner = new MinerNode(new Block(0,"genesis",transactions),
+                "src/config/miner.txt",manager.getKeys());
 
     }
 }

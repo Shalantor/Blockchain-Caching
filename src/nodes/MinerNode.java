@@ -6,6 +6,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*implementation of the miner node*/
 public class MinerNode {
@@ -25,12 +28,21 @@ public class MinerNode {
     /*Last block in blockchain*/
     private Block lastBlock;
 
-    /*List of transactions to put into the new block*/
-    private ArrayList<Block> transactions;
+    /*Current transactions size*/
+    private long sizeInBytes;
 
-    public MinerNode(Block block,String configFilePath) {
+    /*List of transactions to put into the new block. Based on the configuration, the
+    * list will either be a general list with all blocks, or we will have a list for
+    * each interest available in the blockchain implementation. So a transaction is a
+    * hashmap with names and names and the values of some fields. We want many of them.
+    * So we need a list of lists of those transactions*/
+    ArrayList<HashMap<String,Object>> pendingTransactions;
+
+
+    public MinerNode(Block block,String configFilePath,List<String> interests) {
         lastBlock = block;
 
+        /*Get configurations*/
         try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
             String line, key, value;
             String[] info;
@@ -64,10 +76,10 @@ public class MinerNode {
                 ex.printStackTrace();
         }
 
-        System.out.println(minBlockSize);
-        System.out.println(maxBlockSize);
-        System.out.println(groupContent);
 
     }
 
+    public void addTransaction(HashMap<String,Object> transaction){
+        pendingTransactions.add(transaction);
+    }
 }

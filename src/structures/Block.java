@@ -4,6 +4,7 @@ package structures;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class Block {
 
         blockSize = calculateSize();
 
-        //System.out.println(blockSize);
+        System.out.println(blockSize);
     }
 
     /*TODO: Make this dynamic based on object variables, without any prior knowledge*/
@@ -99,6 +100,15 @@ public class Block {
         /*So 32 + 32 + 8 + 8 + 8 + 4 = 92 bytes*/
         long size = 92;
 
+        return calculateTransactionSize(transactions,size);
+    }
+
+    /*Used to calculate previous hash*/
+    public String getHeaderAsString(){
+        return index + timestamp + transactionHash + previousBlockHash + blockSize;
+    }
+
+    public static long calculateTransactionSize(List<HashMap<String,Object>> transactions,long size){
         for(HashMap<String,Object> transaction : transactions){
             for(Map.Entry entry : transaction.entrySet()){
                 try {
@@ -129,14 +139,7 @@ public class Block {
                 }
             }
         }
-
-
         return size;
-    }
-
-    /*Used to calculate previous hash*/
-    public String getHeaderAsString(){
-        return index + timestamp + transactionHash + previousBlockHash + blockSize;
     }
 
 }
