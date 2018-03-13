@@ -16,72 +16,82 @@ public class Interest {
     private int type;
     private int numericType;
     private Object numericValue;
+    private int weight ;
 
     /*Name of interest*/
     private ArrayList<String> interestValues;
     private String interestName;
 
-    public Interest(int type, int numericType, String name,Object numericValue, ArrayList<String> values){
+    public Interest(int type, int numericType,int weight, String name,Object numericValue, ArrayList<String> values){
         this.type = type;
         this.numericType = numericType;
         interestName = name;
         this.numericValue = numericValue;
         interestValues = values;
+        this.weight = weight;
     }
 
-    public boolean checkTransaction(HashMap<String,Object> transaction){
+    public boolean checkBlock(Block block){
+        /*TODO:Make loops more efficient*/
 
         if(type == STRING_TYPE){
-            String value = transaction.get(interestName).toString();
-            if(interestValues.contains(value)){
-                return true;
+            String value;
+            for(HashMap<String,Object> transaction : block.transactions){
+                value = transaction.get(interestName).toString();
+                if(interestValues.contains(value)){
+                    return true;
+                }
             }
         }
         else if(type == NUMERIC_TYPE){
             if(numericType == NUMERIC_GREATER){
-                Object value = transaction.get(interestName);
-                if(value instanceof Double){
-                    if( Double.parseDouble(numericValue.toString()) >=
-                            Double.parseDouble(value.toString()) ){
-                        return true;
+                Object value;
+                for(HashMap<String,Object> transaction : block.transactions){
+                    value = transaction.get(interestName);
+                    if(value instanceof Double){
+                        if( Double.parseDouble(numericValue.toString()) >=
+                                Double.parseDouble(value.toString()) ){
+                            return true;
+                        }
                     }
-                }
-                else if(value instanceof Long){
-                    if( Long.parseLong(numericValue.toString()) >=
-                            Long.parseLong(value.toString()) ){
-                        return true;
-                    }
+                    else if(value instanceof Long){
+                        if( Long.parseLong(numericValue.toString()) >=
+                                Long.parseLong(value.toString()) ){
+                            return true;
+                        }
 
-                }
-                else if(value instanceof Integer){
-                    if( Integer.parseInt(numericValue.toString()) >=
-                            Integer.parseInt(value.toString()) ){
-                        return true;
                     }
+                    else if(value instanceof Integer){
+                        if( Integer.parseInt(numericValue.toString()) >=
+                                Integer.parseInt(value.toString()) ){
+                            return true;
+                        }
 
+                    }
                 }
             }
             else if(numericType == NUMERIC_LOWER){
-                Object value = transaction.get(interestName);
-                if(value instanceof Double){
-                    if( Double.parseDouble(numericValue.toString()) <=
-                            Double.parseDouble(value.toString()) ){
-                        return true;
-                    }
-                }
-                else if(value instanceof Long){
-                    if( Long.parseLong(numericValue.toString()) <=
-                            Long.parseLong(value.toString()) ){
-                        return true;
-                    }
+                Object value;
+                for(HashMap<String,Object> transaction : block.transactions) {
+                    value = transaction.get(interestName);
+                    if (value instanceof Double) {
+                        if (Double.parseDouble(numericValue.toString()) <=
+                                Double.parseDouble(value.toString())) {
+                            return true;
+                        }
+                    } else if (value instanceof Long) {
+                        if (Long.parseLong(numericValue.toString()) <=
+                                Long.parseLong(value.toString())) {
+                            return true;
+                        }
 
-                }
-                else if(value instanceof Integer){
-                    if( Integer.parseInt(numericValue.toString()) <=
-                            Integer.parseInt(value.toString()) ){
-                        return true;
-                    }
+                    } else if (value instanceof Integer) {
+                        if (Integer.parseInt(numericValue.toString()) <=
+                                Integer.parseInt(value.toString())) {
+                            return true;
+                        }
 
+                    }
                 }
             }
         }
