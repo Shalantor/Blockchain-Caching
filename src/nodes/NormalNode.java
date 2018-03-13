@@ -15,6 +15,8 @@ public class NormalNode {
     private static final String DOUBLE = "double";
     private static final String INTEGER = "integer";
     private static final String LONG = "long";
+    private static final String GREATER = "greater";
+    private static final String LOWER = "lower";
 
     /*Available configurations*/
     private static final String MAX_CACHE_SIZE = "max_cache_size";
@@ -77,7 +79,6 @@ public class NormalNode {
 
                 /*get key and value*/
                 info = line.split("\\s+");
-                key = info[0];
                 value = info[1];
 
                 switch (value){
@@ -88,10 +89,40 @@ public class NormalNode {
                                 0,Integer.parseInt(info[2]),info[0],null,subList));
                         break;
                     case DOUBLE:
+                        int operationType = 0;
+                        if(info[3].equals(GREATER)){
+                            operationType = Interest.NUMERIC_GREATER;
+                        }
+                        else if(info[3].equals(LOWER)){
+                            operationType = Interest.NUMERIC_LOWER;
+                        }
+                        interests.put(info[0],new Interest(Interest.NUMERIC_TYPE,
+                                operationType,Integer.parseInt(info[2]),info[0],
+                                Double.parseDouble(info[4]),null));
                         break;
                     case INTEGER:
+                        operationType = 0;
+                        if(info[3].equals(GREATER)){
+                            operationType = Interest.NUMERIC_GREATER;
+                        }
+                        else if(info[3].equals(LOWER)){
+                            operationType = Interest.NUMERIC_LOWER;
+                        }
+                        interests.put(info[0],new Interest(Interest.NUMERIC_TYPE,
+                                operationType,Integer.parseInt(info[2]),info[0],
+                                Integer.parseInt(info[4]),null));
                         break;
                     case LONG:
+                        operationType = 0;
+                        if(info[3].equals(GREATER)){
+                            operationType = Interest.NUMERIC_GREATER;
+                        }
+                        else if(info[3].equals(LOWER)){
+                            operationType = Interest.NUMERIC_LOWER;
+                        }
+                        interests.put(info[0],new Interest(Interest.NUMERIC_TYPE,
+                                operationType,Integer.parseInt(info[2]),info[0],
+                                Long.parseLong(info[4]),null));
                         break;
                 }
             }
