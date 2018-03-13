@@ -41,5 +41,8 @@ public class Main {
         MinerNode miner = new MinerNode(new Block(0,"genesis",transactions),
                 "src/config/miner.txt",manager.getKeys());
 
+        for(int i =0; i < 50; i ++){
+            miner.addTransaction(transactions.get(0));
+        }
     }
 }

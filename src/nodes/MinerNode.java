@@ -36,7 +36,8 @@ public class MinerNode {
     * each interest available in the blockchain implementation. So a transaction is a
     * hashmap with names and names and the values of some fields. We want many of them.
     * So we need a list of lists of those transactions*/
-    ArrayList<HashMap<String,Object>> pendingTransactions;
+    /*For now no grouping*/
+    ArrayList<HashMap<String,Object>> pendingTransactions = new ArrayList<>();
 
 
     public MinerNode(Block block,String configFilePath,List<String> interests) {
@@ -79,7 +80,32 @@ public class MinerNode {
 
     }
 
+    /*Add transaction to pending ones*/
     public void addTransaction(HashMap<String,Object> transaction){
         pendingTransactions.add(transaction);
+        sizeInBytes += Block.calculateSingleTransactionSize(transaction);
+        if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
+            System.out.println("SIZE IS " + sizeInBytes);
+            lastBlock = generateNewBlock();
+        }
+    }
+
+
+    public Block generateNewBlock(){
+        /*Check configuration*/
+        if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
+            /*Generate new block*/
+
+            Block block = new Block(lastBlock.index + 1,
+                    lastBlock.getHeaderAsString(),pendingTransactions);
+
+            /*clear list of previous transactions*/
+            pendingTransactions.clear();
+            sizeInBytes = 0;
+            System.out.println("Generated new block with size " + block.blockSize);
+
+            return block;
+        }
+        return null;
     }
 }

@@ -26,12 +26,11 @@ public class Block {
     public int numTransactions;
     public List<HashMap<String,Object>> transactions;
 
-    public Block(long index, String previousBlockHash,
+    public Block(long index, String previousBlockHeader,
                  List<HashMap<String,Object>> transactions){
 
         /*Assign values that do not need calculation*/
         this.index = index;
-        this.previousBlockHash = previousBlockHash;/*TODO:Generate previous block hash!!!*/
         this.transactions = transactions;
         numTransactions = transactions.size();
 
@@ -48,10 +47,15 @@ public class Block {
             System.exit(1);
         }
 
+        byte[] hash;
+
+        /*Calculate previous hash*/
+        hash = digest.digest(previousBlockHeader.getBytes());
+        this.previousBlockHash = DatatypeConverter.printHexBinary(hash);
+
         /*First create array of hashes of transactions*/
         StringBuilder hashInput = new StringBuilder();
         ArrayList<String> initialHashes = new ArrayList<>();
-        byte[] hash;
         for(HashMap<String,Object> transaction : transactions){
             for(Map.Entry entry : transaction.entrySet()){
                 hashInput.append(entry.getKey().toString());
@@ -175,4 +179,8 @@ public class Block {
         return size;
     }
 
+
+    public long getHeaderSize(){
+        return 92;
+    }
 }
