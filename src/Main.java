@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        TransactionManager manager = new TransactionManager();
+        TransactionManager manager = new TransactionManager("src/test/resources/example.txt");
 
 
         /*Test block*/

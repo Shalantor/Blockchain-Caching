@@ -8,11 +8,6 @@ import java.util.*;
 /*Class that represents the transaction structures*/
 public class TransactionManager {
 
-    /*Configurations*/
-    /*TODO:Make programm read these names and paths from files as well*/
-    private static final String configFilename = "example.txt";
-    private static final String filePath = "src/test/resources/" + configFilename;
-
     /*Possible names for type values*/
     private static final String STRING = "string";
     private static final String DOUBLE = "double";
@@ -22,7 +17,7 @@ public class TransactionManager {
     /*Hash map of values in transaction*/
     private HashMap<String,Object> transactionFields = new HashMap<>();
 
-    public TransactionManager(){
+    public TransactionManager(String filePath){
 
         /*Open and read from example file*/
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
