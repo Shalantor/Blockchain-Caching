@@ -42,6 +42,7 @@ public class MinerNode {
 
     public MinerNode(Block block,String configFilePath,List<String> interests) {
         lastBlock = block;
+        sizeInBytes = lastBlock.getHeaderSize();
 
         /*Get configurations*/
         try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
@@ -101,7 +102,7 @@ public class MinerNode {
 
             /*clear list of previous transactions*/
             pendingTransactions.clear();
-            sizeInBytes = 0;
+            sizeInBytes = lastBlock.getHeaderSize();
             System.out.println("Generated new block with size " + block.blockSize);
 
             return block;
