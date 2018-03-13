@@ -1,4 +1,5 @@
 import nodes.FullNode;
+import nodes.MinerNode;
 import nodes.NormalNode;
 import structures.Block;
 import structures.TransactionManager;
@@ -20,7 +21,7 @@ public class Main {
         }
 
         /*Test full node*/
-        FullNode fullNode = new FullNode(new Block(0,"qwe",transactions));
+        /*FullNode fullNode = new FullNode(new Block(0,"qwe",transactions));
 
         for(int i =0; i < 10; i ++){
             fullNode.addBlock(new Block(i+1,"",transactions));
@@ -36,6 +37,8 @@ public class Main {
 
         for(Block block: blocks){
             System.out.println(block.index);
-        }
+        }*/
+        MinerNode miner = new MinerNode(new Block(0,"genesis",transactions),"src/config/miner.txt");
+
     }
 }
