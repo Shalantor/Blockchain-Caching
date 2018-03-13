@@ -87,7 +87,7 @@ public class Block {
 
         blockSize = calculateSize();
 
-        System.out.println(blockSize);
+        //System.out.println(blockSize);
     }
 
     /*TODO: Make this dynamic based on object variables, without any prior knowledge*/
@@ -136,6 +136,39 @@ public class Block {
                         ex.printStackTrace();
                         System.exit(1);
                     }
+                }
+            }
+        }
+        return size;
+    }
+
+    public static long calculateSingleTransactionSize(HashMap<String,Object> transaction){
+        long size = 0;
+        for(Map.Entry entry : transaction.entrySet()){
+            try {
+                size = size + entry.getKey().toString().getBytes("UTF-8").length;
+            }
+            catch(UnsupportedEncodingException ex){
+                ex.printStackTrace();
+                System.exit(1);
+            }
+            Object value = entry.getValue();
+            if(value instanceof Double){
+                size += 8;
+            }
+            else if(value instanceof Long){
+                size += 8;
+            }
+            else if(value instanceof Integer){
+                size += 4;
+            }
+            else if(value instanceof String){
+                try {
+                    size = size + entry.getKey().toString().getBytes("UTF-8").length;
+                }
+                catch(UnsupportedEncodingException ex){
+                    ex.printStackTrace();
+                    System.exit(1);
                 }
             }
         }
