@@ -1,4 +1,3 @@
-id          string      1    a b c d
 sender      string      1    george spiros florian thomas
 receiver    string      1    george spiros florian thomas
 price       double      1    lower   13.5

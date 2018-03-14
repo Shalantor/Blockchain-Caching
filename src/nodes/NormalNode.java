@@ -1,5 +1,6 @@
 package nodes;
 
+import structures.Block;
 import structures.Interest;
 
 import java.io.BufferedReader;
@@ -30,7 +31,7 @@ public class NormalNode {
     private long timeRestraint;
 
     /*Interest name with the corresponding interest object*/
-    private HashMap<String, Interest> interests = new HashMap<>();
+    private Map<String, Interest> interests = new HashMap<>();
 
     /*The constructor as of now*/
     public NormalNode(String configFilePath,String interestFilePath){
@@ -81,12 +82,14 @@ public class NormalNode {
                 info = line.split("\\s+");
                 value = info[1];
 
+                Interest temp;
                 switch (value){
                     case STRING:
                         String[] subArray = Arrays.copyOfRange(info,3,info.length);
                         ArrayList<String> subList = new ArrayList<>(Arrays.asList(subArray));
-                        interests.put(info[0],new Interest(Interest.STRING_TYPE,
-                                0,Integer.parseInt(info[2]),info[0],null,subList));
+                        temp = new Interest(Interest.STRING_TYPE,
+                                0,Integer.parseInt(info[2]),info[0],null,subList);
+                        interests.put(info[0],temp);
                         break;
                     case DOUBLE:
                         int operationType = 0;
@@ -96,9 +99,10 @@ public class NormalNode {
                         else if(info[3].equals(LOWER)){
                             operationType = Interest.NUMERIC_LOWER;
                         }
-                        interests.put(info[0],new Interest(Interest.NUMERIC_TYPE,
+                        temp = new Interest(Interest.NUMERIC_TYPE,
                                 operationType,Integer.parseInt(info[2]),info[0],
-                                Double.parseDouble(info[4]),null));
+                                Double.parseDouble(info[4]),null);
+                        interests.put(info[0],temp);
                         break;
                     case INTEGER:
                         operationType = 0;
@@ -108,9 +112,10 @@ public class NormalNode {
                         else if(info[3].equals(LOWER)){
                             operationType = Interest.NUMERIC_LOWER;
                         }
-                        interests.put(info[0],new Interest(Interest.NUMERIC_TYPE,
+                        temp = new Interest(Interest.NUMERIC_TYPE,
                                 operationType,Integer.parseInt(info[2]),info[0],
-                                Integer.parseInt(info[4]),null));
+                                Integer.parseInt(info[4]),null);
+                        interests.put(info[0],temp);
                         break;
                     case LONG:
                         operationType = 0;
@@ -120,9 +125,10 @@ public class NormalNode {
                         else if(info[3].equals(LOWER)){
                             operationType = Interest.NUMERIC_LOWER;
                         }
-                        interests.put(info[0],new Interest(Interest.NUMERIC_TYPE,
+                        temp = new Interest(Interest.NUMERIC_TYPE,
                                 operationType,Integer.parseInt(info[2]),info[0],
-                                Long.parseLong(info[4]),null));
+                                Long.parseLong(info[4]),null);
+                        interests.put(info[0],temp);
                         break;
                 }
             }
@@ -132,6 +138,24 @@ public class NormalNode {
             System.out.println("Io exception occurred");
             ex.printStackTrace();
         }
+    }
+
+    /*Below stuff is just for printing*/
+    public void printInterests(){
+        for(Map.Entry entry : interests.entrySet()){
+            System.out.println("Interest name: " + entry.getKey());
+            ((Interest)entry.getValue()).printInfo();
+        }
+    }
+
+    public boolean checkBlock(Block block){
+        for (Map.Entry entry : interests.entrySet()){
+            if(((Interest)entry.getValue()).checkBlock(block)){
+                System.out.println("YES MOTHERFUCKERS INTERESTED");
+                return true;
+            }
+        }
+        return false;
     }
 
 }

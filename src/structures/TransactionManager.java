@@ -97,5 +97,16 @@ public class TransactionManager {
 
     }
 
+    /*stuff below this is for testing*/
+    public HashMap<String,Object> createTransaction(ArrayList<Object> fields){
+        int counter = 0;
+        HashMap<String,Object> transaction = new HashMap<>();
+        for(Map.Entry entry : transactionFields.entrySet()){
+            transaction.put(entry.getKey().toString(),fields.get(counter));
+            counter++;
+        }
+        return transaction;
+    }
+
 
 }

@@ -39,6 +39,7 @@ public class Interest {
             for(HashMap<String,Object> transaction : block.transactions){
                 value = transaction.get(interestName).toString();
                 if(interestValues.contains(value)){
+                    System.out.println("HERE AT STRING with value " + value);
                     return true;
                 }
             }
@@ -49,21 +50,24 @@ public class Interest {
                 for(HashMap<String,Object> transaction : block.transactions){
                     value = transaction.get(interestName);
                     if(value instanceof Double){
-                        if( Double.parseDouble(numericValue.toString()) >=
+                        if( Double.parseDouble(numericValue.toString()) <=
                                 Double.parseDouble(value.toString()) ){
+                            System.out.println("HERE AT DOUBLE with value " + value);
                             return true;
                         }
                     }
                     else if(value instanceof Long){
-                        if( Long.parseLong(numericValue.toString()) >=
+                        if( Long.parseLong(numericValue.toString()) <=
                                 Long.parseLong(value.toString()) ){
+                            System.out.println("HERE AT LONG with value " + value);
                             return true;
                         }
 
                     }
                     else if(value instanceof Integer){
-                        if( Integer.parseInt(numericValue.toString()) >=
+                        if( Integer.parseInt(numericValue.toString()) <=
                                 Integer.parseInt(value.toString()) ){
+                            System.out.println("HERE AT INT with value " + value);
                             return true;
                         }
 
@@ -75,19 +79,22 @@ public class Interest {
                 for(HashMap<String,Object> transaction : block.transactions) {
                     value = transaction.get(interestName);
                     if (value instanceof Double) {
-                        if (Double.parseDouble(numericValue.toString()) <=
+                        if (Double.parseDouble(numericValue.toString()) >=
                                 Double.parseDouble(value.toString())) {
+                            System.out.println("HERE AT DOUBLE LOWER with value " + value);
                             return true;
                         }
                     } else if (value instanceof Long) {
-                        if (Long.parseLong(numericValue.toString()) <=
+                        if (Long.parseLong(numericValue.toString()) >=
                                 Long.parseLong(value.toString())) {
+                            System.out.println("HERE AT LONG LOWER with value " + value);
                             return true;
                         }
 
                     } else if (value instanceof Integer) {
-                        if (Integer.parseInt(numericValue.toString()) <=
+                        if (Integer.parseInt(numericValue.toString()) >=
                                 Integer.parseInt(value.toString())) {
+                            System.out.println("HERE AT INT LOWER with value " + value);
                             return true;
                         }
 
@@ -96,5 +103,25 @@ public class Interest {
             }
         }
         return false;
+    }
+
+    /*Below stuff for testing*/
+    public void printInfo(){
+        if(type == STRING_TYPE){
+            for(String value : interestValues){
+                System.out.print(value + " ");
+            }
+            System.out.print("\n");
+        }
+        else if(type == NUMERIC_TYPE){
+            if(numericType == NUMERIC_GREATER){
+                System.out.print("Number greater than: ");
+            }
+            else if(numericType == NUMERIC_LOWER){
+                System.out.print("Number lower than: ");
+            }
+            System.out.println(numericValue);
+        }
+
     }
 }

@@ -3,3 +3,4 @@ sender      string
 receiver    string
 price       double
 category    string
+amount      long
