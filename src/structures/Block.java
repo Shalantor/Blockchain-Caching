@@ -26,6 +26,10 @@ public class Block {
     public int numTransactions;
     public ArrayList<HashMap<String,Object>> transactions;
 
+    public Block(){
+
+    }
+
     public Block(long index, String previousBlockHeader,
                  ArrayList<HashMap<String,Object>> transactions){
 
