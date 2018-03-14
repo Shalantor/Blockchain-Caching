@@ -49,8 +49,10 @@ public class Main {
 
 
         transactions.add(manager.createTransaction(new ArrayList<>(
-                Arrays.asList("a","noob","pilafi",20.0,"batman",50)
+                Arrays.asList("ababa","bonnie","pilafi",15.4,"batman",190)
         )));
+
+        System.out.println(transactions);
 
         //normal.printInterests();
 

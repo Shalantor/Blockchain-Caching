@@ -17,6 +17,9 @@ public class TransactionManager {
     /*Hash map of values in transaction*/
     private HashMap<String,Object> transactionFields = new HashMap<>();
 
+    /*Arraylist with keys, ordered like they are read from file*/
+    private ArrayList<String> keys = new ArrayList<>();
+
     public TransactionManager(String filePath){
 
         /*Open and read from example file*/
@@ -34,6 +37,7 @@ public class TransactionManager {
                 info = line.split("\\s+");
                 key = info[0];
                 value = info[1];
+                keys.add(info[0]);
 
                 switch (value){
                     case STRING:
@@ -101,8 +105,8 @@ public class TransactionManager {
     public HashMap<String,Object> createTransaction(ArrayList<Object> fields){
         int counter = 0;
         HashMap<String,Object> transaction = new HashMap<>();
-        for(Map.Entry entry : transactionFields.entrySet()){
-            transaction.put(entry.getKey().toString(),fields.get(counter));
+        for(String key : keys){
+            transaction.put(key,fields.get(counter));
             counter++;
         }
         return transaction;
