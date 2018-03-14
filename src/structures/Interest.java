@@ -105,6 +105,73 @@ public class Interest {
         return false;
     }
 
+    /*Light node uses this method*/
+    public boolean checkTransaction(HashMap<String,Object> transaction){
+        if(type == STRING_TYPE){
+            String value;
+            value = transaction.get(interestName).toString();
+            if(interestValues.contains(value)){
+                System.out.println("HERE AT STRING with value " + value);
+                return true;
+            }
+        }
+        else if(type == NUMERIC_TYPE){
+            if(numericType == NUMERIC_GREATER){
+                Object value;
+                value = transaction.get(interestName);
+                if(value instanceof Double){
+                    if( Double.parseDouble(numericValue.toString()) <=
+                            Double.parseDouble(value.toString()) ){
+                        System.out.println("HERE AT DOUBLE with value " + value);
+                        return true;
+                    }
+                }
+                else if(value instanceof Long){
+                    if( Long.parseLong(numericValue.toString()) <=
+                            Long.parseLong(value.toString()) ){
+                        System.out.println("HERE AT LONG with value " + value);
+                        return true;
+                    }
+
+                }
+                else if(value instanceof Integer){
+                    if( Integer.parseInt(numericValue.toString()) <=
+                            Integer.parseInt(value.toString()) ){
+                        System.out.println("HERE AT INT with value " + value);
+                        return true;
+                    }
+
+                }
+            }
+            else if(numericType == NUMERIC_LOWER){
+                Object value;
+                value = transaction.get(interestName);
+                if (value instanceof Double) {
+                    if (Double.parseDouble(numericValue.toString()) >=
+                            Double.parseDouble(value.toString())) {
+                        System.out.println("HERE AT DOUBLE LOWER with value " + value);
+                        return true;
+                    }
+                } else if (value instanceof Long) {
+                    if (Long.parseLong(numericValue.toString()) >=
+                            Long.parseLong(value.toString())) {
+                        System.out.println("HERE AT LONG LOWER with value " + value);
+                        return true;
+                    }
+
+                } else if (value instanceof Integer) {
+                    if (Integer.parseInt(numericValue.toString()) >=
+                            Integer.parseInt(value.toString())) {
+                        System.out.println("HERE AT INT LOWER with value " + value);
+                        return true;
+                    }
+
+                }
+            }
+        }
+        return false;
+    }
+
     /*Below stuff for testing*/
     public void printInfo(){
         if(type == STRING_TYPE){
@@ -122,6 +189,7 @@ public class Interest {
             }
             System.out.println(numericValue);
         }
-
     }
+
+
 }

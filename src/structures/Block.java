@@ -24,10 +24,10 @@ public class Block {
 
     /*This is the data of the block*/
     public int numTransactions;
-    public List<HashMap<String,Object>> transactions;
+    public ArrayList<HashMap<String,Object>> transactions;
 
     public Block(long index, String previousBlockHeader,
-                 List<HashMap<String,Object>> transactions){
+                 ArrayList<HashMap<String,Object>> transactions){
 
         /*Assign values that do not need calculation*/
         this.index = index;
@@ -112,7 +112,7 @@ public class Block {
         return index + timestamp + transactionHash + previousBlockHash + blockSize;
     }
 
-    public static long calculateTransactionSize(List<HashMap<String,Object>> transactions,long size){
+    public static long calculateTransactionSize(ArrayList<HashMap<String,Object>> transactions,long size){
         for(HashMap<String,Object> transaction : transactions){
             for(Map.Entry entry : transaction.entrySet()){
                 try {
