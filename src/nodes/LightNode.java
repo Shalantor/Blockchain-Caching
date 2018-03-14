@@ -16,18 +16,6 @@ import java.util.Map;
 
 public class LightNode extends NormalNode{
 
-    /*Possible names for type values*/
-    private static final String STRING = "string";
-    private static final String DOUBLE = "double";
-    private static final String INTEGER = "integer";
-    private static final String LONG = "long";
-    private static final String GREATER = "greater";
-    private static final String LOWER = "lower";
-
-    /*Available configurations*/
-    private static final String MAX_CACHE_SIZE = "max_cache_size";
-    private static final String TIME_RESTRAINT = "time_restraint";
-
     /*value indicating no cache size limit*/
     public static final int NO_LIMIT = 0;
 
@@ -36,10 +24,10 @@ public class LightNode extends NormalNode{
     private long timeRestraint;
 
     /*Interest name with the corresponding interest object*/
-    private Map<String, Interest> interests = new HashMap<>();
+    private HashMap<String, Interest> interests = new HashMap<>();
 
     /*ArrayList of interested blocks*/
-    private ArrayList<StrippedBlock> blocksInCache = new ArrayList<>();
+    private ArrayList<Block> blocksInCache = new ArrayList<>();
 
     /*Cache manager*/
     /*TODO:Change hardcode*/
@@ -63,7 +51,8 @@ public class LightNode extends NormalNode{
         for (Map.Entry entry : interests.entrySet()){
             if(((Interest)entry.getValue()).checkBlock(block)){
                 System.out.println("YES MOTHERFUCKERS INTERESTED");
-
+                StrippedBlock strippedBlock = new StrippedBlock(block,interests);
+                cacheManager.addBlock(blocksInCache,strippedBlock);
                 return true;
             }
         }

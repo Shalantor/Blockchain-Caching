@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*Light nodes collect blocks and remove any unecessary information*/
-public class StrippedBlock {
+public class StrippedBlock extends Block{
 
     /*Dont keep hashes and timestamp*/
     public long index;
