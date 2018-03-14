@@ -1,5 +1,7 @@
 package nodes;
 
+import cacheManager.CacheManager;
+import cacheManager.SimpleCacheManager;
 import structures.Block;
 import structures.Interest;
 
@@ -24,7 +26,7 @@ public class NormalNode {
     private static final String TIME_RESTRAINT = "time_restraint";
 
     /*value indicating no cache size limit*/
-    private static final int NO_LIMIT = 0;
+    public static final int NO_LIMIT = 0;
 
     /*Does the node have a maximum cache size?*/
     private long maxCacheSize;
@@ -32,6 +34,13 @@ public class NormalNode {
 
     /*Interest name with the corresponding interest object*/
     private Map<String, Interest> interests = new HashMap<>();
+
+    /*ArrayList of interested blocks*/
+    private ArrayList<Block> blocksInCache = new ArrayList<>();
+
+    /*Cache manager*/
+    /*TODO:Change hardcode*/
+    private CacheManager cacheManager = new SimpleCacheManager();
 
     /*The constructor as of now*/
     public NormalNode(String configFilePath,String interestFilePath){
@@ -152,6 +161,7 @@ public class NormalNode {
         for (Map.Entry entry : interests.entrySet()){
             if(((Interest)entry.getValue()).checkBlock(block)){
                 System.out.println("YES MOTHERFUCKERS INTERESTED");
+                cacheManager.addBlock(blocksInCache,block);
                 return true;
             }
         }
