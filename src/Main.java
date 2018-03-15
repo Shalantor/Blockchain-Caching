@@ -1,4 +1,5 @@
 import nodes.FullNode;
+import nodes.LightNode;
 import nodes.MinerNode;
 import nodes.NormalNode;
 import structures.Block;
@@ -16,9 +17,9 @@ public class Main {
 
         /*Test block*/
         ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
-        for(int i =0; i < 10; i ++){
+        /*for(int i =0; i < 10; i ++){
             transactions.add(manager.createRandomTransaction());
-        }
+        }*/
 
         /*Test full node*/
         /*FullNode fullNode = new FullNode(new Block(0,"qwe",transactions));
@@ -44,22 +45,34 @@ public class Main {
         for(int i =0; i < 50; i ++){
             miner.addTransaction(transactions.get(0));
         }*/
-        //NormalNode normal = new NormalNode("src/config/normal_node_config.txt",
+        NormalNode normal = new NormalNode("src/config/normal_node_config.txt",
                 "src/config/normal_node_interests.txt");
 
 
-        /*transactions.add(manager.createTransaction(new ArrayList<>(
-                Arrays.asList("ababa","bonnie","pilafi",15.4,"batman",190)
-        )));*/
+        transactions.add(manager.createTransaction(new ArrayList<>(
+                Arrays.asList("ababa","bonnie","pilafi",15.4,"pizza",190)
+        )));
+
+        transactions.add(manager.createTransaction(new ArrayList<>(
+                Arrays.asList("ababa","bonnie","pilafi",15.4,"batman",10)
+        )));
 
         //System.out.println(transactions);
 
         //normal.printInterests();
 
         Block block = new Block(0,"genesis",transactions);
-        System.out.println(block);
+        //System.out.println(block);
 
         //normal.checkBlock(block);
+        LightNode lightNode = new LightNode("src/config/normal_node_config.txt",
+                "src/config/normal_node_interests.txt");
+
+        //lightNode.printInterests();
+        lightNode.checkBlock(block);
+        normal.checkBlock(block);
+        lightNode.printBlocks();
+        normal.printBlocks();
 
     }
 }

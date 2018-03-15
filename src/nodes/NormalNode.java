@@ -33,7 +33,7 @@ public class NormalNode {
     private long timeRestraint;
 
     /*Interest name with the corresponding interest object*/
-    private Map<String, Interest> interests = new HashMap<>();
+    public Map<String, Interest> interests = new HashMap<>();
 
     /*ArrayList of interested blocks*/
     private ArrayList<Block> blocksInCache = new ArrayList<>();
@@ -149,14 +149,6 @@ public class NormalNode {
         }
     }
 
-    /*Below stuff is just for printing*/
-    public void printInterests(){
-        for(Map.Entry entry : interests.entrySet()){
-            System.out.println("Interest name: " + entry.getKey());
-            ((Interest)entry.getValue()).printInfo();
-        }
-    }
-
     public boolean checkBlock(Block block){
         for (Map.Entry entry : interests.entrySet()){
             if(((Interest)entry.getValue()).checkBlock(block)){
@@ -166,6 +158,21 @@ public class NormalNode {
             }
         }
         return false;
+    }
+
+    /*Below stuff is just for printing*/
+    public void printInterests(){
+        for(Map.Entry entry : interests.entrySet()){
+            System.out.println("Interest name: " + entry.getKey());
+            ((Interest)entry.getValue()).printInfo();
+        }
+    }
+
+    public void printBlocks(){
+        System.out.println("NORMAL NODE BLOCKS");
+        for(Block block : blocksInCache){
+            System.out.println(block);
+        }
     }
 
 }
