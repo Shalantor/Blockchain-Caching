@@ -24,6 +24,7 @@ public class NormalNode {
     /*Available configurations*/
     private static final String MAX_CACHE_SIZE = "max_cache_size";
     private static final String TIME_RESTRAINT = "time_restraint";
+    private static final String CACHE_CONFIG = "cache_configuration";
 
     /*value indicating no cache size limit*/
     public static final int NO_LIMIT = 0;
@@ -40,7 +41,7 @@ public class NormalNode {
 
     /*Cache manager*/
     /*TODO:Change hardcode*/
-    private CacheManager cacheManager = new SimpleCacheManager();
+    private CacheManager cacheManager;
 
     /*The constructor as of now*/
     public NormalNode(String configFilePath,String interestFilePath){
@@ -67,6 +68,12 @@ public class NormalNode {
                         break;
                     case TIME_RESTRAINT:
                         timeRestraint = Long.parseLong(value);
+                        break;
+                    case CACHE_CONFIG:
+                        cacheManager = CacheManager.createManager(
+                                Integer.parseInt(value),
+                                timeRestraint,maxCacheSize);
+                        break;
                 }
             }
 
