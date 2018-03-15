@@ -43,7 +43,7 @@ public class LightNode{
 
     /*Cache manager*/
     /*TODO:Change hardcode*/
-    private CacheManager cacheManager = new SimpleCacheManager();
+    private CacheManager cacheManager = new SimpleCacheManager(timeRestraint,maxCacheSize);
 
     /*The constructor as of now*/
     public LightNode(String configFilePath,String interestFilePath){
