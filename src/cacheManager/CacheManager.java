@@ -8,10 +8,8 @@ import java.util.ArrayList;
 public class CacheManager {
 
     /*available configurations*/
-    private static final int NO_LIMIT_NO_TIME_RESTRAINT = 0;
-    private static final int NO_LIMIT_WITH_TIME_RESTRAINT = 1;
-    private static final int LIMIT_NO_TIME_RESTRAINT = 2;
-    private static final int LIMIT_WITH_TIME_RESTRAINT = 3;
+    private static final int NO_CACHE_LIMIT = 0;
+    private static final int CACHE_LIMIT_SIMPLE = 1;
 
 
     public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
@@ -25,8 +23,9 @@ public class CacheManager {
 
     public static CacheManager createManager(int type,long timeRestraint,long cacheSize){
         switch (type){
-            case  NO_LIMIT_NO_TIME_RESTRAINT:
+            case  NO_CACHE_LIMIT:
                 return new SimpleCacheManager(timeRestraint,cacheSize);
+
         }
         return null;
     }
