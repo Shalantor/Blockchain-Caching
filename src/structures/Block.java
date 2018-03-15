@@ -187,4 +187,21 @@ public class Block {
     public long getHeaderSize(){
         return 92;
     }
+
+    /*Below stuff is for testing*/
+    @Override
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        for(HashMap<String,Object> tr : transactions){
+            str.append(tr.toString());
+            str.append("\n");
+        }
+        return "Index in Blockchain: " + index + "\n" +
+                "Timestamp: " + timestamp + "\n" +
+                "Block size: " + blockSize + "\n" +
+                "Previous block hash: " + previousBlockHash + "\n" +
+                "Transaction root hash: " + transactionHash + "\n" +
+                "Transactions in block:\n " + str + "\n";
+    }
+
 }

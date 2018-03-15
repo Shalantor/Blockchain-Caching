@@ -7,7 +7,7 @@ import java.util.Map;
 /*Light nodes collect blocks and remove any unecessary information*/
 public class StrippedBlock extends Block{
 
-    /*Dont keep hashes and timestamp*/
+    /*Do not keep hashes and timestamp*/
     public long index;
     public long blockSize;
     public ArrayList<HashMap<String,Object>> keptTransactions;
@@ -33,5 +33,19 @@ public class StrippedBlock extends Block{
                 keptTransactions.add(transaction);
             }
         }
+    }
+
+    /*below stuff is for testing*/
+    @Override
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        for(HashMap<String,Object> tr : keptTransactions){
+            str.append(tr.toString());
+            str.append("\n");
+        }
+        return "Index in Blockchain: " + index + "\n" +
+                "Timestamp: " + timestamp + "\n" +
+                "Block size: " + blockSize + "\n" +
+                "Transactions in block:\n " + str + "\n";
     }
 }
