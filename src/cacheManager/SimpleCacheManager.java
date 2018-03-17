@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class SimpleCacheManager extends CacheManager{
 
     private long timeLimit;
+    private long sizeOfCachedBlocks;
 
     public SimpleCacheManager(long timeLimit,long cacheSize){
         this.timeLimit = timeLimit;
@@ -18,6 +19,7 @@ public class SimpleCacheManager extends CacheManager{
     @Override
     public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
         blocksInCache.add(block);
+        sizeOfCachedBlocks += block.blockSize;
         return true;
     }
 
@@ -38,6 +40,7 @@ public class SimpleCacheManager extends CacheManager{
         }
         else if(currentTime - blocksInCache.get(end).timestamp > timeLimit){
             blocksInCache.clear();
+            sizeOfCachedBlocks = 0;
             return;
         }
 
@@ -59,6 +62,7 @@ public class SimpleCacheManager extends CacheManager{
 
         /*Now remove blocks from list*/
         for(int i =0; i <= start; i++){
+            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
             blocksInCache.remove(0);
         }
 

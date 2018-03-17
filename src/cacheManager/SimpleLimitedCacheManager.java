@@ -8,6 +8,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
 
     private long timeLimit;
     private long cacheSize;
+    private long sizeOfCachedBlocks;
 
     public SimpleLimitedCacheManager(long timeLimit,long cacheSize){
         this.timeLimit = timeLimit;
@@ -17,6 +18,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
     @Override
     public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
         blocksInCache.add(block);
+        sizeOfCachedBlocks += block.blockSize;
         return true;
     }
 
@@ -38,6 +40,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
         }
         else if(currentTime - blocksInCache.get(end).timestamp > timeLimit){
             blocksInCache.clear();
+            sizeOfCachedBlocks = 0;
             return;
         }
 
@@ -59,6 +62,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
 
         /*Now remove blocks from list*/
         for(int i =0; i <= start; i++){
+            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
             blocksInCache.remove(0);
         }
 
