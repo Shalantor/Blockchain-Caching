@@ -37,11 +37,10 @@ public class NormalNode {
     public Map<String, Interest> interests = new HashMap<>();
 
     /*ArrayList of interested blocks*/
-    private ArrayList<Block> blocksInCache = new ArrayList<>();
+    public ArrayList<Block> blocksInCache = new ArrayList<>();
 
     /*Cache manager*/
-    /*TODO:Add variable for size of blocks in cache*/
-    private CacheManager cacheManager;
+    public CacheManager cacheManager;
 
     /*The constructor as of now*/
     public NormalNode(String configFilePath,String interestFilePath){
@@ -159,7 +158,6 @@ public class NormalNode {
     public boolean checkBlock(Block block){
         for (Map.Entry entry : interests.entrySet()){
             if(((Interest)entry.getValue()).checkBlock(block)){
-                System.out.println("YES MOTHERFUCKERS INTERESTED");
                 cacheManager.addBlock(blocksInCache,block);
                 return true;
             }

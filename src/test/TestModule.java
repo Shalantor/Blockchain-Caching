@@ -25,9 +25,9 @@ public class TestModule{
 
             /*Test block*/
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
-        /*for(int i =0; i < 10; i ++){
-            transactions.add(manager.createRandomTransaction());
-        }*/
+            for(int i =0; i < 10; i ++){
+                transactions.add(manager.createRandomTransaction());
+            }
 
             /*Test full node*/
         /*FullNode fullNode = new FullNode(new Block(0,"qwe",transactions));
@@ -69,18 +69,33 @@ public class TestModule{
 
             //normal.printInterests();
 
-            Block block = new Block(0,"genesis",transactions);
+            //Block block = new Block(0,"genesis",transactions);
             //System.out.println(block);
 
             //normal.checkBlock(block);
-            LightNode lightNode = new LightNode("src/test/resources/normal_node_config.txt",
-                    "src/test/resources/normal_node_interests.txt");
+            //LightNode lightNode = new LightNode("src/test/resources/normal_node_config.txt",
+                    //"src/test/resources/normal_node_interests.txt");
 
             //lightNode.printInterests();
-            lightNode.checkBlock(block);
-            normal.checkBlock(block);
-            lightNode.printBlocks();
-            normal.printBlocks();
+            //lightNode.checkBlock(block);
+            //normal.checkBlock(block);
+            //lightNode.printBlocks();
+            //normal.printBlocks();
+
+            ArrayList<Block> blocks = new ArrayList<>();
+            /*Create blocks*/
+            for(int i =0;i < 2; i++){
+                blocks.add(new Block(0,"genesis",transactions));
+            }
+
+            for(int i =0;i < 2; i++){
+                blocks.get(i).timestamp = 0;
+            }
+
+            normal.blocksInCache = blocks;
+            System.out.println(blocks.size());
+            normal.cacheManager.removeOldBlocks(blocks);
+            System.out.println(blocks.size());
 
         }
     }

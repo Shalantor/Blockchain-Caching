@@ -30,17 +30,30 @@ public class SimpleCacheManager extends CacheManager{
         long currentTime;
         Block currentBlock;
 
+        currentTime = System.currentTimeMillis();
+
+        /*Check edge cases*/
+        if(currentTime - blocksInCache.get(0).timestamp < timeLimit){
+            return;
+        }
+        else if(currentTime - blocksInCache.get(end).timestamp > timeLimit){
+            blocksInCache.clear();
+            return;
+        }
+
         while(start != end){
-            currentTime = System.currentTimeMillis();
             currentBlock = blocksInCache.get(pos);
 
             if(currentTime - currentBlock.timestamp > timeLimit){
                 start = pos;
-                pos = (int) Math.ceil((start + end) / 2);
+                pos = (int) Math.ceil((start + end) * 1.0f / 2);
+                if(start == end - 1){
+                    break;
+                }
             }
             else if(currentTime - currentBlock.timestamp < timeLimit){
                 end = pos;
-                pos = (int) Math.floor((start + end) / 2);
+                pos = (int) Math.floor((start + end) * 1.0f / 2);
             }
         }
 

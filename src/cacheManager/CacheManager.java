@@ -25,6 +25,8 @@ public class CacheManager {
         switch (type){
             case  NO_CACHE_LIMIT:
                 return new SimpleCacheManager(timeRestraint,cacheSize);
+            case CACHE_LIMIT_SIMPLE:
+                return new SimpleLimitedCacheManager(timeRestraint,cacheSize);
 
         }
         return null;
