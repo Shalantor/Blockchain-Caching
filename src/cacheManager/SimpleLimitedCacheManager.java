@@ -24,28 +24,28 @@ public class SimpleLimitedCacheManager extends CacheManager{
     public void removeOldBlocks(ArrayList<Block> blocksInCache){
         /*Binary search blocks and then remove. Blocks in cache are order with timestamps*/
         int size = blocksInCache.size();
-        int start = 0,end = size;
-        int pos;
+        int start = 0,end = size-1;
+        int pos = (start + end ) / 2;
         long currentTime;
         Block currentBlock;
 
         while(start != end){
-            pos = (start + end) / 2;
             currentTime = System.currentTimeMillis();
             currentBlock = blocksInCache.get(pos);
 
             if(currentTime - currentBlock.timestamp > timeLimit){
                 start = pos;
+                pos = (int) Math.ceil((start + end) / 2);
             }
             else if(currentTime - currentBlock.timestamp < timeLimit){
                 end = pos;
+                pos = (int) Math.floor((start + end) / 2);
             }
         }
 
         /*Now remove blocks from list*/
-        for(int i =0; i < start; i++){
+        for(int i =0; i <= start; i++){
             blocksInCache.remove(0);
         }
-
     }
 }

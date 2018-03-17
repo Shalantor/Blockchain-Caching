@@ -40,7 +40,7 @@ public class NormalNode {
     private ArrayList<Block> blocksInCache = new ArrayList<>();
 
     /*Cache manager*/
-    /*TODO:Change hardcode*/
+    /*TODO:Add variable for size of blocks in cache*/
     private CacheManager cacheManager;
 
     /*The constructor as of now*/
