@@ -30,6 +30,7 @@ public class LightNode{
     /*Available configurations*/
     private static final String MAX_CACHE_SIZE = "max_cache_size";
     private static final String TIME_RESTRAINT = "time_restraint";
+    private static final String CACHE_CONFIG = "cache_configuration";
 
     /*Does the node have a maximum cache size?*/
     private long maxCacheSize;
@@ -70,6 +71,11 @@ public class LightNode{
                         break;
                     case TIME_RESTRAINT:
                         timeRestraint = Long.parseLong(value);
+                    case CACHE_CONFIG:
+                        cacheManager = CacheManager.createManager(
+                                Integer.parseInt(value),
+                                timeRestraint,maxCacheSize);
+                        break;
                 }
             }
 
