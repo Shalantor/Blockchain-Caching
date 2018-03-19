@@ -65,6 +65,7 @@ public class Node {
         return jsonObject;
     }
 
+    /*MESSAGES TO AND FROM MINER*/
     /*Message to send to miner*/
     public JSONObject createMessageForMiner(String type, HashMap<String,Object> transaction){
         JSONObject jsonObject = transactionToJSON(transaction);
@@ -79,6 +80,7 @@ public class Node {
         return jsonObject;
     }
 
+    /*MESSAGES TO AND FROM FULL NODE*/
     /*Message from full node to a node that made a request for some blocks*/
     public JSONObject createMessageFromFullNode(String type,ArrayList<Block> blocks){
         JSONArray jsonBlocks = new JSONArray();
@@ -113,6 +115,7 @@ public class Node {
     }
 
 
+    /*MESSAGES FROM AND TO NORMAL NODES*/
     /*Normal node sends requests to nodes for their interests*/
     /*Source is the node type that send the message*/
     public JSONObject createInterestRequest(String source,String type){
@@ -123,9 +126,10 @@ public class Node {
     }
 
     /*Normal node answers with its interests*/
-    public JSONObject createInterestAnswer(String type, ArrayList<Interest> interests){
+    public JSONObject createInterestAnswer(String type,String source, ArrayList<Interest> interests){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",type);
+        jsonObject.put("source",source);
 
         JSONArray jsonArray = new JSONArray();
         for(Interest interest : interests){
@@ -137,6 +141,7 @@ public class Node {
         return jsonObject;
     }
 
+    /*Create json object from interest*/
     public JSONObject interestToJSON(Interest interest){
 
         JSONObject jsonObject = new JSONObject();
@@ -152,6 +157,32 @@ public class Node {
             jsonArray.put(value);
         }
         jsonObject.put("interested_values",jsonArray);
+
+        return jsonObject;
+    }
+
+    /*Block request from normal node to normal node*/
+    public JSONObject createBlockRequest(String type,String source){
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type",type);
+        jsonObject.put("source",source);
+
+        return jsonObject;
+    }
+
+    /*Normal node answer with blocks after getting request from normal node*/
+    public JSONObject createBlockReply(String type,ArrayList<Block> blocks){
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type",type);
+
+        JSONArray jsonArray = new JSONArray();
+        for(Block block : blocks){
+            jsonArray.put(blockToJSON(block));
+        }
+
+        jsonObject.put("blocks",jsonArray);
 
         return jsonObject;
     }
