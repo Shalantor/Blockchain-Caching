@@ -113,15 +113,48 @@ public class Node {
     }
 
 
-    /*Normal node answers to another normal node with blocks and his interests*/
+    /*Normal node sends requests to nodes for their interests*/
     /*Source is the node type that send the message*/
     public JSONObject createInterestRequest(String source,String type){
-
-
-
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type",type);
+        jsonObject.put("source",source);
+        return jsonObject;
     }
 
+    /*Normal node answers with its interests*/
+    public JSONObject createInterestAnswer(String type, ArrayList<Interest> interests){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type",type);
 
+        JSONArray jsonArray = new JSONArray();
+        for(Interest interest : interests){
+            jsonArray.put(interestToJSON(interest));
+        }
+
+        jsonObject.put("interests",jsonArray);
+
+        return jsonObject;
+    }
+
+    public JSONObject interestToJSON(Interest interest){
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("interest_type",interest.type);
+        jsonObject.put("interest_name",interest.interestName);
+        jsonObject.put("interest_numeric_type",interest.numericType);
+        jsonObject.put("interest_numeric_value",interest.numericValue);
+        jsonObject.put("interest_weight",interest.weight);
+
+        /*Interested values*/
+        JSONArray jsonArray = new JSONArray();
+        for(String value: interest.interestValues){
+            jsonArray.put(value);
+        }
+        jsonObject.put("interested_values",jsonArray);
+
+        return jsonObject;
+    }
 
 
 

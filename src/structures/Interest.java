@@ -13,14 +13,14 @@ public class Interest {
     public final static int NUMERIC_GREATER = 1;
 
     /*Variables for the actual modes*/
-    private int type;
-    private int numericType;
-    private Object numericValue;
-    private int weight ;
+    public int type;
+    public int numericType;
+    public Object numericValue;
+    public int weight ;
 
     /*Name of interest*/
-    private ArrayList<String> interestValues;
-    private String interestName;
+    public ArrayList<String> interestValues;
+    public String interestName;
 
     public Interest(int type, int numericType,int weight, String name,Object numericValue, ArrayList<String> values){
         this.type = type;
