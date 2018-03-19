@@ -4,10 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class Node {
 
@@ -90,6 +87,23 @@ public class Node {
 
         jsonObject.put("blocks",jsonBlocks);
         jsonObject.put("number_blocks",jsonBlocks.length());
+
+        return jsonObject;
+    }
+
+    /*Message to full node for requesting some blocks*/
+    /*Type is separate blocks or intervals*/
+    public JSONObject createRequestToFullNode(String type, List<Integer> indexes){
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        jsonObject.put("type",type);
+
+        for(Integer index : indexes){
+            jsonArray.put(index);
+        }
+
+        jsonObject.put("indexArray",indexes);
 
         return jsonObject;
     }
