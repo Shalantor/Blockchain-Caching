@@ -2,15 +2,16 @@ package structures;
 
 /*The data structures for the block*/
 
+import nodes.Node;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Block {
 
@@ -28,6 +29,30 @@ public class Block {
 
     public Block(){
 
+    }
+
+    /*Create block from json object*/
+    public Block(JSONObject jsonObject,Node node){
+
+        /*get headers*/
+        index = (long)jsonObject.get("index");
+        timestamp = (long)jsonObject.get("timestamp");
+        transactionHash = (String)jsonObject.get("transaction_hash");
+        previousBlockHash = (String)jsonObject.get("previous_block_hash");
+        blockSize = (long)jsonObject.get("block_size");
+        numTransactions = (int)jsonObject.get("number_transactions");
+
+        /*Extract transactions*/
+        JSONArray jsonTransactions = jsonObject.getJSONArray("transactions");
+        transactions = new ArrayList<>();
+
+        for(int i=0;i < jsonTransactions.length(); i++){
+            JSONObject jsonTransaction = jsonTransactions.getJSONObject(i);
+            HashMap<String,Object> newTransaction;
+            newTransaction = node.JSONToTransaction(jsonTransaction);
+
+            transactions.add(newTransaction);
+        }
     }
 
     public Block(long index, String previousBlockHeader,
@@ -201,6 +226,7 @@ public class Block {
                 "Block size: " + blockSize + "\n" +
                 "Previous block hash: " + previousBlockHash + "\n" +
                 "Transaction root hash: " + transactionHash + "\n" +
+                "Number of transactions in block " + numTransactions + "\n" +
                 "Transactions in block:\n " + str + "\n";
     }
 

@@ -93,12 +93,10 @@ public class TestModule{
 
             Node node = new Node("");
 
-            System.out.println(transactions.get(0));
-            System.out.println("TROLOLOLOLOL");
-            JSONObject jsonObject = node.transactionToJSON(transactions.get(0));
-            System.out.println("TROLOLOLOLOL");
-            node.JSONToTransaction(jsonObject);
-            
+            JSONObject jsonObject = node.blockToJSON(block);
+            Block block2 = new Block(jsonObject,node);
+            System.out.println(block);
+            System.out.println(block2);
 
         }
     }
