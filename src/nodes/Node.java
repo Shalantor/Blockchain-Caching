@@ -3,6 +3,7 @@ package nodes;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
+import structures.Interest;
 
 import java.util.*;
 
@@ -65,19 +66,21 @@ public class Node {
     }
 
     /*Message to send to miner*/
-    public JSONObject createMessageForMiner(HashMap<String,Object> transaction){
+    public JSONObject createMessageForMiner(String type, HashMap<String,Object> transaction){
         JSONObject jsonObject = transactionToJSON(transaction);
+        jsonObject.put("type",type);
         return jsonObject;
     }
 
     /*Message for new block created from miner*/
-    public JSONObject createNewBlockMessage(Block block){
+    public JSONObject createNewBlockMessage(Block block,String type){
         JSONObject jsonObject = blockToJSON(block);
+        jsonObject.put("type",type);
         return jsonObject;
     }
 
     /*Message from full node to a node that made a request for some blocks*/
-    public JSONObject createMessageFromFullNode(ArrayList<Block> blocks){
+    public JSONObject createMessageFromFullNode(String type,ArrayList<Block> blocks){
         JSONArray jsonBlocks = new JSONArray();
         JSONObject jsonObject = new JSONObject();
 
@@ -87,6 +90,7 @@ public class Node {
 
         jsonObject.put("blocks",jsonBlocks);
         jsonObject.put("number_blocks",jsonBlocks.length());
+        jsonObject.put("type",type);
 
         return jsonObject;
     }
@@ -107,6 +111,17 @@ public class Node {
 
         return jsonObject;
     }
+
+
+    /*Normal node answers to another normal node with blocks and his interests*/
+    /*Source is the node type that send the message*/
+    public JSONObject createInterestRequest(String source,String type){
+
+
+
+    }
+
+
 
 
 
