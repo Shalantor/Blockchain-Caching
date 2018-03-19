@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import structures.Block;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class Node {
@@ -22,7 +23,23 @@ public class Node {
             jsonObject.put(entry.getKey().toString(),entry.getValue());
         }
 
+        System.out.println(jsonObject);
         return jsonObject;
+    }
+
+    /*Create transaction from JSON object*/
+    public HashMap<String,Object> JSONToTransaction(JSONObject jsonObject){
+
+        Iterator<?> keys = jsonObject.keys();
+        HashMap<String,Object> transaction = new HashMap<>();
+
+        while(keys.hasNext()){
+            String key = (String) keys.next();
+            transaction.put(key,jsonObject.get(key));
+        }
+
+        System.out.println(transaction);
+        return transaction;
     }
 
     /*Create JSON object form block*/
@@ -46,9 +63,11 @@ public class Node {
 
         jsonObject.put("transactions",transactions);
 
-        System.out.println(jsonObject);
         return jsonObject;
     }
+
+
+
 
 
 }

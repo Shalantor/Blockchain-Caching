@@ -3,6 +3,7 @@ package test;
 import nodes.LightNode;
 import nodes.Node;
 import nodes.NormalNode;
+import org.json.JSONObject;
 import structures.Block;
 import structures.TransactionManager;
 
@@ -84,15 +85,21 @@ public class TestModule{
             System.out.println(blocks.size());*/
 
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
-            for(int i =0; i < 2; i ++){
+            for(int i =0; i < 1; i ++){
                 transactions.add(manager.createRandomTransaction());
             }
 
             Block block = new Block(0,"genesis",transactions);
 
             Node node = new Node("");
-            //System.out.println(block);
-            node.blockToJSON(block);
+
+            System.out.println(transactions.get(0));
+            System.out.println("TROLOLOLOLOL");
+            JSONObject jsonObject = node.transactionToJSON(transactions.get(0));
+            System.out.println("TROLOLOLOLOL");
+            node.JSONToTransaction(jsonObject);
+            
+
         }
     }
 }
