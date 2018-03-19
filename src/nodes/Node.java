@@ -187,6 +187,21 @@ public class Node {
         return jsonObject;
     }
 
+    /*LIGHT NODE MESSAGES*/
+    /*Light node answers with indices of blocks*/
+    public JSONObject createIndicesReply(String type,ArrayList<Integer> indexes){
 
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type",type);
+
+        JSONArray jsonArray = new JSONArray();
+
+        for(Integer index : indexes){
+            jsonArray.put(index);
+        }
+
+        jsonObject.put("indexes",jsonArray);
+        return jsonObject;
+    }
 
 }
