@@ -66,7 +66,19 @@ public class Node {
         return jsonObject;
     }
 
+    /*Message to send to miner*/
+    public JSONObject createMessageForMiner(HashMap<String,Object> transaction){
+        JSONObject jsonObject = transactionToJSON(transaction);
+        return jsonObject;
+    }
 
+    /*Message for new block created from miner*/
+    public JSONObject createNewBlockMessage(Block block){
+        JSONObject jsonObject = blockToJSON(block);
+        return jsonObject;
+    }
+
+    
 
 
 
