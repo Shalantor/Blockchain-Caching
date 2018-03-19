@@ -84,13 +84,15 @@ public class TestModule{
             System.out.println(blocks.size());*/
 
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
-            for(int i =0; i < 1; i ++){
+            for(int i =0; i < 2; i ++){
                 transactions.add(manager.createRandomTransaction());
             }
-            System.out.println(transactions.get(0));
+
+            Block block = new Block(0,"genesis",transactions);
 
             Node node = new Node("");
-            node.transactionToJSON(transactions.get(0));
+            //System.out.println(block);
+            node.blockToJSON(block);
         }
     }
 }
