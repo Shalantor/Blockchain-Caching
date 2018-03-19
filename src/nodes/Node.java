@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -78,7 +79,20 @@ public class Node {
         return jsonObject;
     }
 
-    
+    /*Message from full node to a node that made a request for some blocks*/
+    public JSONObject createMessageFromFullNode(ArrayList<Block> blocks){
+        JSONArray jsonBlocks = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+
+        for(Block block : blocks){
+            jsonBlocks.put(blockToJSON(block));
+        }
+
+        jsonObject.put("blocks",jsonBlocks);
+        jsonObject.put("number_blocks",jsonBlocks.length());
+
+        return jsonObject;
+    }
 
 
 
