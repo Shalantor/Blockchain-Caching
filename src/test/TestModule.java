@@ -1,6 +1,7 @@
 package test;
 
 import nodes.LightNode;
+import nodes.Node;
 import nodes.NormalNode;
 import structures.Block;
 import structures.TransactionManager;
@@ -24,10 +25,6 @@ public class TestModule{
 
 
             /*Test block*/
-            ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
-            for(int i =0; i < 10; i ++){
-                transactions.add(manager.createRandomTransaction());
-            }
 
             /*Test full node*/
         /*FullNode fullNode = new FullNode(new Block(0,"qwe",transactions));
@@ -53,17 +50,6 @@ public class TestModule{
         for(int i =0; i < 50; i ++){
             miner.addTransaction(transactions.get(0));
         }*/
-            NormalNode normal = new NormalNode("src/test/resources/normal_node_config.txt",
-                    "src/test/resources/normal_node_interests.txt");
-
-
-            transactions.add(manager.createTransaction(new ArrayList<>(
-                    Arrays.asList("ababa","bonnie","pilafi",15.4,"pizza",190)
-            )));
-
-            transactions.add(manager.createTransaction(new ArrayList<>(
-                    Arrays.asList("ababa","bonnie","pilafi",15.4,"batman",10)
-            )));
 
             //System.out.println(transactions);
 
@@ -82,9 +68,9 @@ public class TestModule{
             //lightNode.printBlocks();
             //normal.printBlocks();
 
-            ArrayList<Block> blocks = new ArrayList<>();
+            //ArrayList<Block> blocks = new ArrayList<>();
             /*Create blocks*/
-            for(int i =0;i < 2; i++){
+            /*for(int i =0;i < 2; i++){
                 blocks.add(new Block(0,"genesis",transactions));
             }
 
@@ -95,8 +81,16 @@ public class TestModule{
             normal.blocksInCache = blocks;
             System.out.println(blocks.size());
             normal.cacheManager.removeOldBlocks(blocks);
-            System.out.println(blocks.size());
+            System.out.println(blocks.size());*/
 
+            ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+            for(int i =0; i < 1; i ++){
+                transactions.add(manager.createRandomTransaction());
+            }
+            System.out.println(transactions.get(0));
+
+            Node node = new Node("");
+            node.transactionToJSON(transactions.get(0));
         }
     }
 }
