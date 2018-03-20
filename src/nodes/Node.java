@@ -5,7 +5,10 @@ import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -47,7 +50,9 @@ public class Node implements Runnable{
         while (running){
             try{
                 Socket socket = listener.accept();
-                processMessage(socket);
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                JSONObject jsonObject = new JSONObject(br.readLine());
+                processMessage(jsonObject);
             }
             catch (SocketTimeoutException ex){
                 continue;
@@ -58,7 +63,7 @@ public class Node implements Runnable{
         }
     }
 
-    public void processMessage(Socket socket){
+    public void processMessage(JSONObject jsonObject){
 
     }
 

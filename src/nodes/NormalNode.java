@@ -157,10 +157,6 @@ public class NormalNode extends Node{
         }
     }
 
-    @Override
-    public void processMessage(Socket socket){
-
-    }
 
     public boolean checkBlock(Block block){
         for (Map.Entry entry : interests.entrySet()){
