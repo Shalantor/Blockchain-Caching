@@ -1,10 +1,12 @@
 package nodes;
 
+import org.json.JSONObject;
 import structures.Block;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +84,14 @@ public class MinerNode extends Node{
         }
 
 
+    }
+
+    @Override
+    public void processMessage(JSONObject jsonObject, Socket socket){
+        if((Integer)jsonObject.get("type") == TRANSACTION_TO_MINER){
+            HashMap<String,Object> transaction = JSONToTransaction((JSONObject) jsonObject.get("transactions"));
+            addTransaction(transaction);
+        }
     }
 
     /*Add transaction to pending ones*/

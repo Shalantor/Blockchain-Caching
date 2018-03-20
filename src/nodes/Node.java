@@ -125,7 +125,9 @@ public class Node implements Runnable{
     /*MESSAGES TO AND FROM MINER*/
     /*Message to send to miner*/
     public JSONObject createMessageForMiner(int type, HashMap<String,Object> transaction){
-        JSONObject jsonObject = transactionToJSON(transaction);
+        JSONObject jsonTransaction = transactionToJSON(transaction);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("transactions",jsonTransaction);
         jsonObject.put("type",type);
         return jsonObject;
     }

@@ -79,7 +79,7 @@ public class FullNode extends Node{
         }
         else if((Integer)jsonObject.get("type") == BLOCK_FROM_MINER){
             Block block = new Block(jsonObject,this);
-            blockChain.add(block);
+            addBlock(block);
         }
     }
 
