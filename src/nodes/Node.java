@@ -52,7 +52,7 @@ public class Node implements Runnable{
                 Socket socket = listener.accept();
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 JSONObject jsonObject = new JSONObject(br.readLine());
-                processMessage(jsonObject);
+                processMessage(jsonObject,socket);
             }
             catch (SocketTimeoutException ex){
                 continue;
@@ -63,7 +63,7 @@ public class Node implements Runnable{
         }
     }
 
-    public void processMessage(JSONObject jsonObject){
+    public void processMessage(JSONObject jsonObject,Socket socket){
 
     }
 
@@ -156,17 +156,18 @@ public class Node implements Runnable{
 
     /*Message to full node for requesting some blocks*/
     /*Type is separate blocks or intervals*/
-    public JSONObject createRequestToFullNode(int type, List<Integer> indexes){
+    public JSONObject createRequestToFullNode(int type, int requestType, List<Integer> indexes){
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
         jsonObject.put("type",type);
+        jsonObject.put("request_type",requestType);
 
         for(Integer index : indexes){
             jsonArray.put(index);
         }
 
-        jsonObject.put("indexArray",indexes);
+        jsonObject.put("index_array",indexes);
 
         return jsonObject;
     }
