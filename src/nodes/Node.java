@@ -5,13 +5,54 @@ import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.util.*;
 
-public class Node {
+public class Node implements Runnable{
+
+    private ServerSocket listener;
+    private int timeOut;
+    private boolean running;
 
     /*Read configuration from text file*/
-    public Node(String configFilePath){
+    public Node(int port,int timeOut){
+        try {
+            listener = new ServerSocket(port);
+            listener.setSoTimeout(timeOut);
+        }
+        catch (IOException ex){
+            System.out.println("Could not create server socket");
+        }
+        this.timeOut = timeOut;
+    }
 
+    /*run method*/
+    @Override
+    public void run(){
+        running = true;
+        while (running){
+            try{
+                Socket socket = listener.accept();
+                processMessage(socket);
+            }
+            catch (SocketTimeoutException ex){
+                continue;
+            }
+            catch (IOException ex){
+                System.out.println("Could not accept connection");
+            }
+        }
+    }
+
+    public void processMessage(Socket socket){
+
+    }
+
+    public void stop(){
+        running = false;
     }
 
     /*Create JSON object from transaction*/
