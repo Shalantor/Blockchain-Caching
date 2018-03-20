@@ -8,6 +8,7 @@ import structures.Interest;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.*;
 
 /*Implementation of the normal node*/
@@ -154,6 +155,11 @@ public class NormalNode extends Node{
             System.out.println("Io exception occurred");
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void processMessage(Socket socket){
+
     }
 
     public boolean checkBlock(Block block){

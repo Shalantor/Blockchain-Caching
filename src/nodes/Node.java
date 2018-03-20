@@ -13,6 +13,17 @@ import java.util.*;
 
 public class Node implements Runnable{
 
+    /*Static constants for message types*/
+    public static final int TRANSACTION_TO_MINER = 0;
+    public static final int BLOCK_FROM_MINER = 1;
+    public static final int REPLY_FROM_FULL_NODE = 2;
+    public static final int REQUEST_TO_FULL_NODE = 3;
+    public static final int INTEREST_REQUEST_TO_NORMAL = 4;
+    public static final int INTEREST_REPLY_FROM_NORMAL = 5;
+    public static final int BLOCK_REQUEST_TO_NORMAL = 6;
+    public static final int BLOCK_REPLY_FROM_NORMAL = 7;
+    public static final int INDICES_REPLY_FROM_LIGHT = 8;
+
     private ServerSocket listener;
     private int timeOut;
     private boolean running;
@@ -108,14 +119,14 @@ public class Node implements Runnable{
 
     /*MESSAGES TO AND FROM MINER*/
     /*Message to send to miner*/
-    public JSONObject createMessageForMiner(String type, HashMap<String,Object> transaction){
+    public JSONObject createMessageForMiner(int type, HashMap<String,Object> transaction){
         JSONObject jsonObject = transactionToJSON(transaction);
         jsonObject.put("type",type);
         return jsonObject;
     }
 
     /*Message for new block created from miner*/
-    public JSONObject createNewBlockMessage(Block block,String type){
+    public JSONObject createNewBlockMessage(Block block,int type){
         JSONObject jsonObject = blockToJSON(block);
         jsonObject.put("type",type);
         return jsonObject;
@@ -123,7 +134,7 @@ public class Node implements Runnable{
 
     /*MESSAGES TO AND FROM FULL NODE*/
     /*Message from full node to a node that made a request for some blocks*/
-    public JSONObject createMessageFromFullNode(String type,ArrayList<Block> blocks){
+    public JSONObject createMessageFromFullNode(int type,ArrayList<Block> blocks){
         JSONArray jsonBlocks = new JSONArray();
         JSONObject jsonObject = new JSONObject();
 
@@ -140,7 +151,7 @@ public class Node implements Runnable{
 
     /*Message to full node for requesting some blocks*/
     /*Type is separate blocks or intervals*/
-    public JSONObject createRequestToFullNode(String type, List<Integer> indexes){
+    public JSONObject createRequestToFullNode(int type, List<Integer> indexes){
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
@@ -159,7 +170,7 @@ public class Node implements Runnable{
     /*MESSAGES FROM AND TO NORMAL NODES*/
     /*Normal node sends requests to nodes for their interests*/
     /*Source is the node type that send the message*/
-    public JSONObject createInterestRequest(String source,String type){
+    public JSONObject createInterestRequest(String source,int type){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",type);
         jsonObject.put("source",source);
@@ -167,7 +178,7 @@ public class Node implements Runnable{
     }
 
     /*Normal node answers with its interests*/
-    public JSONObject createInterestAnswer(String type,String source, ArrayList<Interest> interests){
+    public JSONObject createInterestAnswer(int type,String source, ArrayList<Interest> interests){
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",type);
         jsonObject.put("source",source);
@@ -203,7 +214,7 @@ public class Node implements Runnable{
     }
 
     /*Block request from normal node to normal node*/
-    public JSONObject createBlockRequest(String type,String source){
+    public JSONObject createBlockRequest(int type,String source){
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",type);
@@ -213,7 +224,7 @@ public class Node implements Runnable{
     }
 
     /*Normal node answer with blocks after getting request from normal node*/
-    public JSONObject createBlockReply(String type,ArrayList<Block> blocks){
+    public JSONObject createBlockReply(int type,ArrayList<Block> blocks){
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",type);
@@ -230,7 +241,7 @@ public class Node implements Runnable{
 
     /*LIGHT NODE MESSAGES*/
     /*Light node answers with indices of blocks*/
-    public JSONObject createIndicesReply(String type,ArrayList<Integer> indexes){
+    public JSONObject createIndicesReply(int type,ArrayList<Integer> indexes){
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",type);
