@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.*;
 
 /*Implementation of the normal node*/
-public class NormalNode {
+public class NormalNode extends Node{
 
     /*Possible names for type values*/
     private static final String STRING = "string";
@@ -43,8 +43,9 @@ public class NormalNode {
     public CacheManager cacheManager;
 
     /*The constructor as of now*/
-    public NormalNode(String configFilePath,String interestFilePath){
+    public NormalNode(String configFilePath,String interestFilePath,int port, int timeOut){
 
+        super(port,timeOut);
         /*Open and read from config file*/
         try(BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
             String line,key,value;

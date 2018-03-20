@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /*implementation of the miner node*/
-public class MinerNode {
+public class MinerNode extends Node{
 
     /*Available configurations*/
     public static final String MIN_BLOCK_SIZE = "min_block_size";
@@ -40,7 +40,10 @@ public class MinerNode {
     ArrayList<HashMap<String,Object>> pendingTransactions = new ArrayList<>();
 
 
-    public MinerNode(Block block,String configFilePath,List<String> interests) {
+    public MinerNode(Block block,String configFilePath,List<String> interests,int port,int timeOut) {
+
+        super(port,timeOut);
+
         lastBlock = block;
         sizeInBytes = lastBlock.getHeaderSize();
 

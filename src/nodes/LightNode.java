@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LightNode{
+public class LightNode extends Node{
 
     /*value indicating no cache size limit*/
     public static final int NO_LIMIT = 0;
@@ -47,8 +47,9 @@ public class LightNode{
     private CacheManager cacheManager = new SimpleCacheManager(timeRestraint,maxCacheSize);
 
     /*The constructor as of now*/
-    public LightNode(String configFilePath,String interestFilePath){
+    public LightNode(String configFilePath,String interestFilePath,int port,int timeOut){
 
+        super(port,timeOut);
         /*Open and read from config file*/
         try(BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
             String line,key,value;

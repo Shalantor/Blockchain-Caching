@@ -89,15 +89,6 @@ public class TestModule{
                 transactions.add(manager.createRandomTransaction());
             }
 
-            Block block = new Block(0,"genesis",transactions);
-
-            Node node = new Node("");
-
-            JSONObject jsonObject = node.blockToJSON(block);
-            Block block2 = new Block(jsonObject,node);
-            System.out.println(block);
-            System.out.println(block2);
-
         }
     }
 }

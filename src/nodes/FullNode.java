@@ -7,12 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 /*Has all the block chain stored*/
-public class FullNode {
+public class FullNode extends Node{
 
     private List<Block> blockChain = new LinkedList<>();
 
     /*Initialize with genesis block*/
-    public FullNode(Block genesisBlock){
+    public FullNode(Block genesisBlock,int port,int timeOut){
+        super(port,timeOut);
         blockChain.add(genesisBlock);
     }
 
