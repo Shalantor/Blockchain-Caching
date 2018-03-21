@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
+import structures.StrippedBlock;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -249,15 +250,15 @@ public class Node implements Runnable{
 
     /*LIGHT NODE MESSAGES*/
     /*Light node answers with indices of blocks*/
-    public JSONObject createIndicesReply(int type,ArrayList<Integer> indexes){
+    public JSONObject createIndicesReply(int type,ArrayList<Block> blocks){
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",type);
 
         JSONArray jsonArray = new JSONArray();
 
-        for(Integer index : indexes){
-            jsonArray.put(index);
+        for(Block block : blocks){
+            jsonArray.put(block.index);
         }
 
         jsonObject.put("indexes",jsonArray);
