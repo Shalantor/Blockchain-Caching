@@ -5,10 +5,7 @@ import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -134,7 +131,9 @@ public class Node implements Runnable{
 
     /*Message for new block created from miner*/
     public JSONObject createNewBlockMessage(Block block,int type){
-        JSONObject jsonObject = blockToJSON(block);
+        JSONObject jsonBlock = blockToJSON(block);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("block",jsonBlock);
         jsonObject.put("type",type);
         return jsonObject;
     }
@@ -262,6 +261,28 @@ public class Node implements Runnable{
 
         jsonObject.put("indexes",jsonArray);
         return jsonObject;
+    }
+
+    /*Send block to other nodes via some protocol*/
+    public void propagateBlock(Block block){
+        JSONObject jsonObject = blockToJSON(block);
+
+        /*TODO:CHANGE WHERE THE BLOCK IS SENT HUHU*/
+        try {
+            Socket socket = new Socket("localhost", 9090);
+            try {
+                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                out.write(jsonObject.toString());
+                out.close();
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+        }
+        catch (IOException ex){
+            System.out.println("El no socketo de la creato");
+            System.exit(1);
+        }
     }
 
 }

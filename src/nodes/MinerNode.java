@@ -118,6 +118,7 @@ public class MinerNode extends Node{
             sizeInBytes = lastBlock.getHeaderSize();
             //System.out.println("Generated new block with size " + block.blockSize);
 
+            propagateBlock(block);
             return block;
         }
         return null;
