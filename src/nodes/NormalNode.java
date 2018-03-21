@@ -2,12 +2,15 @@ package nodes;
 
 import cacheManager.CacheManager;
 import cacheManager.SimpleCacheManager;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.*;
 
@@ -180,6 +183,100 @@ public class NormalNode extends Node{
         System.out.println("NORMAL NODE BLOCKS");
         for(Block block : blocksInCache){
             System.out.println(block);
+        }
+    }
+
+    @Override
+    public void processMessage(JSONObject jsonObject, Socket socket){
+        if((Integer)jsonObject.get("type") == INTEREST_REQUEST_TO_NORMAL){
+            ArrayList<Interest> interestsToSend = new ArrayList<>();
+            for( String key : interests.keySet()){
+                interestsToSend.add(interests.get(key));
+            }
+            JSONObject jsonReply = createInterestAnswer(INTEREST_REPLY_FROM_NORMAL,"normal",interestsToSend);
+
+            /*Now send answer*/
+            try {
+                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                out.write(jsonReply.toString());
+                out.close();
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+        }
+        else if((Integer)jsonObject.get("type") == BLOCK_REQUEST_TO_NORMAL){
+            JSONObject jsonReply = createBlockReply(BLOCK_REPLY_FROM_NORMAL,blocksInCache);
+            /*Now send answer*/
+            try {
+                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                out.write(jsonReply.toString());
+                out.close();
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+        }
+        else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
+            Block block = new Block((JSONObject) jsonObject.get("block"),this);
+            blocksInCache.add(block);
+            propagateBlock(block);
+        }
+    }
+
+    /*Send new transaction*/
+    public void sendNewTransaction(HashMap<String,Object> transaction,Socket socket){
+        JSONObject jsonObject = createMessageForMiner(TRANSACTION_TO_MINER,transaction);
+
+        try {
+            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+            out.write(jsonObject.toString());
+            out.close();
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    /*Send request for interests*/
+    public void sendInterestRequest(Socket socket){
+        JSONObject jsonObject = createInterestRequest("node",INTEREST_REQUEST_TO_NORMAL);
+
+        try {
+            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+            out.write(jsonObject.toString());
+            out.close();
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    /*Send block request*/
+    public void sendBlockRequestToNormal(Socket socket){
+        JSONObject jsonObject = createBlockRequest(BLOCK_REQUEST_TO_NORMAL,"normal");
+
+        try {
+            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+            out.write(jsonObject.toString());
+            out.close();
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    /*Send request to full node*/
+    public void sendBlockRequestToFull(Socket socket,int type, ArrayList<Integer> values){
+        JSONObject jsonObject = createRequestToFullNode(REQUEST_TO_FULL_NODE,type,values);
+
+        try {
+            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+            out.write(jsonObject.toString());
+            out.close();
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
         }
     }
 

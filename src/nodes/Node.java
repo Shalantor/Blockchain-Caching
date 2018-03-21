@@ -23,6 +23,7 @@ public class Node implements Runnable{
     public static final int BLOCK_REQUEST_TO_NORMAL = 6;
     public static final int BLOCK_REPLY_FROM_NORMAL = 7;
     public static final int INDICES_REPLY_FROM_LIGHT = 8;
+    public static final int PROPAGATE_BLOCK = 9;
 
     private ServerSocket listener;
     private int timeOut;
@@ -265,7 +266,10 @@ public class Node implements Runnable{
 
     /*Send block to other nodes via some protocol*/
     public void propagateBlock(Block block){
-        JSONObject jsonObject = blockToJSON(block);
+        JSONObject jsonBlock = blockToJSON(block);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("block",jsonBlock);
+        jsonObject.put("type",PROPAGATE_BLOCK);
 
         /*TODO:CHANGE WHERE THE BLOCK IS SENT HUHU*/
         try {
