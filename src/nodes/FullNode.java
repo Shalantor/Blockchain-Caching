@@ -70,7 +70,7 @@ public class FullNode extends Node{
 
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-                out.write(jsonObject.toString());
+                out.write(jsonReply.toString() + "\n");
                 out.close();
             }
             catch (IOException ex){
@@ -78,9 +78,9 @@ public class FullNode extends Node{
             }
         }
         else if((Integer)jsonObject.get("type") == BLOCK_FROM_MINER){
-            Block block = new Block(jsonObject,this);
+            Block block = new Block((JSONObject) jsonObject.get("block"),this);
             addBlock(block);
-            propagateBlock(block);
+            //propagateBlock(block);
         }
     }
 

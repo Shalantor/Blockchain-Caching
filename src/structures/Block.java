@@ -17,7 +17,7 @@ public class Block {
 
     /*Every block has these fields*/
     /*This is the block header*/
-    public long index;
+    public int index;
     public long timestamp;
     public String transactionHash;
     public String previousBlockHash;
@@ -35,11 +35,11 @@ public class Block {
     public Block(JSONObject jsonObject,Node node){
 
         /*get headers*/
-        index = (long)jsonObject.get("index");
+        index = (int)jsonObject.get("index");
         timestamp = (long)jsonObject.get("timestamp");
         transactionHash = (String)jsonObject.get("transaction_hash");
         previousBlockHash = (String)jsonObject.get("previous_block_hash");
-        blockSize = (long)jsonObject.get("block_size");
+        blockSize = jsonObject.getLong("block_size");
         numTransactions = (int)jsonObject.get("number_transactions");
 
         /*Extract transactions*/
@@ -55,7 +55,7 @@ public class Block {
         }
     }
 
-    public Block(long index, String previousBlockHeader,
+    public Block(int index, String previousBlockHeader,
                  ArrayList<HashMap<String,Object>> transactions){
 
         /*Assign values that do not need calculation*/

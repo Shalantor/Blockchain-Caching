@@ -1,15 +1,23 @@
 package test;
 
+import nodes.FullNode;
 import nodes.LightNode;
 import nodes.Node;
 import nodes.NormalNode;
 import org.json.JSONObject;
 import structures.Block;
+import structures.Interest;
 import structures.TransactionManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class TestModule{
 
@@ -25,69 +33,41 @@ public class TestModule{
             TransactionManager manager = new TransactionManager("src/test/resources/example.txt");
 
 
-            /*Test block*/
-
-            /*Test full node*/
-        /*FullNode fullNode = new FullNode(new Block(0,"qwe",transactions));
-
-        for(int i =0; i < 10; i ++){
-            fullNode.addBlock(new Block(i+1,"",transactions));
-        }
-
-        ArrayList<Integer> indices = new ArrayList<>();
-        indices.add(0);
-        indices.add(4);
-        indices.add(8);
-        indices.add(8);
-
-        List<Block> blocks =  fullNode.getBlocksInIntervals(indices);
-
-        for(Block block: blocks){
-            System.out.println(block.index);
-        }
-        MinerNode miner = new MinerNode(new Block(0,"genesis",transactions),
-                "src/test/resources/miner.txt",manager.getKeys());
-
-        for(int i =0; i < 50; i ++){
-            miner.addTransaction(transactions.get(0));
-        }*/
-
-            //System.out.println(transactions);
-
-            //normal.printInterests();
-
-            //Block block = new Block(0,"genesis",transactions);
-            //System.out.println(block);
-
-            //normal.checkBlock(block);
-            //LightNode lightNode = new LightNode("src/test/resources/normal_node_config.txt",
-                    //"src/test/resources/normal_node_interests.txt");
-
-            //lightNode.printInterests();
-            //lightNode.checkBlock(block);
-            //normal.checkBlock(block);
-            //lightNode.printBlocks();
-            //normal.printBlocks();
-
-            //ArrayList<Block> blocks = new ArrayList<>();
-            /*Create blocks*/
-            /*for(int i =0;i < 2; i++){
-                blocks.add(new Block(0,"genesis",transactions));
-            }
-
-            for(int i =0;i < 2; i++){
-                blocks.get(i).timestamp = 0;
-            }
-
-            normal.blocksInCache = blocks;
-            System.out.println(blocks.size());
-            normal.cacheManager.removeOldBlocks(blocks);
-            System.out.println(blocks.size());*/
-
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
-            for(int i =0; i < 1; i ++){
+            for(int i =0; i < 3; i ++){
                 transactions.add(manager.createRandomTransaction());
             }
+
+            /*Start full node that listens*/
+            Block block = new Block(0,"No Game No Life",transactions);
+            FullNode fullNode = new FullNode(block,9090,3000);
+            Thread thread = new Thread(fullNode);
+            thread.start();
+            block = new Block(1,"No Game No Life",transactions);
+
+            long pilafi = block.blockSize;
+
+            try {
+                Node node = new Node(7331,5000);
+                List<Integer> indexes = new ArrayList<>();
+                indexes.add(0);
+                JSONObject jsonObject = node.createNewBlockMessage(block,Node.BLOCK_FROM_MINER);
+                Socket socket = new Socket("localhost", 9090);
+                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                out.write(jsonObject.toString() + "\n");
+                out.flush();
+
+                /*read message*/
+                //BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                //JSONObject jsonReply = new JSONObject(br.readLine());
+
+                //System.out.println("Test module reply is " + jsonReply);
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+
+            fullNode.stop();
 
         }
     }

@@ -68,6 +68,7 @@ public class Node implements Runnable{
 
     public void stop(){
         running = false;
+        System.out.println("Thread killed with Death Note");
     }
 
     /*Create JSON object from transaction*/
@@ -78,7 +79,6 @@ public class Node implements Runnable{
             jsonObject.put(entry.getKey().toString(),entry.getValue());
         }
 
-        System.out.println(jsonObject);
         return jsonObject;
     }
 
@@ -93,7 +93,6 @@ public class Node implements Runnable{
             transaction.put(key,jsonObject.get(key));
         }
 
-        System.out.println(transaction);
         return transaction;
     }
 
