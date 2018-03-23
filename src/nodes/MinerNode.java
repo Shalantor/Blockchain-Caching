@@ -92,6 +92,9 @@ public class MinerNode extends Node{
             HashMap<String,Object> transaction = JSONToTransaction((JSONObject) jsonObject.get("transactions"));
             addTransaction(transaction);
         }
+        else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
+            propagateBlock(new Block((JSONObject) jsonObject.get("block"),this));
+        }
     }
 
     /*Add transaction to pending ones*/

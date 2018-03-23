@@ -2,6 +2,7 @@ package nodes;
 
 import cacheManager.CacheManager;
 import cacheManager.SimpleCacheManager;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
@@ -197,6 +198,25 @@ public class LightNode extends Node{
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
             blocksInCache.add(block);
             propagateBlock(block);
+        }
+        else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
+            JSONArray jsonArray = jsonObject.getJSONArray("interests");
+            ArrayList<Interest> interests = new ArrayList<>();
+
+            for(int i =0; i < jsonArray.length(); i++){
+                interests.add(JSONToInterest(jsonArray.getJSONObject(0)));
+            }
+
+            /*TODO:Here can evaluate interests*/
+        }
+        else if((Integer)jsonObject.get("type") == BLOCK_REPLY_FROM_NORMAL) {
+            JSONArray jsonArray = jsonObject.getJSONArray("blocks");
+            ArrayList<Block> blocks = new ArrayList<>();
+
+            for(int i =0; i < jsonArray.length(); i++){
+                blocks.add(new Block((JSONObject) jsonArray.get(i),this));
+            }
+            /*TODO:Here can evaluate blocks*/
         }
     }
 

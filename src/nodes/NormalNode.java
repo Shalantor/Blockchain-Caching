@@ -222,6 +222,25 @@ public class NormalNode extends Node{
             blocksInCache.add(block);
             propagateBlock(block);
         }
+        else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
+            JSONArray jsonArray = jsonObject.getJSONArray("interests");
+            ArrayList<Interest> interests = new ArrayList<>();
+
+            for(int i =0; i < jsonArray.length(); i++){
+                interests.add(JSONToInterest(jsonArray.getJSONObject(0)));
+            }
+
+            /*TODO:Here can evaluate interests*/
+        }
+        else if((Integer)jsonObject.get("type") == BLOCK_REPLY_FROM_NORMAL) {
+            JSONArray jsonArray = jsonObject.getJSONArray("blocks");
+            ArrayList<Block> blocks = new ArrayList<>();
+
+            for(int i =0; i < jsonArray.length(); i++){
+                blocks.add(new Block((JSONObject) jsonArray.get(i),this));
+            }
+            /*TODO:Here can evaluate blocks*/
+        }
     }
 
     /*Send new transaction*/

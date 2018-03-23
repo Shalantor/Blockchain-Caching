@@ -243,6 +243,24 @@ public class Node implements Runnable{
         return jsonObject;
     }
 
+    public Interest JSONToInterest(JSONObject jsonObject){
+
+        ArrayList<String> interestedValues = new ArrayList<>();
+        JSONArray jsonArray = jsonObject.getJSONArray("interested_values");
+        for(int i = 0; i < jsonArray.length(); i++){
+            interestedValues.add(jsonArray.getString(i));
+        }
+
+        Interest interest = new Interest(jsonObject.getInt("interest_type"),
+                jsonObject.getInt("interest_numeric_type"),
+                jsonObject.getInt("interest_weight"),
+                jsonObject.getString("interest_name"),
+                jsonObject.get("interest_numeric_value"),
+                interestedValues);
+
+        return interest;
+    }
+
     /*Block request from normal node to normal node*/
     public JSONObject createBlockRequest(String source){
 
