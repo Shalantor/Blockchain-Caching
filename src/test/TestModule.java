@@ -1,9 +1,6 @@
 package test;
 
-import nodes.FullNode;
-import nodes.LightNode;
-import nodes.Node;
-import nodes.NormalNode;
+import nodes.*;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
@@ -40,34 +37,33 @@ public class TestModule{
 
             /*Start full node that listens*/
             Block block = new Block(0,"No Game No Life",transactions);
-            FullNode fullNode = new FullNode(block,9090,3000);
-            Thread thread = new Thread(fullNode);
+            List<String> values = new ArrayList<>();
+            NormalNode normal = new NormalNode("src/test/resources/normal_node_config.txt",
+                    "src/test/resources/normal_node_interests.txt",9090,3000);
+            Thread thread = new Thread(normal);
             thread.start();
-            block = new Block(1,"No Game No Life",transactions);
-
-            long pilafi = block.blockSize;
 
             try {
                 Node node = new Node(7331,5000);
-                List<Integer> indexes = new ArrayList<>();
-                indexes.add(0);
-                JSONObject jsonObject = node.createNewBlockMessage(block,Node.BLOCK_FROM_MINER);
+                System.out.println(transactions.get(0));
+                JSONObject jsonObject = node.createBlockRequest(Node.BLOCK_REQUEST_TO_NORMAL,"normal");
                 Socket socket = new Socket("localhost", 9090);
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
                 out.write(jsonObject.toString() + "\n");
                 out.flush();
 
                 /*read message*/
-                //BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                //JSONObject jsonReply = new JSONObject(br.readLine());
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                System.out.println("TEST MODULE NOW WILL READ");
+                JSONObject jsonReply = new JSONObject(br.readLine());
 
-                //System.out.println("Test module reply is " + jsonReply);
+                System.out.println("Test module reply is " + jsonReply);
             }
             catch (IOException ex){
                 ex.printStackTrace();
             }
 
-            fullNode.stop();
+            normal.stop();
 
         }
     }

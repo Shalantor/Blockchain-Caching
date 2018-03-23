@@ -122,26 +122,26 @@ public class Node implements Runnable{
 
     /*MESSAGES TO AND FROM MINER*/
     /*Message to send to miner*/
-    public JSONObject createMessageForMiner(int type, HashMap<String,Object> transaction){
+    public JSONObject createMessageForMiner(HashMap<String,Object> transaction){
         JSONObject jsonTransaction = transactionToJSON(transaction);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("transactions",jsonTransaction);
-        jsonObject.put("type",type);
+        jsonObject.put("type",TRANSACTION_TO_MINER);
         return jsonObject;
     }
 
     /*Message for new block created from miner*/
-    public JSONObject createNewBlockMessage(Block block,int type){
+    public JSONObject createNewBlockMessage(Block block){
         JSONObject jsonBlock = blockToJSON(block);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("block",jsonBlock);
-        jsonObject.put("type",type);
+        jsonObject.put("type",BLOCK_FROM_MINER);
         return jsonObject;
     }
 
     /*MESSAGES TO AND FROM FULL NODE*/
     /*Message from full node to a node that made a request for some blocks*/
-    public JSONObject createMessageFromFullNode(int type,ArrayList<Block> blocks){
+    public JSONObject createMessageFromFullNode(ArrayList<Block> blocks){
         JSONArray jsonBlocks = new JSONArray();
         JSONObject jsonObject = new JSONObject();
 
@@ -151,18 +151,18 @@ public class Node implements Runnable{
 
         jsonObject.put("blocks",jsonBlocks);
         jsonObject.put("number_blocks",jsonBlocks.length());
-        jsonObject.put("type",type);
+        jsonObject.put("type",REPLY_FROM_FULL_NODE);
 
         return jsonObject;
     }
 
     /*Message to full node for requesting some blocks*/
     /*Type is separate blocks or intervals*/
-    public JSONObject createRequestToFullNode(int type, int requestType, List<Integer> indexes){
+    public JSONObject createRequestToFullNode(int requestType, List<Integer> indexes){
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        jsonObject.put("type",type);
+        jsonObject.put("type",REQUEST_TO_FULL_NODE);
         jsonObject.put("request_type",requestType);
 
         for(Integer index : indexes){
@@ -178,17 +178,17 @@ public class Node implements Runnable{
     /*MESSAGES FROM AND TO NORMAL NODES*/
     /*Normal node sends requests to nodes for their interests*/
     /*Source is the node type that send the message*/
-    public JSONObject createInterestRequest(String source,int type){
+    public JSONObject createInterestRequest(String source){
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type",type);
+        jsonObject.put("type",INTEREST_REQUEST_TO_NORMAL);
         jsonObject.put("source",source);
         return jsonObject;
     }
 
     /*Normal node answers with its interests*/
-    public JSONObject createInterestAnswer(int type,String source, ArrayList<Interest> interests){
+    public JSONObject createInterestAnswer(String source, ArrayList<Interest> interests){
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type",type);
+        jsonObject.put("type",INTEREST_REPLY_FROM_NORMAL);
         jsonObject.put("source",source);
 
         JSONArray jsonArray = new JSONArray();
@@ -213,8 +213,10 @@ public class Node implements Runnable{
 
         /*Interested values*/
         JSONArray jsonArray = new JSONArray();
-        for(String value: interest.interestValues){
-            jsonArray.put(value);
+        if(interest.interestValues != null) {
+            for (String value : interest.interestValues) {
+                jsonArray.put(value);
+            }
         }
         jsonObject.put("interested_values",jsonArray);
 
@@ -222,20 +224,20 @@ public class Node implements Runnable{
     }
 
     /*Block request from normal node to normal node*/
-    public JSONObject createBlockRequest(int type,String source){
+    public JSONObject createBlockRequest(String source){
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type",type);
+        jsonObject.put("type",BLOCK_REQUEST_TO_NORMAL);
         jsonObject.put("source",source);
 
         return jsonObject;
     }
 
     /*Normal node answer with blocks after getting request from normal node*/
-    public JSONObject createBlockReply(int type,ArrayList<Block> blocks){
+    public JSONObject createBlockReply(ArrayList<Block> blocks){
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type",type);
+        jsonObject.put("type",BLOCK_REPLY_FROM_NORMAL);
 
         JSONArray jsonArray = new JSONArray();
         for(Block block : blocks){
@@ -249,10 +251,10 @@ public class Node implements Runnable{
 
     /*LIGHT NODE MESSAGES*/
     /*Light node answers with indices of blocks*/
-    public JSONObject createIndicesReply(int type,ArrayList<Block> blocks){
+    public JSONObject createIndicesReply(ArrayList<Block> blocks){
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type",type);
+        jsonObject.put("type",INDICES_REPLY_FROM_LIGHT);
 
         JSONArray jsonArray = new JSONArray();
 

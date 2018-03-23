@@ -66,7 +66,7 @@ public class FullNode extends Node{
                 blocks = getBlocksInIntervals(indexes);
             }
 
-            JSONObject jsonReply = createMessageFromFullNode(REPLY_FROM_FULL_NODE,blocks);
+            JSONObject jsonReply = createMessageFromFullNode(blocks);
 
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());

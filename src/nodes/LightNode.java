@@ -169,7 +169,7 @@ public class LightNode extends Node{
             for( String key : interests.keySet()){
                 interestsToSend.add(interests.get(key));
             }
-            JSONObject jsonReply = createInterestAnswer(INTEREST_REPLY_FROM_NORMAL,"light",interestsToSend);
+            JSONObject jsonReply = createInterestAnswer("light",interestsToSend);
 
             /*Now send answer*/
             try {
@@ -182,7 +182,7 @@ public class LightNode extends Node{
             }
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REQUEST_TO_NORMAL){
-            JSONObject jsonReply = createIndicesReply(INDICES_REPLY_FROM_LIGHT,blocksInCache);
+            JSONObject jsonReply = createIndicesReply(blocksInCache);
             /*Now send answer*/
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -202,7 +202,7 @@ public class LightNode extends Node{
 
     /*Send new transaction*/
     public void sendNewTransaction(HashMap<String,Object> transaction,Socket socket){
-        JSONObject jsonObject = createMessageForMiner(TRANSACTION_TO_MINER,transaction);
+        JSONObject jsonObject = createMessageForMiner(transaction);
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -216,7 +216,7 @@ public class LightNode extends Node{
 
     /*Send request for interests*/
     public void sendInterestRequest(Socket socket){
-        JSONObject jsonObject = createInterestRequest("node",INTEREST_REQUEST_TO_NORMAL);
+        JSONObject jsonObject = createInterestRequest("node");
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -230,7 +230,7 @@ public class LightNode extends Node{
 
     /*Send block request*/
     public void sendBlockRequestToNormal(Socket socket){
-        JSONObject jsonObject = createBlockRequest(BLOCK_REQUEST_TO_NORMAL,"normal");
+        JSONObject jsonObject = createBlockRequest("normal");
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -244,7 +244,7 @@ public class LightNode extends Node{
 
     /*Send request to full node*/
     public void sendBlockRequestToFull(Socket socket,int type, ArrayList<Integer> values){
-        JSONObject jsonObject = createRequestToFullNode(REQUEST_TO_FULL_NODE,type,values);
+        JSONObject jsonObject = createRequestToFullNode(type,values);
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());

@@ -193,12 +193,12 @@ public class NormalNode extends Node{
             for( String key : interests.keySet()){
                 interestsToSend.add(interests.get(key));
             }
-            JSONObject jsonReply = createInterestAnswer(INTEREST_REPLY_FROM_NORMAL,"normal",interestsToSend);
+            JSONObject jsonReply = createInterestAnswer("normal",interestsToSend);
 
             /*Now send answer*/
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-                out.write(jsonReply.toString());
+                out.write(jsonReply.toString() + "\n");
                 out.close();
             }
             catch (IOException ex){
@@ -206,7 +206,7 @@ public class NormalNode extends Node{
             }
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REQUEST_TO_NORMAL){
-            JSONObject jsonReply = createBlockReply(BLOCK_REPLY_FROM_NORMAL,blocksInCache);
+            JSONObject jsonReply = createBlockReply(blocksInCache);
             /*Now send answer*/
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -226,7 +226,7 @@ public class NormalNode extends Node{
 
     /*Send new transaction*/
     public void sendNewTransaction(HashMap<String,Object> transaction,Socket socket){
-        JSONObject jsonObject = createMessageForMiner(TRANSACTION_TO_MINER,transaction);
+        JSONObject jsonObject = createMessageForMiner(transaction);
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -240,7 +240,7 @@ public class NormalNode extends Node{
 
     /*Send request for interests*/
     public void sendInterestRequest(Socket socket){
-        JSONObject jsonObject = createInterestRequest("node",INTEREST_REQUEST_TO_NORMAL);
+        JSONObject jsonObject = createInterestRequest("node");
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -254,7 +254,7 @@ public class NormalNode extends Node{
 
     /*Send block request*/
     public void sendBlockRequestToNormal(Socket socket){
-        JSONObject jsonObject = createBlockRequest(BLOCK_REQUEST_TO_NORMAL,"normal");
+        JSONObject jsonObject = createBlockRequest("normal");
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -268,7 +268,7 @@ public class NormalNode extends Node{
 
     /*Send request to full node*/
     public void sendBlockRequestToFull(Socket socket,int type, ArrayList<Integer> values){
-        JSONObject jsonObject = createRequestToFullNode(REQUEST_TO_FULL_NODE,type,values);
+        JSONObject jsonObject = createRequestToFullNode(type,values);
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());

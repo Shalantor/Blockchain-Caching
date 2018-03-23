@@ -118,7 +118,7 @@ public class MinerNode extends Node{
             sizeInBytes = lastBlock.getHeaderSize();
             //System.out.println("Generated new block with size " + block.blockSize);
 
-            JSONObject jsonObject = createNewBlockMessage(block,BLOCK_FROM_MINER);
+            JSONObject jsonObject = createNewBlockMessage(block);
             propagateBlock(block);
             return block;
         }
