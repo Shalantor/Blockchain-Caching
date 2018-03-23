@@ -17,8 +17,8 @@ public class FullNode extends Node{
     private List<Block> blockChain = new LinkedList<>();
 
     /*Initialize with genesis block*/
-    public FullNode(Block genesisBlock,int port,int timeOut){
-        super(port,timeOut);
+    public FullNode(Block genesisBlock,int port,int timeOut,String host){
+        super(port,timeOut,host);
         blockChain.add(genesisBlock);
     }
 

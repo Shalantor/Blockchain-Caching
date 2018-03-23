@@ -42,9 +42,9 @@ public class MinerNode extends Node{
     ArrayList<HashMap<String,Object>> pendingTransactions = new ArrayList<>();
 
 
-    public MinerNode(Block block,String configFilePath,List<String> interests,int port,int timeOut) {
+    public MinerNode(Block block,String configFilePath,List<String> interests,int port,int timeOut,String host) {
 
-        super(port,timeOut);
+        super(port,timeOut,host);
 
         lastBlock = block;
         sizeInBytes = lastBlock.getHeaderSize();

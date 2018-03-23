@@ -29,9 +29,11 @@ public class Node implements Runnable{
     private ServerSocket listener;
     private int timeOut;
     private boolean running;
+    private String host;
+    private int port;
 
     /*Read configuration from text file*/
-    public Node(int port,int timeOut){
+    public Node(int port,int timeOut,String host){
         try {
             listener = new ServerSocket(port);
             listener.setSoTimeout(timeOut);
@@ -40,6 +42,8 @@ public class Node implements Runnable{
             System.out.println("Could not create server socket");
         }
         this.timeOut = timeOut;
+        this.host = host;
+        this.port = port;
     }
 
     /*run method*/
@@ -127,6 +131,8 @@ public class Node implements Runnable{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("transactions",jsonTransaction);
         jsonObject.put("type",TRANSACTION_TO_MINER);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
         return jsonObject;
     }
 
@@ -136,6 +142,8 @@ public class Node implements Runnable{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("block",jsonBlock);
         jsonObject.put("type",BLOCK_FROM_MINER);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
         return jsonObject;
     }
 
@@ -152,6 +160,8 @@ public class Node implements Runnable{
         jsonObject.put("blocks",jsonBlocks);
         jsonObject.put("number_blocks",jsonBlocks.length());
         jsonObject.put("type",REPLY_FROM_FULL_NODE);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
 
         return jsonObject;
     }
@@ -164,6 +174,8 @@ public class Node implements Runnable{
 
         jsonObject.put("type",REQUEST_TO_FULL_NODE);
         jsonObject.put("request_type",requestType);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
 
         for(Integer index : indexes){
             jsonArray.put(index);
@@ -182,6 +194,8 @@ public class Node implements Runnable{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",INTEREST_REQUEST_TO_NORMAL);
         jsonObject.put("source",source);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
         return jsonObject;
     }
 
@@ -190,6 +204,8 @@ public class Node implements Runnable{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",INTEREST_REPLY_FROM_NORMAL);
         jsonObject.put("source",source);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
 
         JSONArray jsonArray = new JSONArray();
         for(Interest interest : interests){
@@ -210,6 +226,8 @@ public class Node implements Runnable{
         jsonObject.put("interest_numeric_type",interest.numericType);
         jsonObject.put("interest_numeric_value",interest.numericValue);
         jsonObject.put("interest_weight",interest.weight);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
 
         /*Interested values*/
         JSONArray jsonArray = new JSONArray();
@@ -229,6 +247,8 @@ public class Node implements Runnable{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",BLOCK_REQUEST_TO_NORMAL);
         jsonObject.put("source",source);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
 
         return jsonObject;
     }
@@ -245,6 +265,8 @@ public class Node implements Runnable{
         }
 
         jsonObject.put("blocks",jsonArray);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
 
         return jsonObject;
     }
@@ -263,6 +285,8 @@ public class Node implements Runnable{
         }
 
         jsonObject.put("indexes",jsonArray);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
         return jsonObject;
     }
 
@@ -272,6 +296,8 @@ public class Node implements Runnable{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("block",jsonBlock);
         jsonObject.put("type",PROPAGATE_BLOCK);
+        jsonObject.put("host",host);
+        jsonObject.put("port",port);
 
         /*TODO:CHANGE WHERE THE BLOCK IS SENT HUHU*/
         try {

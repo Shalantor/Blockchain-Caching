@@ -47,9 +47,9 @@ public class NormalNode extends Node{
     public CacheManager cacheManager;
 
     /*The constructor as of now*/
-    public NormalNode(String configFilePath,String interestFilePath,int port, int timeOut){
+    public NormalNode(String configFilePath,String interestFilePath,int port, int timeOut,String host){
 
-        super(port,timeOut);
+        super(port,timeOut,host);
         /*Open and read from config file*/
         try(BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
             String line,key,value;

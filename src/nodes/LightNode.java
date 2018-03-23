@@ -50,9 +50,9 @@ public class LightNode extends Node{
     private CacheManager cacheManager = new SimpleCacheManager(timeRestraint,maxCacheSize);
 
     /*The constructor as of now*/
-    public LightNode(String configFilePath,String interestFilePath,int port,int timeOut){
+    public LightNode(String configFilePath,String interestFilePath,int port,int timeOut,String host){
 
-        super(port,timeOut);
+        super(port,timeOut,host);
         /*Open and read from config file*/
         try(BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
             String line,key,value;

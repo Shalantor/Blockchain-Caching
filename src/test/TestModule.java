@@ -39,14 +39,14 @@ public class TestModule{
             Block block = new Block(0,"No Game No Life",transactions);
             List<String> values = new ArrayList<>();
             NormalNode normal = new NormalNode("src/test/resources/normal_node_config.txt",
-                    "src/test/resources/normal_node_interests.txt",9090,3000);
+                    "src/test/resources/normal_node_interests.txt",9090,3000,"localhost");
             Thread thread = new Thread(normal);
             thread.start();
 
             try {
-                Node node = new Node(7331,5000);
+                Node node = new Node(7331,5000,"localhost");
                 System.out.println(transactions.get(0));
-                JSONObject jsonObject = node.createBlockRequest(Node.BLOCK_REQUEST_TO_NORMAL,"normal");
+                JSONObject jsonObject = node.createBlockRequest("normal");
                 Socket socket = new Socket("localhost", 9090);
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
                 out.write(jsonObject.toString() + "\n");
