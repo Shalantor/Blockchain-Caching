@@ -55,6 +55,8 @@ public class Node implements Runnable{
                 Socket socket = listener.accept();
                 BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 JSONObject jsonObject = new JSONObject(br.readLine());
+                br.close();
+                socket = new Socket(jsonObject.getString("host"),jsonObject.getInt("port"));
                 processMessage(jsonObject,socket);
             }
             catch (SocketTimeoutException ex){
