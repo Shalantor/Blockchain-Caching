@@ -1,6 +1,7 @@
 package cacheManager;
 
 import structures.Block;
+import structures.Interest;
 
 import java.util.ArrayList;
 
@@ -30,5 +31,13 @@ public class CacheManager {
 
         }
         return null;
+    }
+
+    public void evaluateInterests(ArrayList<Interest> interests){
+
+    }
+
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,ArrayList<Block> blocksInCache){
+
     }
 }

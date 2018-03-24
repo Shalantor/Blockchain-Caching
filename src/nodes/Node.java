@@ -26,11 +26,18 @@ public class Node implements Runnable{
     public static final int INDICES_REPLY_FROM_LIGHT = 8;
     public static final int PROPAGATE_BLOCK = 9;
 
+    /*Network configuration types*/
+    public static final int NETWORK_LOCAL = 0;
+
     private ServerSocket listener;
     private int timeOut;
     private boolean running;
+
+    /*variables for network*/
     private String host;
     private int port;
+    public int networkTopology;
+    public int portStart,portEnd;
 
     /*Read configuration from text file*/
     public Node(int port,int timeOut,String host){

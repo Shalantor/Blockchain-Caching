@@ -69,4 +69,12 @@ public class SimpleCacheManager extends CacheManager{
     }
 
 
+    @Override
+    public void addReceivedBlocks(ArrayList<Block> receviedBlocks,ArrayList<Block> blocksInCache){
+
+        /*Insert them based on the order of their timestamps*/
+
+
+    }
+
 }

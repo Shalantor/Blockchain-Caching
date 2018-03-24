@@ -35,6 +35,7 @@ public class LightNode extends Node{
     private static final String MAX_CACHE_SIZE = "max_cache_size";
     private static final String TIME_RESTRAINT = "time_restraint";
     private static final String CACHE_CONFIG = "cache_configuration";
+    private static final String NETWORK_TOPOLOGY = "network_topology";
 
     /*Does the node have a maximum cache size?*/
     private long maxCacheSize;
@@ -80,6 +81,11 @@ public class LightNode extends Node{
                         cacheManager = CacheManager.createManager(
                                 Integer.parseInt(value),
                                 timeRestraint,maxCacheSize);
+                        break;
+                    case NETWORK_TOPOLOGY:
+                        networkTopology = Integer.parseInt(value);
+                        portStart = Integer.parseInt(info[2]);
+                        portEnd = Integer.parseInt(info[3]);
                         break;
                 }
             }

@@ -19,6 +19,7 @@ public class MinerNode extends Node{
     public static final String MIN_BLOCK_SIZE = "min_block_size";
     public static final String MAX_BLOCK_SIZE = "max_block_size";
     public static final String GROUP_CONTENT = "group_content";
+    private static final String NETWORK_TOPOLOGY = "network_topology";
 
     public static final int NO_GROUP = -1;
 
@@ -73,6 +74,11 @@ public class MinerNode extends Node{
                         break;
                     case GROUP_CONTENT:
                         groupContent = Boolean.parseBoolean(value) ? 0 : NO_GROUP;
+                        break;
+                    case NETWORK_TOPOLOGY:
+                        networkTopology = Integer.parseInt(value);
+                        portStart = Integer.parseInt(info[2]);
+                        portEnd = Integer.parseInt(info[3]);
                         break;
                 }
 

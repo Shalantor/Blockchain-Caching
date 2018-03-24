@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -16,10 +18,42 @@ public class FullNode extends Node{
 
     private List<Block> blockChain = new LinkedList<>();
 
+    private static final String NETWORK_TOPOLOGY = "network_topology";
+
     /*Initialize with genesis block*/
-    public FullNode(Block genesisBlock,int port,int timeOut,String host){
+    public FullNode(String configFilePath,Block genesisBlock,int port,int timeOut,String host){
         super(port,timeOut,host);
         blockChain.add(genesisBlock);
+
+        /*Get configurations*/
+        try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
+            String line, key, value;
+            String[] info;
+
+            while (true) {
+                line = br.readLine();
+                if (line == null) {
+                    break;
+                }
+
+                /*get key and value*/
+                info = line.split("\\s+");
+                key = info[0];
+                value = info[1];
+                switch(key){
+                    case NETWORK_TOPOLOGY:
+                        networkTopology = Integer.parseInt(value);
+                        portStart = Integer.parseInt(info[2]);
+                        portEnd = Integer.parseInt(info[3]);
+                        break;
+                }
+
+            }
+        }
+        catch(IOException ex){
+            System.out.println("Io exception occurred");
+            ex.printStackTrace();
+        }
     }
 
     public void addBlock(Block block){
