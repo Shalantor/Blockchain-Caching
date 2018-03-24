@@ -122,7 +122,7 @@ public class FullNode extends Node{
             //propagateBlock(block);
         }
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
-            propagateBlock(new Block((JSONObject) jsonObject.get("block"),this));
+            propagateBlock(jsonObject);
         }
     }
 

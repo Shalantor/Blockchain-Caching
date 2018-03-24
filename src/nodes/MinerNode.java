@@ -51,6 +51,8 @@ public class MinerNode extends Node{
 
         lastBlock = block;
         sizeInBytes = lastBlock.getHeaderSize();
+        minerPort = port;
+        minerAddress = host;
 
         /*Get configurations*/
         try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
@@ -106,7 +108,7 @@ public class MinerNode extends Node{
             addTransaction(transaction);
         }
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
-            propagateBlock(new Block((JSONObject) jsonObject.get("block"),this));
+            propagateBlock(jsonObject);
         }
     }
 

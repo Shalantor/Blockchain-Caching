@@ -36,6 +36,8 @@ public class LightNode extends Node{
     private static final String TIME_RESTRAINT = "time_restraint";
     private static final String CACHE_CONFIG = "cache_configuration";
     private static final String NETWORK_TOPOLOGY = "network_topology";
+    private static final String FULL_NODE_INFO = "full_node";
+    private static final String MINER_INFO = "miner_node";
 
     /*Does the node have a maximum cache size?*/
     private long maxCacheSize;
@@ -86,6 +88,14 @@ public class LightNode extends Node{
                         networkTopology = Integer.parseInt(value);
                         portStart = Integer.parseInt(info[2]);
                         portEnd = Integer.parseInt(info[3]);
+                        break;
+                    case MINER_INFO:
+                        minerAddress = value;
+                        minerPort = Integer.parseInt(info[2]);
+                        break;
+                    case FULL_NODE_INFO:
+                        fullNodeAddress = info[1];
+                        fullNodePort = Integer.parseInt(info[2]);
                         break;
                 }
             }
@@ -203,7 +213,7 @@ public class LightNode extends Node{
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
             blocksInCache.add(block);
-            propagateBlock(block);
+            propagateBlock(jsonObject);
         }
         else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
             JSONArray jsonArray = jsonObject.getJSONArray("interests");
