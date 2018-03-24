@@ -38,6 +38,7 @@ public class Node implements Runnable{
     private int port;
     public int networkTopology;
     public int portStart,portEnd;
+    public int recipients;
 
     /*Read configuration from text file*/
     public Node(int port,int timeOut,String host){
@@ -317,7 +318,7 @@ public class Node implements Runnable{
         return jsonObject;
     }
 
-    /*Send block to other nodes via some protocol*/
+    /*Send block to other nodes via some protocol. This is only used from the miner*/
     public void propagateBlock(Block block){
         JSONObject jsonBlock = blockToJSON(block);
         JSONObject jsonObject = new JSONObject();
@@ -325,22 +326,31 @@ public class Node implements Runnable{
         jsonObject.put("type",PROPAGATE_BLOCK);
         jsonObject.put("host",host);
         jsonObject.put("port",port);
+        jsonObject.put("is_miner",true);
 
-        /*TODO:CHANGE WHERE THE BLOCK IS SENT HUHU*/
-        try {
-            Socket socket = new Socket("localhost", 9090);
-            try {
-                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-                out.write(jsonObject.toString());
-                out.close();
+        int recipientPort = port;
+        if(networkTopology == NETWORK_LOCAL){
+            for(int i =0; i < recipients; i++){
+                try {
+                    recipientPort = port + i;
+                    if(recipientPort > portEnd){
+                        recipientPort = portStart;
+                    }
+                    Socket socket = new Socket("localhost", recipientPort);
+                    try {
+                        OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                        out.write(jsonObject.toString());
+                        out.close();
+                    }
+                    catch (IOException ex){
+                        ex.printStackTrace();
+                    }
+                }
+                catch (IOException ex){
+                    System.out.println("El no socketo de la creato");
+                    System.exit(1);
+                }
             }
-            catch (IOException ex){
-                ex.printStackTrace();
-            }
-        }
-        catch (IOException ex){
-            System.out.println("El no socketo de la creato");
-            System.exit(1);
         }
     }
 

@@ -79,6 +79,7 @@ public class MinerNode extends Node{
                         networkTopology = Integer.parseInt(value);
                         portStart = Integer.parseInt(info[2]);
                         portEnd = Integer.parseInt(info[3]);
+                        recipients = Integer.parseInt(info[4]);
                         break;
                 }
 
