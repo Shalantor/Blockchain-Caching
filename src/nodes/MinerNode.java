@@ -6,6 +6,7 @@ import structures.Block;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ public class MinerNode extends Node{
     public static final String MAX_BLOCK_SIZE = "max_block_size";
     public static final String GROUP_CONTENT = "group_content";
     private static final String NETWORK_TOPOLOGY = "network_topology";
+    private static final String FULL_NODE_INFO = "full_node";
 
     public static final int NO_GROUP = -1;
 
@@ -81,6 +83,10 @@ public class MinerNode extends Node{
                         portEnd = Integer.parseInt(info[3]);
                         recipients = Integer.parseInt(info[4]);
                         break;
+                    case FULL_NODE_INFO:
+                        fullNodeAddress = info[1];
+                        fullNodePort = Integer.parseInt(info[2]);
+                        break;
                 }
 
             }
@@ -129,6 +135,18 @@ public class MinerNode extends Node{
             //System.out.println("Generated new block with size " + block.blockSize);
 
             JSONObject jsonObject = createNewBlockMessage(block);
+
+            /*Send to full node*/
+            try {
+                Socket socket = new Socket(fullNodeAddress,fullNodePort);
+                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                out.write(jsonObject.toString() + "\n");
+                out.close();
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+            
             propagateBlock(block);
             return block;
         }

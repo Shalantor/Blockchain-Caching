@@ -39,6 +39,8 @@ public class Node implements Runnable{
     public int networkTopology;
     public int portStart,portEnd;
     public int recipients;
+    public String fullNodeAddress;
+    public int fullNodePort;
 
     /*Read configuration from text file*/
     public Node(int port,int timeOut,String host){
