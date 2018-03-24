@@ -41,6 +41,8 @@ public class Node implements Runnable{
     public int recipients;
     public String fullNodeAddress;
     public int fullNodePort;
+    public String minerAddress;
+    public int minerPort;
 
     /*Read configuration from text file*/
     public Node(int port,int timeOut,String host){
@@ -351,6 +353,49 @@ public class Node implements Runnable{
                 catch (IOException ex){
                     System.out.println("El no socketo de la creato");
                     System.exit(1);
+                }
+            }
+        }
+    }
+
+    /*Method to relay node*/
+    public void propagateBlock(JSONObject jsonObject){
+        if(networkTopology == NETWORK_LOCAL){
+
+            /*check if message gets propagated*/
+            int senderPort = jsonObject.getInt("port");
+            int estimatePort = senderPort + recipients;
+            if(estimatePort > portEnd){
+                estimatePort = estimatePort - portEnd + portStart - 1;
+            }
+
+            if(estimatePort == port){
+                jsonObject.put("port",port);
+                int recipientPort = port;
+                if(networkTopology == NETWORK_LOCAL){
+                    for(int i =0; i < recipients; i++){
+                        try {
+                            recipientPort = port + i;
+                            if(recipientPort > portEnd){
+                                recipientPort = portStart;
+                            }if(recipientPort == minerPort){
+                                return;
+                            }
+                            Socket socket = new Socket("localhost", recipientPort);
+                            try {
+                                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                                out.write(jsonObject.toString());
+                                out.close();
+                            }
+                            catch (IOException ex){
+                                ex.printStackTrace();
+                            }
+                        }
+                        catch (IOException ex){
+                            System.out.println("El no socketo de la creato");
+                            System.exit(1);
+                        }
+                    }
                 }
             }
         }

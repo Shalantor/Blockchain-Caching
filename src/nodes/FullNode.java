@@ -19,6 +19,7 @@ public class FullNode extends Node{
     private List<Block> blockChain = new LinkedList<>();
 
     private static final String NETWORK_TOPOLOGY = "network_topology";
+    private static final String MINER_INFO = "miner_node";
 
     /*Initialize with genesis block*/
     public FullNode(String configFilePath,Block genesisBlock,int port,int timeOut,String host){
@@ -45,6 +46,10 @@ public class FullNode extends Node{
                         networkTopology = Integer.parseInt(value);
                         portStart = Integer.parseInt(info[2]);
                         portEnd = Integer.parseInt(info[3]);
+                        break;
+                    case MINER_INFO:
+                        minerAddress = value;
+                        minerPort = Integer.parseInt(info[2]);
                         break;
                 }
 

@@ -146,7 +146,7 @@ public class MinerNode extends Node{
             catch (IOException ex){
                 ex.printStackTrace();
             }
-            
+
             propagateBlock(block);
             return block;
         }
