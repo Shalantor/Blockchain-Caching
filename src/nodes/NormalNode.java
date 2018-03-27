@@ -49,6 +49,9 @@ public class NormalNode extends Node{
     /*Cache manager*/
     public CacheManager cacheManager;
 
+    /*Testing*/
+    public int howManyBlocks = 0;
+
     /*The constructor as of now*/
     public NormalNode(String configFilePath,String interestFilePath,int port, int timeOut,String host){
 
@@ -237,6 +240,7 @@ public class NormalNode extends Node{
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
             blocksInCache.add(block);
+            System.out.println("NORMAL NODE: Got message, my length is " + blocksInCache.size());
             propagateBlock(jsonObject);
         }
         else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {

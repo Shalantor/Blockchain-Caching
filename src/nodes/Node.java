@@ -35,7 +35,7 @@ public class Node implements Runnable{
 
     /*variables for network*/
     private String host;
-    private int port;
+    public int port;
     public int networkTopology;
     public int portStart,portEnd;
     public int recipients;
@@ -362,6 +362,7 @@ public class Node implements Runnable{
                         OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
                         out.write(jsonObject.toString());
                         out.close();
+                        socket.close();
                     }
                     catch (IOException ex){
                         ex.printStackTrace();
@@ -383,7 +384,6 @@ public class Node implements Runnable{
             int estimatePort = jsonObject.getInt("next_port");
             /*Only every last node in the interval propagates the block,
             so we have no duplicates. Only in the local configuration!!*/
-            System.out.println("NORMAL NODE: My port is " + port + " from " + jsonObject.getInt("port"));
             if(estimatePort == port){
                 jsonObject.put("port",port);
                 int recipientPort = port;
@@ -410,6 +410,7 @@ public class Node implements Runnable{
                                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
                                 out.write(jsonObject.toString());
                                 out.close();
+                                socket.close();
                             }
                             catch (IOException ex){
                                 ex.printStackTrace();

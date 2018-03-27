@@ -10,6 +10,10 @@ import java.util.Scanner;
 
 public class FunctionalityTestModule {
 
+    private static int START = 7000;
+    private static int STOP = 7010;
+
+
     public static void main(String[] args) {
 
         /*create transactions*/
@@ -27,15 +31,15 @@ public class FunctionalityTestModule {
 
         /*Create full node, with port 7012*/
         FullNode fullNode = new FullNode("src/test/resources/full_node.txt",
-                genesisBlock, 7012,1000,"localhost");
+                genesisBlock, STOP,1000,"localhost");
 
         /*create miner node with port 7011*/
         MinerNode minerNode = new MinerNode(genesisBlock,"src/test/resources/miner.txt",
-                null,7011,1000,"localhost");
+                null,STOP - 1,1000,"localhost");
 
         /*Now create normal nodes with ports ranging from 7000 to 7010*/
-        NormalNode[] normalNodes = new NormalNode[8];
-        LightNode[] lightNodes = new LightNode[3];
+        NormalNode[] normalNodes = new NormalNode[STOP - START - 1];
+        LightNode[] lightNodes = new LightNode[0];
 
         /*Create threads*/
         Thread[] threads = new Thread[normalNodes.length + lightNodes.length + 2];
@@ -46,7 +50,7 @@ public class FunctionalityTestModule {
         for(int i=0; i < normalNodes.length; i++){
             normalNodes[i] = new NormalNode("src/test/resources/normal_node_config.txt",
                     "src/test/resources/normal_node_interests.txt",
-                    7000+i,1000,"localhost");
+                    START+i,1000,"localhost");
             threads[counter] = new Thread(normalNodes[i]);
             counter ++;
         }
@@ -55,7 +59,7 @@ public class FunctionalityTestModule {
         for(int i = 0; i < lightNodes.length; i++){
             lightNodes[i] = new LightNode("src/test/resources/normal_node_config.txt",
                     "src/test/resources/normal_node_interests.txt",
-                    7000+i + normalNodes.length,1000,"localhost");
+                    START+i + normalNodes.length,1000,"localhost");
             threads[counter] = new Thread(lightNodes[i]);
             counter ++;
         }
@@ -66,7 +70,7 @@ public class FunctionalityTestModule {
         }
 
         /*test block propagation*/
-        minerNode.addTransaction(transactions.get(0));
+        PropagationTestModule.testPropagation(minerNode,transactions,fullNode,lightNodes,normalNodes);
 
         /*Wait for enter from user*/
         Scanner scanner = new Scanner(System.in);
@@ -95,6 +99,8 @@ public class FunctionalityTestModule {
         catch (InterruptedException ex){
             ex.printStackTrace();
         }
+
+        PropagationTestModule.printResults(fullNode,lightNodes,normalNodes);
     }
 
 }

@@ -47,7 +47,7 @@ public class LightNode extends Node{
     private HashMap<String, Interest> interests = new HashMap<>();
 
     /*ArrayList of interested blocks*/
-    private ArrayList<Block> blocksInCache = new ArrayList<>();
+    public ArrayList<Block> blocksInCache = new ArrayList<>();
 
     /*Cache manager*/
     /*TODO:Change hardcode*/

@@ -16,7 +16,7 @@ import java.util.List;
 /*Has all the block chain stored*/
 public class FullNode extends Node{
 
-    private List<Block> blockChain = new LinkedList<>();
+    public List<Block> blockChain = new LinkedList<>();
 
     private static final String NETWORK_TOPOLOGY = "network_topology";
     private static final String MINER_INFO = "miner_node";
@@ -120,8 +120,10 @@ public class FullNode extends Node{
         else if((Integer)jsonObject.get("type") == BLOCK_FROM_MINER){
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
             addBlock(block);
+            System.out.println("GOT MESSAGE FROM MINER, my length is " + blockChain.size());
         }
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
+            System.out.println("FULL NODE PROPAGATE BLOCK");
             propagateBlock(jsonObject);
         }
     }

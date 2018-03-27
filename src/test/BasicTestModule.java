@@ -16,12 +16,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class TestModule{
+public class BasicTestModule {
 
     public static final int JUST_CHECK_FUNCTIONALITY = 0;
 
     private int testType;
-    public TestModule(int testType){
+    public BasicTestModule(int testType){
         this.testType = testType;
     }
 
