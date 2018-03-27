@@ -44,6 +44,9 @@ public class Node implements Runnable{
     public String minerAddress;
     public int minerPort;
 
+    /*Socket we got a reply from*/
+    Socket readSocket;
+
     /*Read configuration from text file*/
     public Node(int port,int timeOut,String host){
         running = true;
@@ -65,18 +68,18 @@ public class Node implements Runnable{
     public void run(){
         while (running){
             try{
-                Socket socket = listener.accept();
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                readSocket = listener.accept();
+                BufferedReader br = new BufferedReader(new InputStreamReader(readSocket.getInputStream()));
                 JSONObject jsonObject = new JSONObject(br.readLine());
                 br.close();
-                socket = new Socket(jsonObject.getString("host"),jsonObject.getInt("port"));
-                processMessage(jsonObject,socket);
+                readSocket = new Socket(jsonObject.getString("host"),jsonObject.getInt("port"));
+                processMessage(jsonObject,readSocket);
             }
             catch (SocketTimeoutException ex){
                 continue;
             }
             catch (IOException ex){
-                System.out.println("Could not accept connection");
+                System.out.println("Could not accept connection lol");
             }
         }
     }
@@ -87,7 +90,13 @@ public class Node implements Runnable{
 
     public void stop(){
         running = false;
-        //System.out.println("Thread killed with Death Note");
+        try{
+            readSocket.close();
+        }
+        catch (IOException ex){
+            System.out.println("IOexception in stop");
+        }
+        System.out.println("Thread killed with Death Note");
     }
 
     /*Create JSON object from transaction*/
