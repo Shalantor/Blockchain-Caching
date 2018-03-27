@@ -127,6 +127,7 @@ public class MinerNode extends Node{
         /*Check configuration*/
         if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
             /*Generate new block*/
+            System.out.println("Send message to full node");
 
             Block block = new Block(lastBlock.index + 1,
                     lastBlock.getHeaderAsString(),pendingTransactions);

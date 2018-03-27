@@ -46,6 +46,7 @@ public class FullNode extends Node{
                         networkTopology = Integer.parseInt(value);
                         portStart = Integer.parseInt(info[2]);
                         portEnd = Integer.parseInt(info[3]);
+                        recipients = Integer.parseInt(info[4]);
                         break;
                     case MINER_INFO:
                         minerAddress = value;
@@ -119,7 +120,6 @@ public class FullNode extends Node{
         else if((Integer)jsonObject.get("type") == BLOCK_FROM_MINER){
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
             addBlock(block);
-            //propagateBlock(block);
         }
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
             propagateBlock(jsonObject);

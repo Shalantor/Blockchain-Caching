@@ -1,0 +1,2 @@
+network_topology    0   7000    7012    2
+miner_node          localhost   7011

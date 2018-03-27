@@ -46,7 +46,9 @@ public class Node implements Runnable{
 
     /*Read configuration from text file*/
     public Node(int port,int timeOut,String host){
+        running = true;
         try {
+            //System.out.println("Listening on port " + port);
             listener = new ServerSocket(port);
             listener.setSoTimeout(timeOut);
         }
@@ -61,7 +63,6 @@ public class Node implements Runnable{
     /*run method*/
     @Override
     public void run(){
-        running = true;
         while (running){
             try{
                 Socket socket = listener.accept();
@@ -86,7 +87,7 @@ public class Node implements Runnable{
 
     public void stop(){
         running = false;
-        System.out.println("Thread killed with Death Note");
+        //System.out.println("Thread killed with Death Note");
     }
 
     /*Create JSON object from transaction*/
@@ -334,11 +335,18 @@ public class Node implements Runnable{
 
         int recipientPort = port;
         if(networkTopology == NETWORK_LOCAL){
-            for(int i =0; i < recipients; i++){
+            for(int i =1; i <= recipients; i++){
                 try {
                     recipientPort = port + i;
                     if(recipientPort > portEnd){
                         recipientPort = portStart;
+                    }
+                    //System.out.println("MINER NODE: propagate to port " + recipientPort);
+                    if( i == recipients){
+                        jsonObject.put("next_port",recipientPort);
+                    }
+                    else{
+                        jsonObject.put("next_port",-1);
                     }
                     Socket socket = new Socket("localhost", recipientPort);
                     try {
@@ -358,28 +366,35 @@ public class Node implements Runnable{
         }
     }
 
-    /*Method to relay node*/
+    /*Method to relay node. This is used from all nodes*/
     public void propagateBlock(JSONObject jsonObject){
         if(networkTopology == NETWORK_LOCAL){
 
             /*check if message gets propagated*/
-            int senderPort = jsonObject.getInt("port");
-            int estimatePort = senderPort + recipients;
-            if(estimatePort > portEnd){
-                estimatePort = estimatePort - portEnd + portStart - 1;
-            }
-
+            int estimatePort = jsonObject.getInt("next_port");
+            /*Only every last node in the interval propagates the block,
+            so we have no duplicates. Only in the local configuration!!*/
+            System.out.println("NORMAL NODE: My port is " + port + " from " + jsonObject.getInt("port"));
             if(estimatePort == port){
                 jsonObject.put("port",port);
                 int recipientPort = port;
                 if(networkTopology == NETWORK_LOCAL){
-                    for(int i =0; i < recipients; i++){
+                    for(int i =1; i <= recipients; i++){
                         try {
                             recipientPort = port + i;
                             if(recipientPort > portEnd){
                                 recipientPort = portStart;
-                            }if(recipientPort == minerPort){
+                            }
+                            //System.out.println("Recipient port is " + recipientPort + " and i am " + port);
+                            if(recipientPort == minerPort || recipientPort == fullNodePort ){
+                                System.out.println("Got to stop now");
                                 return;
+                            }
+                            if( i == recipients){
+                                jsonObject.put("next_port",recipientPort);
+                            }
+                            else{
+                                jsonObject.put("next_port",-1);
                             }
                             Socket socket = new Socket("localhost", recipientPort);
                             try {

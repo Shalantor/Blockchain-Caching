@@ -1,3 +1,5 @@
-min_block_size          1000
+min_block_size          10
 max_block_size          2000
 group_content           false
+network_topology        0   7000    7012    2
+full_node               localhost   7012
