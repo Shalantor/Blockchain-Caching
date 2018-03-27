@@ -30,11 +30,11 @@ public class FunctionalityTestModule {
 
 
         /*Create full node, with port 7012*/
-        FullNode fullNode = new FullNode("src/test/resources/full_node.txt",
+        FullNode fullNode = new FullNode("src/test/resources/node_config.txt",
                 genesisBlock, STOP,1000,"localhost");
 
         /*create miner node with port 7011*/
-        MinerNode minerNode = new MinerNode(genesisBlock,"src/test/resources/miner.txt",
+        MinerNode minerNode = new MinerNode(genesisBlock,"src/test/resources/node_config.txt",
                 null,STOP - 1,1000,"localhost");
 
         /*Now create normal nodes with ports ranging from 7000 to 7010*/
@@ -48,7 +48,7 @@ public class FunctionalityTestModule {
         int counter = 2;
 
         for(int i=0; i < normalNodes.length; i++){
-            normalNodes[i] = new NormalNode("src/test/resources/normal_node_config.txt",
+            normalNodes[i] = new NormalNode("src/test/resources/node_config.txt",
                     "src/test/resources/normal_node_interests.txt",
                     START+i,1000,"localhost");
             threads[counter] = new Thread(normalNodes[i]);
@@ -57,7 +57,7 @@ public class FunctionalityTestModule {
 
         /*also create light nodes*/
         for(int i = 0; i < lightNodes.length; i++){
-            lightNodes[i] = new LightNode("src/test/resources/normal_node_config.txt",
+            lightNodes[i] = new LightNode("src/test/resources/node_config.txt",
                     "src/test/resources/normal_node_interests.txt",
                     START+i + normalNodes.length,1000,"localhost");
             threads[counter] = new Thread(lightNodes[i]);

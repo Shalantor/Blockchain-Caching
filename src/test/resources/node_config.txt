@@ -4,3 +4,6 @@ cache_configuration 0
 network_topology    0   7000 7010   1
 miner_node          localhost   7009
 full_node           localhost   7010
+min_block_size          10
+max_block_size          2000
+group_content           false
