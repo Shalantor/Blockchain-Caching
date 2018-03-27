@@ -192,7 +192,7 @@ public class LightNode extends Node{
             /*Now send answer*/
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-                out.write(jsonReply.toString());
+                out.write(jsonReply.toString()+ "\n");
                 out.close();
             }
             catch (IOException ex){
@@ -204,7 +204,7 @@ public class LightNode extends Node{
             /*Now send answer*/
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-                out.write(jsonReply.toString());
+                out.write(jsonReply.toString()+ "\n");
                 out.close();
             }
             catch (IOException ex){
@@ -243,7 +243,7 @@ public class LightNode extends Node{
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-            out.write(jsonObject.toString());
+            out.write(jsonObject.toString()+ "\n");
             out.close();
         }
         catch (IOException ex){
@@ -257,7 +257,7 @@ public class LightNode extends Node{
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-            out.write(jsonObject.toString());
+            out.write(jsonObject.toString()+ "\n");
             out.close();
         }
         catch (IOException ex){
@@ -271,7 +271,7 @@ public class LightNode extends Node{
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-            out.write(jsonObject.toString());
+            out.write(jsonObject.toString()+ "\n");
             out.close();
         }
         catch (IOException ex){
@@ -285,7 +285,7 @@ public class LightNode extends Node{
 
         try {
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-            out.write(jsonObject.toString());
+            out.write(jsonObject.toString()+ "\n");
             out.close();
         }
         catch (IOException ex){

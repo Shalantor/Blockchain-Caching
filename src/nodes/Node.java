@@ -43,6 +43,7 @@ public class Node implements Runnable{
     public int fullNodePort;
     public String minerAddress;
     public int minerPort;
+    private int tries;
 
     /*Socket we got a reply from*/
     Socket readSocket;
@@ -53,7 +54,6 @@ public class Node implements Runnable{
         try {
             //System.out.println("Listening on port " + port);
             listener = new ServerSocket(port);
-            listener.setSoTimeout(timeOut);
         }
         catch (IOException ex){
             System.out.println("Could not create server socket");
@@ -68,12 +68,34 @@ public class Node implements Runnable{
     public void run(){
         while (running){
             try{
+                listener.setSoTimeout(timeOut);
                 readSocket = listener.accept();
                 BufferedReader br = new BufferedReader(new InputStreamReader(readSocket.getInputStream()));
-                JSONObject jsonObject = new JSONObject(br.readLine());
+
+                JSONObject jsonObject = null;
+                while(true) {
+                    try {
+                        if (br.ready()) {
+                            jsonObject = new JSONObject(br.readLine());
+                            break;
+                        }
+                        Thread.sleep(1000);
+                        tries++;
+                        if(tries > 10){
+                            tries = 0;
+                            break;
+                        }
+                    }
+                    catch (InterruptedException ex){
+
+                    }
+                }
+
                 br.close();
-                readSocket = new Socket(jsonObject.getString("host"),jsonObject.getInt("port"));
-                processMessage(jsonObject,readSocket);
+                if(jsonObject != null){
+                    readSocket = new Socket(jsonObject.getString("host"),jsonObject.getInt("port"));
+                    processMessage(jsonObject,readSocket);
+                }
             }
             catch (SocketTimeoutException ex){
                 continue;
@@ -96,7 +118,7 @@ public class Node implements Runnable{
         catch (IOException ex){
             System.out.println("IOexception in stop");
         }
-        System.out.println("Thread killed with Death Note");
+        //System.out.println("Thread killed with Death Note");
     }
 
     /*Create JSON object from transaction*/
@@ -360,9 +382,8 @@ public class Node implements Runnable{
                     Socket socket = new Socket("localhost", recipientPort);
                     try {
                         OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-                        out.write(jsonObject.toString());
+                        out.write(jsonObject.toString() + "\n");
                         out.close();
-                        socket.close();
                     }
                     catch (IOException ex){
                         ex.printStackTrace();
@@ -408,9 +429,8 @@ public class Node implements Runnable{
                             Socket socket = new Socket("localhost", recipientPort);
                             try {
                                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-                                out.write(jsonObject.toString());
+                                out.write(jsonObject.toString() + "\n");
                                 out.close();
-                                socket.close();
                             }
                             catch (IOException ex){
                                 ex.printStackTrace();

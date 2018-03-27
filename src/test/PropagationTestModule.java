@@ -17,6 +17,9 @@ public class PropagationTestModule {
                                        NormalNode[] normalNodes){
         minerNode.addTransaction(transactions.get(0));
         minerNode.addTransaction(transactions.get(0));
+        minerNode.addTransaction(transactions.get(0));
+        minerNode.addTransaction(transactions.get(0));
+        minerNode.addTransaction(transactions.get(0));
     }
 
 
@@ -27,7 +30,7 @@ public class PropagationTestModule {
         System.out.println("Full node blockchain size: " + fullNode.blockChain.size());
 
         for(int i=0; i < normalNodes.length; i++){
-            System.out.println("Normal node blockchain size: " + normalNodes[i].blocksInCache.size());
+            System.out.println("Normal node with port " +normalNodes[i].port+" blockchain size: " + normalNodes[i].blocksInCache.size());
         }
 
         for(int i=0; i < lightNodes.length; i++){

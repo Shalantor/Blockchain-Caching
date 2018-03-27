@@ -76,9 +76,6 @@ public class FunctionalityTestModule {
         Scanner scanner = new Scanner(System.in);
         String enter = scanner.nextLine();
 
-        /*Stop nodes from listening*/
-        fullNode.stop();
-        minerNode.stop();
 
         /*stop light and normal nodes*/
         for(int i=0; i < normalNodes.length; i++){
@@ -89,11 +86,14 @@ public class FunctionalityTestModule {
             lightNodes[i].stop();
         }
 
+        /*Stop nodes from listening*/
+        fullNode.stop();
+        minerNode.stop();
+
         /*Wait for threads to stop*/
         try {
             for (int i = 0; i < threads.length; i++) {
                 threads[i].join();
-                System.out.println("Stop thread with id " + i);
             }
         }
         catch (InterruptedException ex){
