@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
+import structures.SavedNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +20,9 @@ public class SimpleCacheManager extends CacheManager{
     private long timeLimit;
     private long sizeOfCachedBlocks;
 
-    /*Which node we got the best interests from*/
+    /*Which nodes we got the best interests from. This is
+    sorted. Lowest index = highest score*/
+    ArrayList<SavedNode> bestNodes;
 
 
     public SimpleCacheManager(long timeLimit,long cacheSize){
@@ -120,7 +123,6 @@ public class SimpleCacheManager extends CacheManager{
 
         Interest interest,ownInterest;
         int matches=0,missMatches=0;
-        int maxMatches=0,maxMissMatches=0;
 
         for(int i = 0; i < interests.length(); i++){
 
@@ -147,17 +149,32 @@ public class SimpleCacheManager extends CacheManager{
                 else if(interest.type == Interest.NUMERIC_TYPE){
                     if(interest.numericType == Interest.NUMERIC_GREATER){
                         if(interest.numericValue == ownInterest.numericValue){
-                            matches = 1;
+                            matches += 1;
                         }
                         else{
-                            missMatches = 0;
+                            missMatches += 1;
                         }
                     }
                 }
             }
-
-            /*Now check matches and miss matches*/
         }
+
+        /*Now check matches and miss matches and compare to others*/
+        SavedNode savedNode = new SavedNode(receivedInterests.getString("host"),
+                receivedInterests.getInt("port"), matches - missMatches);
+
+        /*Is list empty? then just add, else insert in sorted list*/
+        if(bestNodes.isEmpty()){
+            bestNodes.add(savedNode);
+        }
+        else{
+            for(int i =0; i < bestNodes.size(); i++){
+                if(bestNodes.get(i).score < savedNode.score){
+                    bestNodes.add(i,savedNode);
+                }
+            }
+        }
+
     }
 
 }
