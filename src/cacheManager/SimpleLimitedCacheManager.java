@@ -30,6 +30,13 @@ public class SimpleLimitedCacheManager extends CacheManager{
             }
         }
         sizeOfCachedBlocks += block.blockSize;
+
+        /*Now check if size of blocks is larger than allowed cache size*/
+        while (sizeOfCachedBlocks > cacheSize){
+            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
+            blocksInCache.remove(0);
+        }
+
         return true;
     }
 
