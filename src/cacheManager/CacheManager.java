@@ -1,5 +1,7 @@
 package cacheManager;
 
+import nodes.Node;
+import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 
@@ -35,7 +37,8 @@ public class CacheManager {
         return null;
     }
 
-    public void evaluateInterests(ArrayList<Interest> interests){
+    public void evaluateInterests(JSONObject jsonObject, HashMap<String,Interest> ownInterests,
+                                  Node node){
 
     }
 
