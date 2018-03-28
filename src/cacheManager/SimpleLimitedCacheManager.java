@@ -1,8 +1,10 @@
 package cacheManager;
 
 import structures.Block;
+import structures.Interest;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class SimpleLimitedCacheManager extends CacheManager{
 
@@ -17,7 +19,16 @@ public class SimpleLimitedCacheManager extends CacheManager{
 
     @Override
     public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
-        blocksInCache.add(block);
+        /*Insert in sorted array list*/
+        if(blocksInCache.get(blocksInCache.size() - 1).index < block.index){
+            blocksInCache.add(block);
+        }
+
+        for(int i = blocksInCache.size() - 2; i >= 0; i--){
+            if(blocksInCache.get(i).index < block.index ){
+                blocksInCache.add(i+1,block);
+            }
+        }
         sizeOfCachedBlocks += block.blockSize;
         return true;
     }
@@ -66,5 +77,15 @@ public class SimpleLimitedCacheManager extends CacheManager{
             blocksInCache.remove(0);
         }
 
+    }
+
+    @Override
+    public boolean checkBlock(Block block, Map<String,Interest> interests){
+        for (Map.Entry entry : interests.entrySet()){
+            if(((Interest)entry.getValue()).checkBlock(block)){
+                return true;
+            }
+        }
+        return  false;
     }
 }

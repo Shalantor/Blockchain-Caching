@@ -27,7 +27,6 @@ public class SimpleCacheManager extends CacheManager{
             blocksInCache.add(block);
         }
 
-
         for(int i = blocksInCache.size() - 2; i >= 0; i--){
             if(blocksInCache.get(i).index < block.index ){
                 blocksInCache.add(i+1,block);
