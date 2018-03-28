@@ -239,7 +239,6 @@ public class NormalNode extends Node{
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
             boolean isAdded =  checkBlock(block);
-            System.out.println("NORMAL NODE: Got message, my length is " + blocksInCache.size());
             propagateBlock(jsonObject);
         }
         else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
