@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
+import structures.StrippedBlock;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -182,11 +183,9 @@ public class NormalNode extends Node{
 
 
     public boolean checkBlock(Block block){
-        for (Map.Entry entry : interests.entrySet()){
-            if(((Interest)entry.getValue()).checkBlock(block)){
-                cacheManager.addBlock(blocksInCache,block);
-                return true;
-            }
+        if( cacheManager.checkBlock(block,interests)){
+            cacheManager.addBlock(blocksInCache,block);
+            return true;
         }
         return false;
     }
@@ -239,7 +238,7 @@ public class NormalNode extends Node{
         }
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
-            blocksInCache.add(block);
+            boolean isAdded =  checkBlock(block);
             System.out.println("NORMAL NODE: Got message, my length is " + blocksInCache.size());
             propagateBlock(jsonObject);
         }

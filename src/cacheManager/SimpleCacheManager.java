@@ -1,8 +1,11 @@
 package cacheManager;
 
 import structures.Block;
+import structures.Interest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /*The simplest manager, it just adds the block to the cache
 * if there is something interesting in it.
@@ -75,6 +78,16 @@ public class SimpleCacheManager extends CacheManager{
         /*Insert them based on the order of their timestamps*/
 
 
+    }
+
+    @Override
+    public boolean checkBlock(Block block, Map<String,Interest> interests){
+        for (Map.Entry entry : interests.entrySet()){
+            if(((Interest)entry.getValue()).checkBlock(block)){
+                return true;
+            }
+        }
+        return  false;
     }
 
 }

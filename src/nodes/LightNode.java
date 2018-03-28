@@ -213,7 +213,7 @@ public class LightNode extends Node{
         }
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
-            blocksInCache.add(block);
+            boolean isAdded =  checkBlock(block);
             propagateBlock(jsonObject);
         }
         else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
@@ -303,13 +303,10 @@ public class LightNode extends Node{
     }
 
     public boolean checkBlock(Block block){
-        for (Map.Entry entry : interests.entrySet()){
-            if(((Interest)entry.getValue()).checkBlock(block)){
-                System.out.println("YES MOTHERFUCKERS INTERESTED");
-                StrippedBlock strippedBlock = new StrippedBlock(block,interests);
-                cacheManager.addBlock(blocksInCache,strippedBlock);
-                return true;
-            }
+        if( cacheManager.checkBlock(block,interests)){
+            StrippedBlock strippedBlock = new StrippedBlock(block,interests);
+            cacheManager.addBlock(blocksInCache,strippedBlock);
+            return true;
         }
         return false;
     }

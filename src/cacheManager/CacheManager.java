@@ -4,6 +4,8 @@ import structures.Block;
 import structures.Interest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /*Super class for all managers*/
 public class CacheManager {
@@ -39,5 +41,9 @@ public class CacheManager {
 
     public void addReceivedBlocks(ArrayList<Block> receivedBlocks,ArrayList<Block> blocksInCache){
 
+    }
+
+    public boolean checkBlock(Block block, Map<String,Interest> interests){
+        return true;
     }
 }
