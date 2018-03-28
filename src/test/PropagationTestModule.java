@@ -15,11 +15,20 @@ public class PropagationTestModule {
                                        FullNode fullNode,
                                        LightNode[] lightNodes,
                                        NormalNode[] normalNodes){
-        minerNode.addTransaction(transactions.get(0));
-        minerNode.addTransaction(transactions.get(0));
-        minerNode.addTransaction(transactions.get(0));
-        minerNode.addTransaction(transactions.get(0));
-        minerNode.addTransaction(transactions.get(0));
+        for(int i =0; i < 20; i++){
+            minerNode.addTransaction(transactions.get(0));
+        }
+
+        try{
+            Thread.sleep(8000);
+        }
+        catch (InterruptedException ex){
+            System.out.println("test propagation interrupt");
+        }
+
+        for(int i =0; i < 20; i++){
+            minerNode.addTransaction(transactions.get(0));
+        }
     }
 
 

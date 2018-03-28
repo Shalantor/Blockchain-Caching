@@ -47,8 +47,8 @@ public class Node implements Runnable{
 
     /*Socket we got a reply from*/
     Socket readSocket;
-    private static final int WAIT = 100;
-    private static final int TRIES = 10;
+    private static final int WAIT = 50;
+    private static final int TRIES = 4;
     private int waitTime = WAIT;
 
     /*Read configuration from text file*/
@@ -56,7 +56,7 @@ public class Node implements Runnable{
         running = true;
         try {
             //System.out.println("Listening on port " + port);
-            listener = new ServerSocket(port);
+            listener = new ServerSocket(port,100);
         }
         catch (IOException ex){
             System.out.println("Could not create server socket");
@@ -82,6 +82,9 @@ public class Node implements Runnable{
                             jsonObject = new JSONObject(br.readLine());
                             break;
                         }
+                        if(this instanceof FullNode){
+                            System.out.println("FULL NODE SLEEP " + waitTime);
+                        }
                         Thread.sleep(waitTime);
                         tries++;
                         waitTime += WAIT;
@@ -101,6 +104,7 @@ public class Node implements Runnable{
                 if(jsonObject != null){
                     readSocket = new Socket(jsonObject.getString("host"),jsonObject.getInt("port"));
                     processMessage(jsonObject,readSocket);
+                    readSocket.close();
                 }
             }
             catch (SocketTimeoutException ex){
