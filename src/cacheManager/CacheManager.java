@@ -49,4 +49,8 @@ public class CacheManager {
     public boolean checkBlock(Block block, Map<String,Interest> interests){
         return true;
     }
+
+    public void removeSavedNodes(){
+
+    }
 }

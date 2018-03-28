@@ -22,7 +22,7 @@ public class SimpleCacheManager extends CacheManager{
 
     /*Which nodes we got the best interests from. This is
     sorted. Lowest index = highest score*/
-    ArrayList<SavedNode> bestNodes;
+    public ArrayList<SavedNode> bestNodes;
 
 
     public SimpleCacheManager(long timeLimit,long cacheSize){
@@ -175,6 +175,11 @@ public class SimpleCacheManager extends CacheManager{
             }
         }
 
+    }
+
+    @Override
+    public void removeSavedNodes(){
+        bestNodes.clear();
     }
 
 }

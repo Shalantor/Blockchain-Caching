@@ -1,9 +1,14 @@
 package cacheManager;
 
+import nodes.Node;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
+import structures.SavedNode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimpleLimitedCacheManager extends CacheManager{
@@ -11,6 +16,10 @@ public class SimpleLimitedCacheManager extends CacheManager{
     private long timeLimit;
     private long cacheSize;
     private long sizeOfCachedBlocks;
+
+    /*Which nodes we got the best interests from. This is
+    sorted. Lowest index = highest score*/
+    public ArrayList<SavedNode> bestNodes;
 
     public SimpleLimitedCacheManager(long timeLimit,long cacheSize){
         this.timeLimit = timeLimit;
@@ -94,5 +103,76 @@ public class SimpleLimitedCacheManager extends CacheManager{
             }
         }
         return  false;
+    }
+
+    @Override
+    public void evaluateInterests(JSONObject receivedInterests,
+                                  HashMap<String,Interest> ownInterests,
+                                  Node node){
+
+        /*Best case scenario is when the manager finds interests
+         * that are exactly the same with its own interests. Else, find
+         * interests with as little difference as possible*/
+        JSONArray interests = receivedInterests.getJSONArray("interests");
+
+        Interest interest,ownInterest;
+        int matches=0,missMatches=0;
+
+        for(int i = 0; i < interests.length(); i++){
+
+            /*Extract interest*/
+            interest = node.JSONToInterest(interests.getJSONObject(i));
+
+            /*Is there an interest like this in my own interests?*/
+            if(ownInterests.containsKey(interest.interestName)){
+                ownInterest = ownInterests.get(interest.interestName);
+
+                /*String type?*/
+                if(interest.type == Interest.STRING_TYPE){
+                    for(String value: interest.interestValues){
+                        if(ownInterest.interestValues.contains(value)){
+                            matches += 1;
+                        }
+                        else{
+                            missMatches += 1;
+                        }
+                    }
+                    missMatches += Math.abs(interest.interestValues.size() - ownInterest.interestValues.size());
+                }
+                /*or numeric type?. Numeric are simpler*/
+                else if(interest.type == Interest.NUMERIC_TYPE){
+                    if(interest.numericType == Interest.NUMERIC_GREATER){
+                        if(interest.numericValue == ownInterest.numericValue){
+                            matches += 1;
+                        }
+                        else{
+                            missMatches += 1;
+                        }
+                    }
+                }
+            }
+        }
+
+        /*Now check matches and miss matches and compare to others*/
+        SavedNode savedNode = new SavedNode(receivedInterests.getString("host"),
+                receivedInterests.getInt("port"), matches - missMatches);
+
+        /*Is list empty? then just add, else insert in sorted list*/
+        if(bestNodes.isEmpty()){
+            bestNodes.add(savedNode);
+        }
+        else{
+            for(int i =0; i < bestNodes.size(); i++){
+                if(bestNodes.get(i).score < savedNode.score){
+                    bestNodes.add(i,savedNode);
+                }
+            }
+        }
+
+    }
+
+    @Override
+    public void removeSavedNodes(){
+        bestNodes.clear();
     }
 }
