@@ -47,6 +47,9 @@ public class Node implements Runnable{
 
     /*Socket we got a reply from*/
     Socket readSocket;
+    private static final int WAIT = 100;
+    private static final int TRIES = 10;
+    private int waitTime = WAIT;
 
     /*Read configuration from text file*/
     public Node(int port,int timeOut,String host){
@@ -79,15 +82,18 @@ public class Node implements Runnable{
                             jsonObject = new JSONObject(br.readLine());
                             break;
                         }
-                        Thread.sleep(1000);
+                        Thread.sleep(waitTime);
                         tries++;
-                        if(tries > 10){
+                        waitTime += WAIT;
+                        if(tries >= TRIES){
                             tries = 0;
+                            waitTime = WAIT;
                             break;
                         }
                     }
                     catch (InterruptedException ex){
-
+                        System.out.println("Interrupted lol");
+                        break;
                     }
                 }
 

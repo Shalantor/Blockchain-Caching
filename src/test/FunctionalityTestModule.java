@@ -67,6 +67,7 @@ public class FunctionalityTestModule {
         /*Now start threads*/
         for(int i = 0; i < threads.length; i++){
             threads[i].start();
+            System.out.println("Thread " + i + " stopped");
         }
 
         /*test block propagation*/
@@ -75,7 +76,6 @@ public class FunctionalityTestModule {
         /*Wait for enter from user*/
         Scanner scanner = new Scanner(System.in);
         String enter = scanner.nextLine();
-
 
         /*stop light and normal nodes*/
         for(int i=0; i < normalNodes.length; i++){
@@ -94,6 +94,7 @@ public class FunctionalityTestModule {
         try {
             for (int i = 0; i < threads.length; i++) {
                 threads[i].join();
+                System.out.println("Stop");
             }
         }
         catch (InterruptedException ex){
