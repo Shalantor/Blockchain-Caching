@@ -37,10 +37,16 @@ public class SimpleCacheManager extends CacheManager{
         if(blocksInCache.get(blocksInCache.size() - 1).index < block.index){
             blocksInCache.add(block);
         }
+        else if(blocksInCache.get(blocksInCache.size() - 1).index == block.index){
+            return false;
+        }
 
         for(int i = blocksInCache.size() - 2; i >= 0; i--){
             if(blocksInCache.get(i).index < block.index ){
                 blocksInCache.add(i+1,block);
+            }
+            else if(blocksInCache.get(i).index == block.index ){
+                return false;
             }
         }
         sizeOfCachedBlocks += block.blockSize;
@@ -92,7 +98,7 @@ public class SimpleCacheManager extends CacheManager{
 
     }
 
-
+    /*TODO:Implement :P */
     @Override
     public void addReceivedBlocks(ArrayList<Block> receviedBlocks,ArrayList<Block> blocksInCache){
 
