@@ -102,6 +102,39 @@ public class SimpleLimitedCacheManager extends CacheManager{
     }
 
     @Override
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks, ArrayList<Block> blocksInCache) {
+        /*Insert them based on the order of their indexes*/
+        int start = 0;
+        for(Block receivedBlock : receivedBlocks){
+            /*block with greater index than the others in cache?*/
+            if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).index){
+                blocksInCache.add(receivedBlock);
+                sizeOfCachedBlocks += receivedBlock.blockSize;
+                continue;
+            }
+            /*block not in cache*/
+            for(int i = start; i < blocksInCache.size()-1; i++){
+                if(receivedBlock.index == blocksInCache.get(start).index){
+                    start = i;
+                    break;
+                }
+                else if(receivedBlock.index > blocksInCache.get(start).index){
+                    start = i + 1;
+                    blocksInCache.add(i+1,receivedBlock);
+                    sizeOfCachedBlocks += receivedBlock.blockSize;
+                    break;
+                }
+            }
+        }
+
+        /*Check if there are too many blocks*/
+        while(sizeOfCachedBlocks > cacheSize){
+            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
+            blocksInCache.remove(0);
+        }
+    }
+
+    @Override
     public boolean checkBlock(Block block, Map<String,Interest> interests){
         for (Map.Entry entry : interests.entrySet()){
             if(((Interest)entry.getValue()).checkBlock(block)){

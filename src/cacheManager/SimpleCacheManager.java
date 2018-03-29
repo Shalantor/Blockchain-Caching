@@ -96,7 +96,7 @@ public class SimpleCacheManager extends CacheManager{
         }
 
     }
-    
+
     @Override
     public void addReceivedBlocks(ArrayList<Block> receivedBlocks,ArrayList<Block> blocksInCache){
 
@@ -106,6 +106,7 @@ public class SimpleCacheManager extends CacheManager{
             /*block with greater index than the others in cache?*/
             if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).index){
                 blocksInCache.add(receivedBlock);
+                sizeOfCachedBlocks += receivedBlock.blockSize;
                 continue;
             }
             /*block not in cache*/
@@ -117,6 +118,7 @@ public class SimpleCacheManager extends CacheManager{
                 else if(receivedBlock.index > blocksInCache.get(start).index){
                     start = i + 1;
                     blocksInCache.add(i+1,receivedBlock);
+                    sizeOfCachedBlocks += receivedBlock.blockSize;
                     break;
                 }
             }
