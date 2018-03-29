@@ -185,7 +185,10 @@ public class SimpleCacheManager extends CacheManager{
                             missMatches += 1;
                         }
                     }
-                    missMatches += Math.abs(interest.interestValues.size() - ownInterest.interestValues.size());
+                    /*Different size means that there are different interests*/
+                    if(interest.interestValues.size() < ownInterest.interestValues.size()){
+                        missMatches += interest.interestValues.size() - ownInterest.interestValues.size();
+                    }
                 }
                 /*or numeric type?. Numeric are simpler*/
                 else if(interest.type == Interest.NUMERIC_TYPE){
@@ -199,6 +202,9 @@ public class SimpleCacheManager extends CacheManager{
                     }
                 }
             }
+            else{
+                missMatches += 2;
+            }
         }
 
         /*Now check matches and miss matches and compare to others*/
@@ -210,6 +216,7 @@ public class SimpleCacheManager extends CacheManager{
             bestNodes.add(savedNode);
         }
         else{
+            /*Best node at start of list*/
             for(int i =0; i < bestNodes.size(); i++){
                 if(bestNodes.get(i).score < savedNode.score){
                     bestNodes.add(i,savedNode);
