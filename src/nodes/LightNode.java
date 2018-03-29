@@ -50,8 +50,7 @@ public class LightNode extends Node{
     public ArrayList<Block> blocksInCache = new ArrayList<>();
 
     /*Cache manager*/
-    /*TODO:Change hardcode*/
-    private CacheManager cacheManager = new SimpleCacheManager(timeRestraint,maxCacheSize);
+    private CacheManager cacheManager;
 
     /*The constructor as of now*/
     public LightNode(String configFilePath,String interestFilePath,int port,int timeOut,String host){

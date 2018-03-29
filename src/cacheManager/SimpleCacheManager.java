@@ -32,17 +32,28 @@ public class SimpleCacheManager extends CacheManager{
     @Override
     public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
 
-        /*Insert in sorted array list*/
+        /*check if cache empty*/
+        if(blocksInCache.size() == 0){
+            blocksInCache.add(block);
+            sizeOfCachedBlocks += block.blockSize;
+            return true;
+        }
+
+        /*Check last block in cache*/
         if(blocksInCache.get(blocksInCache.size() - 1).index < block.index){
             blocksInCache.add(block);
+            sizeOfCachedBlocks += block.blockSize;
+            return true;
         }
         else if(blocksInCache.get(blocksInCache.size() - 1).index == block.index){
             return false;
         }
 
-        for(int i = blocksInCache.size() - 2; i >= 0; i--){
-            if(blocksInCache.get(i).index < block.index ){
-                blocksInCache.add(i+1,block);
+        /*Insert into sorted array list in cache*/
+        for(int i = 0; i < blocksInCache.size(); i++){
+            if(blocksInCache.get(i).index > block.index ){
+                blocksInCache.add(i,block);
+                break;
             }
             else if(blocksInCache.get(i).index == block.index ){
                 return false;
