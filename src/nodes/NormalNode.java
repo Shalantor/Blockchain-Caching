@@ -42,7 +42,7 @@ public class NormalNode extends Node{
     private long timeRestraint;
 
     /*Interest name with the corresponding interest object*/
-    public Map<String, Interest> interests = new HashMap<>();
+    public HashMap<String, Interest> interests = new HashMap<>();
 
     /*ArrayList of interested blocks*/
     public ArrayList<Block> blocksInCache = new ArrayList<>();
@@ -129,7 +129,7 @@ public class NormalNode extends Node{
                         String[] subArray = Arrays.copyOfRange(info,3,info.length);
                         ArrayList<String> subList = new ArrayList<>(Arrays.asList(subArray));
                         temp = new Interest(Interest.STRING_TYPE,
-                                0,Integer.parseInt(info[2]),info[0],null,subList);
+                                0,Integer.parseInt(info[2]),info[0],0,subList);
                         interests.put(info[0],temp);
                         break;
                     case DOUBLE:
