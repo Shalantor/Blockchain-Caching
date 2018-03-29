@@ -210,9 +210,6 @@ public class SimpleCacheManager extends CacheManager{
             }
         }
 
-        System.out.println("Miss matches are " + missMatches);
-        System.out.println("Matches " + matches);
-
         /*Now check matches and miss matches and compare to others*/
         SavedNode savedNode = new SavedNode(receivedInterests.getString("host"),
                 receivedInterests.getInt("port"), matches - missMatches);
