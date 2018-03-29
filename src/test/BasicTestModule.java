@@ -1,7 +1,9 @@
 package test;
 
 import nodes.NormalNode;
+import org.json.JSONObject;
 import structures.Block;
+import structures.Interest;
 import structures.TransactionManager;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ public class BasicTestModule {
     private String interestFilePath = "src/test/resources/normal_node_interests.txt";
     private String configFilePath = "src/test/resources/node_config.txt";
     private String managerFilePath = "src/test/resources/example.txt";
+    private String otherInterestFilePath = "src/test/resources/normal_node_interests2.txt";
 
     public BasicTestModule(int testType){
         this.testType = testType;
@@ -36,25 +39,19 @@ public class BasicTestModule {
                         Arrays.asList("lol","spiros","florian",
                         50.0,"pizza",20))));
             }
+            /*Other node*/
+            NormalNode normalNode2 = new NormalNode(configFilePath,otherInterestFilePath,
+                    8002,5000,"localhost");
 
-            /*Test add blocks method*/
-            for(int i = 1; i<10; i+=2){
-                Block block = new Block(i,"genesis",transactions);
-                if(normalNode.cacheManager.checkBlock(block,normalNode.interests)){
-                    normalNode.cacheManager.addBlock(normalNode.blocksInCache,block);
-                }
+            /*Create interests*/
+            ArrayList<Interest> interestsToSend = new ArrayList<>();
+            for( String key : normalNode2.interests.keySet()){
+                interestsToSend.add(normalNode2.interests.get(key));
             }
+            JSONObject jsonObject = normalNode2.createInterestAnswer("normal",interestsToSend);
 
-            ArrayList<Block> testBlocks = new ArrayList<>();
-            for(int i=0; i < 10; i+=2){
-                testBlocks.add(new Block(i,"genesis",transactions));
-            }
-
-            normalNode.cacheManager.addReceivedBlocks(testBlocks,normalNode.blocksInCache);
-
-            for(Block b : normalNode.blocksInCache){
-                System.out.println(b.index);
-            }
+            /*Now evaluate them*/
+            normalNode.cacheManager.evaluateInterests(jsonObject,normalNode.interests,normalNode);
         }
     }
 }

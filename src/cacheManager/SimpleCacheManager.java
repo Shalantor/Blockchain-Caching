@@ -22,7 +22,7 @@ public class SimpleCacheManager extends CacheManager{
 
     /*Which nodes we got the best interests from. This is
     sorted. Lowest index = highest score*/
-    public ArrayList<SavedNode> bestNodes;
+    public ArrayList<SavedNode> bestNodes = new ArrayList<>();
 
 
     public SimpleCacheManager(long timeLimit,long cacheSize){
@@ -187,13 +187,16 @@ public class SimpleCacheManager extends CacheManager{
                     }
                     /*Different size means that there are different interests*/
                     if(interest.interestValues.size() < ownInterest.interestValues.size()){
-                        missMatches += interest.interestValues.size() - ownInterest.interestValues.size();
+                        missMatches += ownInterest.interestValues.size() - interest.interestValues.size();
                     }
                 }
                 /*or numeric type?. Numeric are simpler*/
                 else if(interest.type == Interest.NUMERIC_TYPE){
-                    if(interest.numericType == Interest.NUMERIC_GREATER){
-                        if(interest.numericValue == ownInterest.numericValue){
+                    if(interest.numericType == ownInterest.numericType){
+                        String interestString,ownInterestString;
+                        interestString = interest.numericValue + "";
+                        ownInterestString = ownInterest.numericValue + "";
+                        if(interestString.equals(ownInterestString)){
                             matches += 1;
                         }
                         else{
@@ -206,6 +209,9 @@ public class SimpleCacheManager extends CacheManager{
                 missMatches += 2;
             }
         }
+
+        System.out.println("Miss matches are " + missMatches);
+        System.out.println("Matches " + matches);
 
         /*Now check matches and miss matches and compare to others*/
         SavedNode savedNode = new SavedNode(receivedInterests.getString("host"),
