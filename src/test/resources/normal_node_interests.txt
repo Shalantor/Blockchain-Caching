@@ -1,5 +1,1 @@
-sender      string      1    george spiros florian thomas
-receiver    string      1    george spiros florian thomas
-price       double      1    lower   13.5
 category    string      1    technology  electronic  book    pizza
-amount      long        1    greater 100

@@ -30,7 +30,6 @@ public class SimpleCacheManager extends CacheManager{
     }
 
     @Override
-    /*TODO:Add case where block already exists*/
     public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
 
         /*Insert in sorted array list*/
@@ -97,13 +96,31 @@ public class SimpleCacheManager extends CacheManager{
         }
 
     }
-
-    /*TODO:Implement :P */
+    
     @Override
-    public void addReceivedBlocks(ArrayList<Block> receviedBlocks,ArrayList<Block> blocksInCache){
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,ArrayList<Block> blocksInCache){
 
-        /*Insert them based on the order of their timestamps*/
-
+        /*Insert them based on the order of their indexes*/
+        int start = 0;
+        for(Block receivedBlock : receivedBlocks){
+            /*block with greater index than the others in cache?*/
+            if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).index){
+                blocksInCache.add(receivedBlock);
+                continue;
+            }
+            /*block not in cache*/
+            for(int i = start; i < blocksInCache.size()-1; i++){
+                if(receivedBlock.index == blocksInCache.get(start).index){
+                    start = i;
+                    break;
+                }
+                else if(receivedBlock.index > blocksInCache.get(start).index){
+                    start = i + 1;
+                    blocksInCache.add(i+1,receivedBlock);
+                    break;
+                }
+            }
+        }
 
     }
 
