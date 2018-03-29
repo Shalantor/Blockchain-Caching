@@ -37,19 +37,23 @@ public class BasicTestModule {
                         50.0,"pizza",20))));
             }
 
-            for(int i = 5; i<10; i+=2){
+            /*Test add blocks method*/
+            for(int i = 1; i<10; i+=2){
                 Block block = new Block(i,"genesis",transactions);
                 if(normalNode.cacheManager.checkBlock(block,normalNode.interests)){
                     normalNode.cacheManager.addBlock(normalNode.blocksInCache,block);
                 }
             }
-            Block block = new Block(5,"genesis",transactions);
-            if(normalNode.cacheManager.checkBlock(block,normalNode.interests)){
-                normalNode.cacheManager.addBlock(normalNode.blocksInCache,block);
+
+            ArrayList<Block> testBlocks = new ArrayList<>();
+            for(int i=0; i < 10; i+=2){
+                testBlocks.add(new Block(i,"genesis",transactions));
             }
 
-            for(Block block1: normalNode.blocksInCache){
-                System.out.println(block1.index);
+            normalNode.cacheManager.addReceivedBlocks(testBlocks,normalNode.blocksInCache);
+
+            for(Block b : normalNode.blocksInCache){
+                System.out.println(b.index);
             }
         }
     }

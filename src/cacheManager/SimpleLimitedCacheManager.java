@@ -110,21 +110,27 @@ public class SimpleLimitedCacheManager extends CacheManager{
         /*Insert them based on the order of their indexes*/
         int start = 0;
         for(Block receivedBlock : receivedBlocks){
+            /*Cache empty?*/
+            if(blocksInCache.size() == 0){
+                blocksInCache.add(receivedBlock);
+                sizeOfCachedBlocks += receivedBlock.blockSize;
+                continue;
+            }
             /*block with greater index than the others in cache?*/
             if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).index){
                 blocksInCache.add(receivedBlock);
                 sizeOfCachedBlocks += receivedBlock.blockSize;
                 continue;
             }
-            /*block not in cache*/
-            for(int i = start; i < blocksInCache.size()-1; i++){
-                if(receivedBlock.index == blocksInCache.get(start).index){
+            /*insert in sorted array list*/
+            for(int i = start; i < blocksInCache.size(); i++){
+                if(receivedBlock.index == blocksInCache.get(i).index){
                     start = i;
                     break;
                 }
-                else if(receivedBlock.index > blocksInCache.get(start).index){
-                    start = i + 1;
-                    blocksInCache.add(i+1,receivedBlock);
+                else if(receivedBlock.index < blocksInCache.get(i).index){
+                    start = i;
+                    blocksInCache.add(i,receivedBlock);
                     sizeOfCachedBlocks += receivedBlock.blockSize;
                     break;
                 }
