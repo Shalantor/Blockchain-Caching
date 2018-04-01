@@ -8,6 +8,7 @@ import structures.managerUtils.StringInterest;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 /*Class that represents the transaction structures*/
@@ -119,17 +120,19 @@ public class TransactionManager {
 
     /*Generate interest files for nodes from a given file with possible
     * values for each transaction variable. Then save them into separate files*/
-    public void generateInterestFiles(String filePath,int breakPoints){
+    public void generateInterestFiles(String filePath,int breakPoints, int maxInterests,
+                                      String destPath){
+        /*Interests*/
+        ArrayList<StringInterest> stringInterests = new ArrayList<>();
+        ArrayList<DoubleInterest> doubleInterests = new ArrayList<>();
+        ArrayList<IntegerInterest> integerInterests = new ArrayList<>();
+        ArrayList<LongInterest> longInterests = new ArrayList<>();
+
         /*Open and read from example file*/
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             String[] info;
 
-            /*Interests*/
-            ArrayList<StringInterest> stringInterests = new ArrayList<>();
-            ArrayList<DoubleInterest> doubleInterests = new ArrayList<>();
-            ArrayList<IntegerInterest> integerInterests = new ArrayList<>();
-            ArrayList<LongInterest> longInterests = new ArrayList<>();
 
             while (true) {
                 line = br.readLine();
@@ -189,7 +192,9 @@ public class TransactionManager {
         * 2_S_1_L.txt, means that there is 2 interests, 1 string with
         * 1 value for some variable. Furthermore, there is a long interest in the file */
 
-    }
+        /*First create simple files, so loop over each list*/
+        int fileCounter;
 
+    }
 
 }

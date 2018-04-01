@@ -1,7 +1,6 @@
 package test;
 
 import nodes.NormalNode;
-import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 import structures.TransactionManager;
@@ -26,7 +25,6 @@ public class BasicTestModule {
     public void startTest(){
         if(testType == JUST_CHECK_FUNCTIONALITY){
             TransactionManager manager = new TransactionManager(managerFilePath);
-            manager.generateInterestFiles(interestFilePath,3);
         }
     }
 }
