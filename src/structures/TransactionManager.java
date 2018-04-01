@@ -212,6 +212,21 @@ public class TransactionManager {
                     ex.printStackTrace();
                 }
             }
+            /*Now case for a range file*/
+            if(s.getPossibleValues().size() == 0){
+                try{
+                    String fileName = "1_R_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(s.getName() + "\tstring\t1\t" +
+                            s.getRangeName() + "\t" + s.getRangeStart() + "\t" +s.getRangeEnd());
+                    out.flush();
+                    out.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
