@@ -3,7 +3,7 @@ package structures.managerUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringInterest extends GeneratedInterest{
+public class StringInterest {
 
     private String name;
     private List<String> possibleValues;
