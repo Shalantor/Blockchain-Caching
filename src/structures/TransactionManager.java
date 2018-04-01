@@ -5,10 +5,7 @@ import structures.managerUtils.IntegerInterest;
 import structures.managerUtils.LongInterest;
 import structures.managerUtils.StringInterest;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
 /*Class that represents the transaction structures*/
@@ -145,9 +142,15 @@ public class TransactionManager {
 
                 switch (info[1]){
                     case STRING:
-                        String[] subArray = Arrays.copyOfRange(info,2,info.length);
-                        ArrayList<String> subList = new ArrayList<>(Arrays.asList(subArray));
-                        stringInterests.add(new StringInterest(info[0],subList));
+                        if(info[3].equals("-")){
+                            stringInterests.add(new StringInterest(info[0],info[2],0,
+                                    Integer.parseInt(info[4])));
+                        }
+                        else{
+                            String[] subArray = Arrays.copyOfRange(info,2,info.length);
+                            ArrayList<String> subList = new ArrayList<>(Arrays.asList(subArray));
+                            stringInterests.add(new StringInterest(info[0],subList));
+                        }
                         break;
                     case DOUBLE:
                         doubleInterests.add(new DoubleInterest(info[0],
@@ -193,8 +196,23 @@ public class TransactionManager {
         * 1 value for some variable. Furthermore, there is a long interest in the file */
 
         /*First create simple files, so loop over each list*/
-        int fileCounter;
+        int fileCounter = 0;
 
+        for(StringInterest s : stringInterests){
+            for(String value : s.getPossibleValues()){
+                try{
+                    String fileName = "1_S_1_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(s.getName() + "\tstring\t1\t" + value);
+                    out.flush();
+                    out.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
 }

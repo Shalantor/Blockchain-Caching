@@ -1,5 +1,5 @@
-sender       string   node1   -   node100
-receiver     string   node2   -   node100
+sender       string   node   -   100
+receiver     string   node   -   100
 amount       double   0    2000.0
 fees         double   0    30.0
 num_inputs   integer  1    10

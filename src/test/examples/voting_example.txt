@@ -1,4 +1,4 @@
-voter      string    node1   -    node100
+voter      string    node   -    100
 candidate  string    sly ratchet paul geralt
 age        integer   0  80
 origin     string    germany greece novalis skyrim nether mars sun
