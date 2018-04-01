@@ -1,0 +1,9 @@
+sender    string   node1   -   node100
+receiver  string   node2   -   node100
+category  string   electronics clothing sports furniture toys gaming decoration books health music
+price     double   0    5000.0
+count     integer  0    100
+origin    string   europe north_america south_america asia africa australia arctic antarctic pacific
+fee       integer  0    20.0
+
+
