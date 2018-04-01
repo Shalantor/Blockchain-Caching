@@ -1,6 +1,6 @@
 package structures.managerUtils;
 
-public class LongInterest {
+public class LongInterest extends GeneratedInterest{
 
     private String name;
     private Long minValue;

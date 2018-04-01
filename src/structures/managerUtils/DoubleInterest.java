@@ -1,6 +1,6 @@
 package structures.managerUtils;
 
-public class DoubleInterest {
+public class DoubleInterest extends GeneratedInterest{
 
     private String name;
     private Double minValue;

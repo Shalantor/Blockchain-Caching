@@ -23,6 +23,3 @@ hs_err_pid*
 
 # intellij out folder
 out/
-
-# intellij workspace
-.idea/
