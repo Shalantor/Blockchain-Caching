@@ -17,6 +17,12 @@ public class TransactionManager {
     private static final String INTEGER = "integer";
     private static final String LONG = "long";
 
+    /*Interests*/
+    private ArrayList<StringInterest> stringInterests = new ArrayList<>();
+    private ArrayList<DoubleInterest> doubleInterests = new ArrayList<>();
+    private ArrayList<IntegerInterest> integerInterests = new ArrayList<>();
+    private ArrayList<LongInterest> longInterests = new ArrayList<>();
+
     /*Hash map of values in transaction*/
     private HashMap<String,Object> transactionFields = new HashMap<>();
 
@@ -119,11 +125,6 @@ public class TransactionManager {
     * values for each transaction variable. Then save them into separate files*/
     public void generateInterestFiles(String filePath,int breakPoints, int maxInterests,
                                       String destPath){
-        /*Interests*/
-        ArrayList<StringInterest> stringInterests = new ArrayList<>();
-        ArrayList<DoubleInterest> doubleInterests = new ArrayList<>();
-        ArrayList<IntegerInterest> integerInterests = new ArrayList<>();
-        ArrayList<LongInterest> longInterests = new ArrayList<>();
 
         /*Open and read from example file*/
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -339,8 +340,55 @@ public class TransactionManager {
             }
         }
 
-        /*now start with 2 interests*/
+    }
 
+    /*Create interest files with two interests*/
+    private void generateTwoInterestsFiles(String destPath,int maxInterests,
+                                           int maxCombinedInterests,int breakPoints){
+
+        /*Loop over interests*/
+        /*First create simple files, so loop over each list*/
+        int fileCounter = 0;
+        int count = 0;
+
+        /*Strings*/
+        for(StringInterest s : stringInterests){
+            List<String> values = s.getPossibleValues();
+            count = 0;
+            for(String value : values){
+                try{
+                    String value2 = values.get((count + 1) % values.size() );
+                    String fileName = "2_S_2_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    count++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(s.getName() + "\tstring\t1\t" + value + "\t" + value2);
+                    out.flush();
+                    out.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+                if(count == maxInterests){
+                    break;
+                }
+            }
+            /*Now case for a range file*/
+            if(s.getPossibleValues().size() == 0){
+                try{
+                    String fileName = "2_R_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(s.getName() + "\tstring\t1\t" +
+                            s.getRangeName() + "\t" + s.getRangeStart() + "\t" +s.getRangeEnd());
+                    out.flush();
+                    out.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
 }
