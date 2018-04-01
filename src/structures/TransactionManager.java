@@ -260,6 +260,62 @@ public class TransactionManager {
         }
 
         /*Long*/
+        for(LongInterest d : longInterests){
+            double value = 0;
+            for(int i = 0; i < breakPoints; i++){
+                try{
+                    value += (d.getMaxValue() - d.getMinValue())/breakPoints;
+
+                    /*greater*/
+                    String fileName = "1_L_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(d.getName() + "\tlong\t1\tgreater\t" + value);
+                    out.flush();
+                    out.close();
+
+                    /*lower*/
+                    fileName = "1_L_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    out = new PrintWriter(destPath + fileName);
+                    out.println(d.getName() + "\tlong\t1\tlower\t" + value);
+                    out.flush();
+                    out.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        /*Integers*/
+        for(IntegerInterest d : integerInterests){
+            double value = 0;
+            for(int i = 0; i < breakPoints; i++){
+                try{
+                    value += (d.getMaxValue() - d.getMinValue())/breakPoints;
+
+                    /*greater*/
+                    String fileName = "1_I_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(d.getName() + "\tinteger\t1\tgreater\t" + value);
+                    out.flush();
+                    out.close();
+
+                    /*lower*/
+                    fileName = "1_I_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    out = new PrintWriter(destPath + fileName);
+                    out.println(d.getName() + "\tinteger\t1\tlower\t" + value);
+                    out.flush();
+                    out.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
 }
