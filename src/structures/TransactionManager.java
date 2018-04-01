@@ -119,7 +119,7 @@ public class TransactionManager {
 
     /*Generate interest files for nodes from a given file with possible
     * values for each transaction variable. Then save them into separate files*/
-    public void generateInterestFiles(String filePath){
+    public void generateInterestFiles(String filePath,int breakPoints){
         /*Open and read from example file*/
         try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -169,7 +169,25 @@ public class TransactionManager {
 
         /*Now that interests are stored lets interest files for the nodes. the file names
         * have a specific format. There are files with only 1 interest and it goes on until
-        * a set amount of max interests*/
+        * a set amount of max interests. Available formats:
+        * S : string interest file
+        * I : integer interest file
+        * D : double interest file
+        * L : long interest file
+        * Also the files have a number, meaning how many interests there are.
+        * Furthermore, in case of string interest, it is indicated how many values
+        * the node is interested in.
+        *
+        * For example a string file looks like this:
+        * 1_S_2.txt, means in this file is 1 String interest with
+        * 2 values for some variable
+        *
+        * A numeric file looks like this:
+        * 1_D.txt, means that there is 1 Double interest for some variable.
+        *
+        * For a node with multiple interests:
+        * 2_S_1_L.txt, means that there is 2 interests, 1 string with
+        * 1 value for some variable. Furthermore, there is a long interest in the file */
 
     }
 
