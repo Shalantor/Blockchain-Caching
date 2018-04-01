@@ -4,6 +4,4 @@ category  string   electronics clothing sports furniture toys gaming decoration 
 price     double   0    5000.0
 count     integer  0    100
 origin    string   europe north_america south_america asia africa australia arctic antarctic pacific
-fee       integer  0    20.0
-
-
+fee       double  0    20.0

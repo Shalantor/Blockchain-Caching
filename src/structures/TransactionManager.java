@@ -1,6 +1,11 @@
 package structures;
 
-import java.io.BufferedReader;;
+import structures.managerUtils.DoubleInterest;
+import structures.managerUtils.IntegerInterest;
+import structures.managerUtils.LongInterest;
+import structures.managerUtils.StringInterest;
+
+import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -110,6 +115,62 @@ public class TransactionManager {
             counter++;
         }
         return transaction;
+    }
+
+    /*Generate interest files for nodes from a given file with possible
+    * values for each transaction variable. Then save them into separate files*/
+    public void generateInterestFiles(String filePath){
+        /*Open and read from example file*/
+        try(BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            String[] info;
+
+            /*Interests*/
+            ArrayList<StringInterest> stringInterests = new ArrayList<>();
+            ArrayList<DoubleInterest> doubleInterests = new ArrayList<>();
+            ArrayList<IntegerInterest> integerInterests = new ArrayList<>();
+            ArrayList<LongInterest> longInterests = new ArrayList<>();
+
+            while (true) {
+                line = br.readLine();
+                if(line == null){
+                    break;
+                }
+
+                /*get key and value*/
+                info = line.split("\\s+");
+
+                switch (info[1]){
+                    case STRING:
+                        String[] subArray = Arrays.copyOfRange(info,2,info.length);
+                        ArrayList<String> subList = new ArrayList<>(Arrays.asList(subArray));
+                        stringInterests.add(new StringInterest(info[0],subList));
+                        break;
+                    case DOUBLE:
+                        doubleInterests.add(new DoubleInterest(info[0],
+                                Double.parseDouble(info[2]),Double.parseDouble(info[3])));
+                        break;
+                    case LONG:
+                        longInterests.add(new LongInterest(info[0],
+                                Long.parseLong(info[2]),Long.parseLong(info[3])));
+                        break;
+                    case INTEGER:
+                        integerInterests.add(new IntegerInterest(info[0],
+                                Integer.parseInt(info[2]),Integer.parseInt(info[3])));
+                        break;
+                }
+
+            }
+        }
+        catch(IOException ex){
+            System.out.println("Io exception occurred");
+            ex.printStackTrace();
+        }
+
+        /*Now that interests are stored lets interest files for the nodes. the file names
+        * have a specific format. There are files with only 1 interest and it goes on until
+        * a set amount of max interests*/
+
     }
 
 
