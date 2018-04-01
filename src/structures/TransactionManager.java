@@ -198,6 +198,7 @@ public class TransactionManager {
         /*First create simple files, so loop over each list*/
         int fileCounter = 0;
 
+        /*Strings*/
         for(StringInterest s : stringInterests){
             for(String value : s.getPossibleValues()){
                 try{
@@ -228,6 +229,37 @@ public class TransactionManager {
                 }
             }
         }
+
+        /*Doubles*/
+        for(DoubleInterest d : doubleInterests){
+            double value = 0;
+            for(int i = 0; i < breakPoints; i++){
+                try{
+                    value += (d.getMaxValue() - d.getMinValue())/breakPoints;
+
+                    /*greater*/
+                    String fileName = "1_D_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(d.getName() + "\tdouble\t1\tgreater\t" + value);
+                    out.flush();
+                    out.close();
+
+                    /*lower*/
+                    fileName = "1_D_" + fileCounter + ".txt";
+                    fileCounter ++;
+                    out = new PrintWriter(destPath + fileName);
+                    out.println(d.getName() + "\tdouble\t1\tlower\t" + value);
+                    out.flush();
+                    out.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        /*Long*/
     }
 
 }
