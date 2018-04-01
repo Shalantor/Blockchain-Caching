@@ -14,10 +14,10 @@ public class BasicTestModule {
     public static final int JUST_CHECK_FUNCTIONALITY = 0;
 
     private int testType;
-    private String interestFilePath = "src/test/examples/voting_example.txt";
+    private String interestFilePath = "src/test/examples/marketplace_example.txt";
     private String configFilePath = "src/test/resources/node_config.txt";
     private String managerFilePath = "src/test/resources/example.txt";
-    private String destPath = "src/test/examples/voting/one_interest/";
+    private String destPath = "src/test/examples/marketplace/one_interest/";
 
     public BasicTestModule(int testType){
         this.testType = testType;
@@ -26,7 +26,7 @@ public class BasicTestModule {
     public void startTest(){
         if(testType == JUST_CHECK_FUNCTIONALITY){
             TransactionManager manager = new TransactionManager(managerFilePath);
-            manager.generateInterestFiles(interestFilePath,4,3,destPath);
+            manager.generateInterestFiles(interestFilePath,4,4,destPath);
         }
     }
 }

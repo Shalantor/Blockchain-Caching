@@ -197,6 +197,7 @@ public class TransactionManager {
 
         /*First create simple files, so loop over each list*/
         int fileCounter = 0;
+        int count = 0;
 
         /*Strings*/
         for(StringInterest s : stringInterests){
@@ -204,6 +205,7 @@ public class TransactionManager {
                 try{
                     String fileName = "1_S_1_" + fileCounter + ".txt";
                     fileCounter ++;
+                    count++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
                     out.println(s.getName() + "\tstring\t1\t" + value);
                     out.flush();
@@ -211,6 +213,9 @@ public class TransactionManager {
                 }
                 catch (IOException ex){
                     ex.printStackTrace();
+                }
+                if(count == maxInterests){
+                    break;
                 }
             }
             /*Now case for a range file*/
@@ -231,6 +236,7 @@ public class TransactionManager {
         }
 
         /*Doubles*/
+        count = 0;
         for(DoubleInterest d : doubleInterests){
             double value = 0;
             for(int i = 0; i < breakPoints; i++){
@@ -240,6 +246,7 @@ public class TransactionManager {
                     /*greater*/
                     String fileName = "1_D_" + fileCounter + ".txt";
                     fileCounter ++;
+                    count++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
                     out.println(d.getName() + "\tdouble\t1\tgreater\t" + value);
                     out.flush();
@@ -257,9 +264,13 @@ public class TransactionManager {
                     ex.printStackTrace();
                 }
             }
+            if(count == maxInterests){
+                break;
+            }
         }
 
         /*Long*/
+        count = 0;
         for(LongInterest d : longInterests){
             double value = 0;
             for(int i = 0; i < breakPoints; i++){
@@ -269,6 +280,7 @@ public class TransactionManager {
                     /*greater*/
                     String fileName = "1_L_" + fileCounter + ".txt";
                     fileCounter ++;
+                    count ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
                     out.println(d.getName() + "\tlong\t1\tgreater\t" + value);
                     out.flush();
@@ -277,6 +289,7 @@ public class TransactionManager {
                     /*lower*/
                     fileName = "1_L_" + fileCounter + ".txt";
                     fileCounter ++;
+                    count ++;
                     out = new PrintWriter(destPath + fileName);
                     out.println(d.getName() + "\tlong\t1\tlower\t" + value);
                     out.flush();
@@ -286,9 +299,13 @@ public class TransactionManager {
                     ex.printStackTrace();
                 }
             }
+            if(count >= maxInterests){
+                break;
+            }
         }
 
         /*Integers*/
+        count = 0;
         for(IntegerInterest d : integerInterests){
             double value = 0;
             for(int i = 0; i < breakPoints; i++){
@@ -298,6 +315,7 @@ public class TransactionManager {
                     /*greater*/
                     String fileName = "1_I_" + fileCounter + ".txt";
                     fileCounter ++;
+                    count ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
                     out.println(d.getName() + "\tinteger\t1\tgreater\t" + value);
                     out.flush();
@@ -306,6 +324,7 @@ public class TransactionManager {
                     /*lower*/
                     fileName = "1_I_" + fileCounter + ".txt";
                     fileCounter ++;
+                    count ++;
                     out = new PrintWriter(destPath + fileName);
                     out.println(d.getName() + "\tinteger\t1\tlower\t" + value);
                     out.flush();
@@ -315,7 +334,13 @@ public class TransactionManager {
                     ex.printStackTrace();
                 }
             }
+            if(count >= maxInterests){
+                break;
+            }
         }
+
+        /*now start with 2 interests*/
+
     }
 
 }
