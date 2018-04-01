@@ -8,8 +8,15 @@ For string variables:
 
 <variable_name>     <variable_type>     <possible_values>
 
+For a lot of possible values, we start with a value, place a minus sign
+afterwards and then write the end value like this:
+
+<start_value>   -   <end_value>
+
 For numeric variables:
 
 <variable_name>     <variable_type>
 
-Numeric values can possibly have a min or max value associated with them.
+Numeric values can possibly have a min or max value associated with them. These are not
+there to limit the transaction values but for the generator of the random transactions
+that will be used to test the blockchain implementation.
