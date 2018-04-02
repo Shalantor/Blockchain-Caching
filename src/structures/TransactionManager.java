@@ -400,6 +400,77 @@ public class TransactionManager {
                 }
             }
         }
+
+        /*Since nodes cannot have multiple interests for the same number type,
+        * we just combine them either with string interests or other number interests*/
+        /*Doubles*/
+        int combineInterests = 2;
+        count = 0;
+
+        for(DoubleInterest d : doubleInterests){
+            try{
+                String fileName = numName + "_D_";
+                String outputString = "";
+                if(integerInterests.size() > 0){
+                    fileName += "I_";
+                    IntegerInterest in = integerInterests.get(0);
+                    outputString = in.getName() + "\tinteger\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                }
+                else if(longInterests.size() > 0){
+                    fileName += "L_";
+                    LongInterest in = longInterests.get(0);
+                    outputString = in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                }
+                if(fileName.equals(numName + "_D_")){
+                    break;
+                }
+                fileCounter++;
+                fileName += fileCounter + ".txt";
+                PrintWriter out = new PrintWriter(destPath + fileName);
+                out.println(d.getName() + "\tdouble\t1\tlower\t" + (d.getMaxValue() / breakPoints));
+                out.println(outputString);
+                out.flush();
+                out.close();
+                count++;
+                if(count > combineInterests){
+                    break;
+                }
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+        }
+
+        if(count < combineInterests){
+            for(IntegerInterest d : integerInterests){
+                try{
+                    String fileName = numName + "_I_";
+                    String outputString = "";
+                    if(longInterests.size() > 0){
+                        fileName += "L_";
+                        LongInterest in = longInterests.get(0);
+                        outputString = in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                    }
+                    if(fileName.equals(numName + "_D_")){
+                        break;
+                    }
+                    fileCounter++;
+                    fileName += fileCounter + ".txt";
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(d.getName() + "\tinteger\t1\tlower\t" + (d.getMaxValue() / breakPoints));
+                    out.println(outputString);
+                    out.flush();
+                    out.close();
+                    count++;
+                    if(count > combineInterests){
+                        break;
+                    }
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
 }
