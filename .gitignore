@@ -26,3 +26,6 @@ out/
 
 # example files for use cases
 src/test/examples/*
+
+# workspace folder
+.idea/*
