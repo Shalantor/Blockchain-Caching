@@ -404,24 +404,38 @@ public class TransactionManager {
         /*Since nodes cannot have multiple interests for the same number type,
         * we just combine them either with string interests or other number interests*/
         /*Doubles*/
-        int combineInterests = 2;
+        int combineInterests = maxInterests / 2;
         count = 0;
 
         for(DoubleInterest d : doubleInterests){
             try{
                 String fileName = numName + "_D_";
                 String outputString = "";
-                if(integerInterests.size() > 0){
-                    fileName += "I_";
-                    IntegerInterest in = integerInterests.get(0);
-                    outputString = in.getName() + "\tinteger\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                int integerCount=0,longCount = 0;
+                boolean notEnough = false;
+                for(int i = 0; i < num; i++){
+                    boolean change = false;
+                    if(integerInterests.size() > integerCount){
+                        change = true;
+                        fileName += "I_";
+                        IntegerInterest in = integerInterests.get(integerCount);
+                        integerCount += 1;
+                        outputString = in.getName() + "\tinteger\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                    }
+                    else if(longInterests.size() > longCount){
+                        change = true;
+                        fileName += "L_";
+                        LongInterest in = longInterests.get(longCount);
+                        longCount += 1;
+                        outputString = in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                    }
+                    outputString += "\n";
+                    if(!change){
+                        notEnough = true;
+                        break;
+                    }
                 }
-                else if(longInterests.size() > 0){
-                    fileName += "L_";
-                    LongInterest in = longInterests.get(0);
-                    outputString = in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
-                }
-                if(fileName.equals(numName + "_D_")){
+                if(fileName.equals(numName + "_D_") || notEnough){
                     break;
                 }
                 fileCounter++;
@@ -446,12 +460,24 @@ public class TransactionManager {
                 try{
                     String fileName = numName + "_I_";
                     String outputString = "";
-                    if(longInterests.size() > 0){
-                        fileName += "L_";
-                        LongInterest in = longInterests.get(0);
-                        outputString = in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                    int longCount = 0;
+                    boolean notEnough = false;
+                    for(int i = 0; i < num; i++){
+                        boolean change = false;
+                        if(longInterests.size() > longCount){
+                            change = true;
+                            fileName += "L_";
+                            LongInterest in = longInterests.get(longCount);
+                            longCount += 1;
+                            outputString = in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                        }
+                        outputString += "\n";
+                        if(!change){
+                            notEnough = true;
+                            break;
+                        }
                     }
-                    if(fileName.equals(numName + "_D_")){
+                    if(fileName.equals(numName + "_D_") || notEnough){
                         break;
                     }
                     fileCounter++;

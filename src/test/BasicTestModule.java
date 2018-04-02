@@ -28,7 +28,7 @@ public class BasicTestModule {
         if(testType == JUST_CHECK_FUNCTIONALITY){
             TransactionManager manager = new TransactionManager(managerFilePath);
             manager.generateInterestFiles(interestFilePath,4,4,destPath);
-            manager.generateMultipleInterestsFiles(destPath2,4,4,1);
+            manager.generateMultipleInterestsFiles(destPath2,4,4,2);
         }
     }
 }
