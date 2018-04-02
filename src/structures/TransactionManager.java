@@ -484,7 +484,51 @@ public class TransactionManager {
                             change = true;
                             fileName += "I_";
                             IntegerInterest next = integerInterests.get(nextIndex);
-                            outputString += next.getName() + "\tdouble\t1\tgreater\t" + (next.getMaxValue() / breakPoints);
+                            outputString += next.getName() + "\tinteger\t1\tgreater\t" + (next.getMaxValue() / breakPoints);
+                        }
+                        outputString += "\n";
+                        if(!change){
+                            notEnough = true;
+                            break;
+                        }
+                    }
+                    if(fileName.equals(numName + "_D_") || notEnough){
+                        break;
+                    }
+                    fileCounter++;
+                    fileName += fileCounter + ".txt";
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.println(d.getName() + "\tinteger\t1\tlower\t" + (d.getMaxValue() / breakPoints));
+                    out.println(outputString);
+                    out.flush();
+                    out.close();
+                    count++;
+                    if(count > combineInterests){
+                        break;
+                    }
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        /*Last check longs*/
+        if(count < maxInterests){
+            for(LongInterest d : longInterests){
+                try{
+                    String fileName = numName + "_L_";
+                    String outputString = "";
+                    int longCount = 0;
+                    boolean notEnough = false;
+                    for(int i = 0; i < num; i++){
+                        boolean change = false;
+                        if(longInterests.size() > 1){
+                            int nextIndex = (longInterests.indexOf(d) + 1) % longInterests.size();
+                            change = true;
+                            fileName += "I_";
+                            LongInterest next = longInterests.get(nextIndex);
+                            outputString += next.getName() + "\tlong\t1\tgreater\t" + (next.getMaxValue() / breakPoints);
                         }
                         outputString += "\n";
                         if(!change){

@@ -17,8 +17,8 @@
       <file leaf-file-name="TransactionManager.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/structures/TransactionManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="201">
-              <caret line="464" column="20" lean-forward="false" selection-start-line="464" selection-start-column="20" selection-end-line="464" selection-end-column="20" />
+            <state relative-caret-position="-89">
+              <caret line="529" column="77" lean-forward="false" selection-start-line="529" selection-start-column="77" selection-end-line="529" selection-end-column="77" />
               <folding />
             </state>
           </provider>
@@ -650,8 +650,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/structures/TransactionManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="201">
-          <caret line="464" column="20" lean-forward="false" selection-start-line="464" selection-start-column="20" selection-end-line="464" selection-end-column="20" />
+        <state relative-caret-position="-89">
+          <caret line="529" column="77" lean-forward="false" selection-start-line="529" selection-start-column="77" selection-end-line="529" selection-end-column="77" />
           <folding />
         </state>
       </provider>
