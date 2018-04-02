@@ -382,9 +382,6 @@ public class TransactionManager {
             i++;
         }
 
-        for(int j : indexes){
-          System.out.println(j);
-        }
     }
 
     /*Create interest files with two interests*/
@@ -460,19 +457,29 @@ public class TransactionManager {
                 output += br.readLine() + "\n";
                 br.close();
                 fileName += numName + "_" + f.getName().substring(2,f.getName().lastIndexOf("_")) + "_";
+
+                int start = 0;
+                int extra = 0;
+                Random generator = new Random();
                 for(int i = 1; i <= num; i++){
-                    File next = listOfFiles[((index + i*length/4) % length)];
+
+                    /*Find index in indexes array*/
+                    start = indexes[indexes.length - i] + generator.nextInt(maxInterests);
+
+                    File next = listOfFiles[start];
                     BufferedReader br1 = new BufferedReader(new FileReader(sourcePath + next.getName()));
                     output += br1.readLine() + "\n";
                     br1.close();
                     fileName += next.getName().substring(2,next.getName().lastIndexOf("_")) + "_";
                 }
+
                 fileName += fileCounter + ".txt";
                 fileCounter ++;
                 count ++;
                 index ++;
                 PrintWriter out = new PrintWriter(destPath + fileName);
                 out.println(output);
+                System.out.println(output);
                 out.flush();
                 out.close();
                 if(count >= maxInterests){
