@@ -18,6 +18,7 @@ public class BasicTestModule {
     private String configFilePath = "src/test/resources/node_config.txt";
     private String managerFilePath = "src/test/resources/example.txt";
     private String destPath = "src/test/examples/marketplace/one_interest/";
+    private String destPath2 = "src/test/examples/marketplace/two_interests/";
 
     public BasicTestModule(int testType){
         this.testType = testType;
@@ -27,6 +28,7 @@ public class BasicTestModule {
         if(testType == JUST_CHECK_FUNCTIONALITY){
             TransactionManager manager = new TransactionManager(managerFilePath);
             manager.generateInterestFiles(interestFilePath,4,4,destPath);
+            manager.generateMultipleInterestsFiles(destPath2,4,4,1);
         }
     }
 }

@@ -343,13 +343,14 @@ public class TransactionManager {
     }
 
     /*Create interest files with two interests*/
-    private void generateTwoInterestsFiles(String destPath,int maxInterests,
-                                           int maxCombinedInterests,int breakPoints){
+    public void generateMultipleInterestsFiles(String destPath,int maxInterests,
+                                                int breakPoints,int num){
 
         /*Loop over interests*/
         /*First create simple files, so loop over each list*/
         int fileCounter = 0;
         int count = 0;
+        int numName = num + 1;
 
         /*Strings*/
         for(StringInterest s : stringInterests){
@@ -357,12 +358,19 @@ public class TransactionManager {
             count = 0;
             for(String value : values){
                 try{
-                    String value2 = values.get((count + 1) % values.size() );
-                    String fileName = "2_S_2_" + fileCounter + ".txt";
+                    String[] combineValues = new String[num];
+                    for(int i = 1; i <= num; i++){
+                        combineValues[i-1] = values.get((count + i) % values.size() );
+                    }
+                    String fileName = numName + "_S_" + numName + "_" + fileCounter + ".txt";
                     fileCounter ++;
                     count++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(s.getName() + "\tstring\t1\t" + value + "\t" + value2);
+                    out.print(s.getName() + "\tstring\t1\t" + value);
+                    for(String cValue : combineValues){
+                        out.print("\t" + cValue);
+                    }
+                    out.println("");
                     out.flush();
                     out.close();
                 }
@@ -376,11 +384,14 @@ public class TransactionManager {
             /*Now case for a range file*/
             if(s.getPossibleValues().size() == 0){
                 try{
-                    String fileName = "2_R_" + fileCounter + ".txt";
+                    String fileName = numName + "_R_" + fileCounter + ".txt";
                     fileCounter ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(s.getName() + "\tstring\t1\t" +
-                            s.getRangeName() + "\t" + s.getRangeStart() + "\t" +s.getRangeEnd());
+                    out.print(s.getName() + "\tstring\t1\t" + s.getRangeName());
+                    for(int i =0; i <= num; i++){
+                        out.print("\t" + (s.getRangeStart()+i) );
+                    }
+                    out.println("");
                     out.flush();
                     out.close();
                 }
