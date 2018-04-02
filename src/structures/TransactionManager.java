@@ -420,14 +420,21 @@ public class TransactionManager {
                         fileName += "I_";
                         IntegerInterest in = integerInterests.get(integerCount);
                         integerCount += 1;
-                        outputString = in.getName() + "\tinteger\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                        outputString += in.getName() + "\tinteger\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
                     }
                     else if(longInterests.size() > longCount){
                         change = true;
                         fileName += "L_";
                         LongInterest in = longInterests.get(longCount);
                         longCount += 1;
-                        outputString = in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                        outputString += in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                    }
+                    else if(doubleInterests.size() > 1){
+                        int nextIndex = (doubleInterests.indexOf(d) + 1) % doubleInterests.size();
+                        change = true;
+                        fileName += "D_";
+                        DoubleInterest nextD = doubleInterests.get(nextIndex);
+                        outputString += nextD.getName() + "\tdouble\t1\tgreater\t" + (nextD.getMaxValue() / breakPoints);
                     }
                     outputString += "\n";
                     if(!change){
@@ -455,6 +462,7 @@ public class TransactionManager {
             }
         }
 
+        /*Not enought combined interests?*/
         if(count < combineInterests){
             for(IntegerInterest d : integerInterests){
                 try{
@@ -469,7 +477,7 @@ public class TransactionManager {
                             fileName += "L_";
                             LongInterest in = longInterests.get(longCount);
                             longCount += 1;
-                            outputString = in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                            outputString += in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
                         }
                         outputString += "\n";
                         if(!change){
