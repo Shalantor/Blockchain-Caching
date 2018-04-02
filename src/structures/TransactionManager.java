@@ -462,7 +462,7 @@ public class TransactionManager {
             }
         }
 
-        /*Not enought combined interests?*/
+        /*Not enough combined interests?*/
         if(count < combineInterests){
             for(IntegerInterest d : integerInterests){
                 try{
@@ -478,6 +478,13 @@ public class TransactionManager {
                             LongInterest in = longInterests.get(longCount);
                             longCount += 1;
                             outputString += in.getName() + "\tlong\t1\tgreater\t" + (in.getMaxValue() / breakPoints);
+                        }
+                        else if(integerInterests.size() > 1){
+                            int nextIndex = (integerInterests.indexOf(d) + 1) % integerInterests.size();
+                            change = true;
+                            fileName += "I_";
+                            IntegerInterest next = integerInterests.get(nextIndex);
+                            outputString += next.getName() + "\tdouble\t1\tgreater\t" + (next.getMaxValue() / breakPoints);
                         }
                         outputString += "\n";
                         if(!change){
