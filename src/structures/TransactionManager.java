@@ -29,6 +29,8 @@ public class TransactionManager {
     /*Arraylist with keys, ordered like they are read from file*/
     private ArrayList<String> keys = new ArrayList<>();
 
+    private int[] indexes;
+
     public TransactionManager(String filePath){
 
         /*Open and read from example file*/
@@ -234,6 +236,7 @@ public class TransactionManager {
                     ex.printStackTrace();
                 }
             }
+            count = 0;
         }
 
         /*Doubles*/
@@ -264,9 +267,9 @@ public class TransactionManager {
                 catch (IOException ex){
                     ex.printStackTrace();
                 }
-            }
-            if(count == maxInterests){
-                break;
+                if(count == maxInterests){
+                    break;
+                }
             }
         }
 
@@ -299,9 +302,9 @@ public class TransactionManager {
                 catch (IOException ex){
                     ex.printStackTrace();
                 }
-            }
-            if(count >= maxInterests){
-                break;
+                if(count == maxInterests){
+                    break;
+                }
             }
         }
 
@@ -334,17 +337,154 @@ public class TransactionManager {
                 catch (IOException ex){
                     ex.printStackTrace();
                 }
-            }
-            if(count >= maxInterests){
-                break;
+                if(count == maxInterests){
+                    break;
+                }
             }
         }
 
+        /*Now save the indexes of the start of each interest, like they would appear
+        * in a directory that is ordered alphabetically, in ascending order*/
+        indexes = new int[stringInterests.size() + longInterests.size() +
+                integerInterests.size() + doubleInterests.size()];
+
+        int start = 0;
+        int i = 0;
+
+        /*2 is because 1 for lower, 1 for greater*/
+        for(DoubleInterest d : doubleInterests){
+            indexes[i] = start + 2*maxInterests;
+            start += 2*maxInterests;
+            i++;
+        }
+
+        for(IntegerInterest d : integerInterests){
+            indexes[i] = start + 2*maxInterests;
+            start += 2*maxInterests;
+            i++;
+        }
+
+        for(LongInterest d : longInterests){
+            indexes[i] = start + 2*maxInterests;
+            start += 2*maxInterests;
+            i++;
+        }
+
+        for(StringInterest s : stringInterests){
+            if(s.getPossibleValues().size() > 0){
+                indexes[i] = start + maxInterests;
+                start += maxInterests;
+            }
+            else{
+                indexes[i] = start + 1;
+                start += 1;
+            }
+            i++;
+        }
+
+        for(int j : indexes){
+          System.out.println(j);
+        }
     }
 
     /*Create interest files with two interests*/
-    public void generateMultipleInterestsFiles(String destPath,int maxInterests, int num) {
-        
+    public void generateMultipleInterestsFiles(String destPath,String sourcePath,
+                                               int maxInterests, int num) {
+
+        /*Loop over interests*/
+        /*First create simple files, so loop over each list*/
+        int fileCounter = 0;
+        int count = 0;
+        int numName = num + 1;
+
+        /*Strings*/
+        for (StringInterest s : stringInterests) {
+            List<String> values = s.getPossibleValues();
+            count = 0;
+            for (String value : values) {
+                try {
+                    String[] combineValues = new String[num];
+                    for (int i = 1; i <= num; i++) {
+                        combineValues[i - 1] = values.get((count + i) % values.size());
+                    }
+                    String fileName = numName + "_S_" + numName + "_" + fileCounter + ".txt";
+                    fileCounter++;
+                    count++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.print(s.getName() + "\tstring\t1\t" + value);
+                    for (String cValue : combineValues) {
+                        out.print("\t" + cValue);
+                    }
+                    out.println("");
+                    out.flush();
+                    out.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                if (count == maxInterests) {
+                    break;
+                }
+            }
+            /*Now case for a range file*/
+            if (s.getPossibleValues().size() == 0) {
+                try {
+                    String fileName = numName + "_R_" + fileCounter + ".txt";
+                    fileCounter++;
+                    PrintWriter out = new PrintWriter(destPath + fileName);
+                    out.print(s.getName() + "\tstring\t1\t" + s.getRangeName());
+                    for (int i = 0; i <= num; i++) {
+                        out.print("\t" + (s.getRangeStart() + i));
+                    }
+                    out.println("");
+                    out.flush();
+                    out.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        /*Now read from the previous files(1 interest) and combine their text*/
+        File folder = new File(sourcePath);
+        File[] listOfFiles = folder.listFiles();
+
+        count = 0;
+        int index = 0;
+        int length = listOfFiles.length;
+        Arrays.sort(listOfFiles);
+
+        for(File f: listOfFiles){
+            String output = "";
+            String fileName = "";
+            try(BufferedReader br = new BufferedReader(new FileReader(sourcePath + f.getName()))) {
+                output += br.readLine() + "\n";
+                br.close();
+                fileName += numName + "_" + f.getName().substring(2,f.getName().lastIndexOf("_")) + "_";
+                for(int i = 1; i <= num; i++){
+                    File next = listOfFiles[((index + i*length/4) % length)];
+                    BufferedReader br1 = new BufferedReader(new FileReader(sourcePath + next.getName()));
+                    output += br1.readLine() + "\n";
+                    br1.close();
+                    fileName += next.getName().substring(2,next.getName().lastIndexOf("_")) + "_";
+                }
+                fileName += fileCounter + ".txt";
+                fileCounter ++;
+                count ++;
+                index ++;
+                PrintWriter out = new PrintWriter(destPath + fileName);
+                out.println(output);
+                out.flush();
+                out.close();
+                if(count >= maxInterests){
+                    return;
+                }
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+
+        }
+
     }
 
 }
