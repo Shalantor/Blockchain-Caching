@@ -116,28 +116,11 @@ public class TransactionManager {
     /*A transaction is a hashmap of names of fields and the corresponding field values*/
     public HashMap<String,Object> createRandomTransaction() {
 
-        HashMap<String,Object> transaction = new HashMap<>();
-        Object value;
-        Random generator = new Random();
+        ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
-        for(Map.Entry entry : transactionFields.entrySet()){
-            value = entry.getValue();
-            if(value instanceof Double){
-                transaction.put(entry.getKey().toString(),generator.nextDouble());
-            }
-            else if(value instanceof Long){
-                transaction.put(entry.getKey().toString(),generator.nextLong());
-            }
-            else if(value instanceof Integer){
-                transaction.put(entry.getKey().toString(),generator.nextInt());
-            }
-            else if(value instanceof String){
-                transaction.put(entry.getKey().toString(),"AAABBBAAA");
-            }
+        transactions = createRandomTransactions(1);
 
-        }
-
-        return transaction;
+        return transactions.get(0);
 
     }
 
