@@ -57,9 +57,16 @@ public class TransactionManager {
                     case STRING:
                         transactionFields.put(key,"");
                         HashMap<String,Object> sData = new HashMap<>();
-                        sData.put("possible_values",Arrays.copyOfRange(info,2,info.length));
-                        sData.put("type",STRING);
+                        if(Arrays.asList(info).contains("-")){
+                            sData.put("possible_values",null);
+                            sData.put("max",info[4]);
+                            sData.put("name",info[2]);
+                        }
+                        else{
+                            sData.put("possible_values",Arrays.copyOfRange(info,2,info.length));
+                        }
                         data.put(key,sData);
+                        sData.put("type",STRING);
                         break;
                     case DOUBLE:
                         transactionFields.put(key,new Double(0));
@@ -527,7 +534,15 @@ public class TransactionManager {
                 switch ((String)info.get("type")){
                     case  STRING:
                         String[] list = (String[]) info.get("possible_values");
-                        tr.put(entry.getKey().toString(),list[generator.nextInt(list.length)]);
+                        if(list == null){
+                            int max = Integer.parseInt((String) info.get("max"));
+                            String name = (String) info.get("name");
+                            int value = generator.nextInt(max);
+                            tr.put(entry.getKey().toString(),name + value);
+                        }
+                        else{
+                            tr.put(entry.getKey().toString(),list[generator.nextInt(list.length)]);
+                        }
                         break;
                     case DOUBLE:
                         Double min = (Double) info.get("min");
