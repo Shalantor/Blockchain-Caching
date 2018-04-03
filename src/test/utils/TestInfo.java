@@ -1,6 +1,10 @@
 package test.utils;
 
-import java.util.HashMap;
+import nodes.LightNode;
+import nodes.Node;
+import nodes.NormalNode;
+
+import java.io.File;
 
 public class TestInfo {
 
@@ -13,48 +17,77 @@ public class TestInfo {
     private int[] normalNumPerc;
     private int[] lightNumPerc;
 
-    /*Percentages of nodes that will have a certain type of interest. The type
-    * can be string, double, long or integer. */
-    /*I decided to put a hashmap with keys
-    * S = string
-    * L = long
-    * D = double
-    * I = integer.
-    * The array can have any length (for me only 3, because I set for my project
-    * a maximum of 3 interests per node, but nothing stops it from having more).
-    * We have an array for each of the interest numbers that there can be.*/
-    private HashMap<String,Integer>[] interestPercentages;
-
-    /*Finally we have percentages for each interest. For example 20% of nodes may
-    * have the exact same interest, that's what this represents. We have an array
-    * of arrays. In my example i would have 3 arrays with percentages.*/
-    private int[][] sameInterestPerc;
-
-    public TestInfo(){
-
-    }
-
-    public void setNumNormalNodes(int numNormalNodes) {
+    public TestInfo(int numNormalNodes,int numLightNodes,
+                    int[] normalNumPerc,int[] lightNumPerc){
         this.numNormalNodes = numNormalNodes;
-    }
-
-    public void setNumLightNodes(int numLightNodes) {
         this.numLightNodes = numLightNodes;
-    }
-
-    public void setNormalNumPerc(int[] normalNumPerc) {
         this.normalNumPerc = normalNumPerc;
-    }
-
-    public void setLightNumPerc(int[] lightNumPerc) {
         this.lightNumPerc = lightNumPerc;
     }
 
-    public void setInterestPercentages(HashMap<String, Integer>[] interestPercentages) {
-        this.interestPercentages = interestPercentages;
-    }
+    public Node[] generateUniformInt(String[] filePaths,String config,int port, int timeOut,String host){
 
-    public void setSameInterestPerc(int[][] sameInterestPerc) {
-        this.sameInterestPerc = sameInterestPerc;
+        /*Index in array to store node*/
+        int indexNode = 0;
+        Node[] returnNodes = new Node[numNormalNodes + numLightNodes];
+
+        /*First the normal nodes*/
+        for(int i =0; i < normalNumPerc.length; i++){
+
+            /*How many nodes have this amount of interests?*/
+            int nodes = normalNumPerc[i] * numNormalNodes / 100;
+
+            /*Folder and files in that folder*/
+            File folder = new File(filePaths[i]);
+            File[] files = folder.listFiles();
+
+            /*Index for files*/
+            int indexFile = 0;
+
+            for(int j = 0; j < nodes; j++){
+
+                /*Create new node*/
+                System.out.println("File name is " + files[indexFile].getName());
+                NormalNode n = new NormalNode(config,filePaths[i] + files[indexFile].getName(),
+                        port + indexNode,timeOut,host);
+
+                /*Add to nodes array*/
+                returnNodes[indexNode] = n;
+
+                /*Increment valid indexes*/
+                indexFile = (indexFile + 1) % files.length;
+                indexNode ++;
+            }
+        }
+
+        /*Now light nodes*/
+        for(int i =0; i < lightNumPerc.length; i++){
+
+            /*How many nodes have this amount of interests?*/
+            int nodes = lightNumPerc[i] * numLightNodes / 100;
+
+            /*Folder and files in that folder*/
+            File folder = new File(filePaths[i]);
+            File[] files = folder.listFiles();
+
+            /*Index for files*/
+            int indexFile = 0;
+
+            for(int j = 0; j < nodes; j++){
+
+                /*Create new node*/
+                LightNode n = new LightNode(config,filePaths[i] + files[indexFile].getName(),
+                        port + indexNode,timeOut,host);
+
+                /*Add to nodes array*/
+                returnNodes[indexNode] = n;
+
+                /*Increment valid indexes*/
+                indexFile = (indexFile + 1) % files.length;
+                indexNode ++;
+            }
+        }
+
+        return returnNodes;
     }
 }

@@ -276,7 +276,7 @@ public class TransactionManager {
         /*Long*/
         count = 0;
         for(LongInterest d : longInterests){
-            double value = 0;
+            long value = 0;
             for(int i = 0; i < breakPoints; i++){
                 try{
                     value += (d.getMaxValue() - d.getMinValue())/breakPoints;
@@ -311,7 +311,7 @@ public class TransactionManager {
         /*Integers*/
         count = 0;
         for(IntegerInterest d : integerInterests){
-            double value = 0;
+            int value = 0;
             for(int i = 0; i < breakPoints; i++){
                 try{
                     value += (d.getMaxValue() - d.getMinValue())/breakPoints;
@@ -341,45 +341,6 @@ public class TransactionManager {
                     break;
                 }
             }
-        }
-
-        /*Now save the indexes of the start of each interest, like they would appear
-        * in a directory that is ordered alphabetically, in ascending order*/
-        indexes = new int[stringInterests.size() + longInterests.size() +
-                integerInterests.size() + doubleInterests.size()];
-
-        int start = 0;
-        int i = 0;
-
-        /*2 is because 1 for lower, 1 for greater*/
-        for(DoubleInterest d : doubleInterests){
-            indexes[i] = start + 2*maxInterests;
-            start += 2*maxInterests;
-            i++;
-        }
-
-        for(IntegerInterest d : integerInterests){
-            indexes[i] = start + 2*maxInterests;
-            start += 2*maxInterests;
-            i++;
-        }
-
-        for(LongInterest d : longInterests){
-            indexes[i] = start + 2*maxInterests;
-            start += 2*maxInterests;
-            i++;
-        }
-
-        for(StringInterest s : stringInterests){
-            if(s.getPossibleValues().size() > 0){
-                indexes[i] = start + maxInterests;
-                start += maxInterests;
-            }
-            else{
-                indexes[i] = start + 1;
-                start += 1;
-            }
-            i++;
         }
 
     }
@@ -458,13 +419,11 @@ public class TransactionManager {
                 br.close();
                 fileName += numName + "_" + f.getName().substring(2,f.getName().lastIndexOf("_")) + "_";
 
-                int start = 0;
-                int extra = 0;
                 Random generator = new Random();
+                int start = 0;
                 for(int i = 1; i <= num; i++){
 
-                    /*Find index in indexes array*/
-                    start = indexes[indexes.length - i] + generator.nextInt(maxInterests);
+                    start = (start + 10 + i) % listOfFiles.length;
 
                     File next = listOfFiles[start];
                     BufferedReader br1 = new BufferedReader(new FileReader(sourcePath + next.getName()));
@@ -479,7 +438,6 @@ public class TransactionManager {
                 index ++;
                 PrintWriter out = new PrintWriter(destPath + fileName);
                 out.println(output);
-                System.out.println(output);
                 out.flush();
                 out.close();
                 if(count >= maxInterests){
