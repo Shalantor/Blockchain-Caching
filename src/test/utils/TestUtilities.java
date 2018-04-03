@@ -5,6 +5,9 @@ import nodes.Node;
 import nodes.NormalNode;
 import structures.TransactionManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class TestUtilities {
 
     private String interestFilePath = "src/test/examples/marketplace_example.txt";
@@ -32,5 +35,11 @@ public class TestUtilities {
         TestInfo info = new TestInfo(100,50,normalPerc,lightPerc);
         Node[] nodes = info.generateUniformInt(filePaths,configFilePath,7001,5000,"localhost");
 
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createRandomTransactions(5);
+
+        for(HashMap<String,Object> t : transactions){
+            System.out.println(t);
+        }
     }
 }

@@ -515,4 +515,41 @@ public class TransactionManager {
         }
     }
 
+    /*Generate transactions, based on the input, completely random*/
+    public ArrayList<HashMap<String,Object>> createRandomTransactions(int count){
+
+        Random generator = new Random();
+        ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+        for(int i =0; i < count; i++){
+            HashMap<String,Object> tr = new HashMap<>();
+            for(Map.Entry entry : data.entrySet()){
+                HashMap<String,Object> info = (HashMap<String, Object>) entry.getValue();
+                switch ((String)info.get("type")){
+                    case  STRING:
+                        String[] list = (String[]) info.get("possible_values");
+                        tr.put(entry.getKey().toString(),list[generator.nextInt(list.length)]);
+                        break;
+                    case DOUBLE:
+                        Double min = (Double) info.get("min");
+                        Double max = (Double) info.get("max");
+                        tr.put(entry.getKey().toString(),(generator.nextDouble()*max) + min);
+                        break;
+                    case LONG:
+                        Long lmin = (Long) info.get("min");
+                        Long lmax = (Long) info.get("max");
+                        tr.put(entry.getKey().toString(),(generator.nextLong()*lmax) + lmin);
+                        break;
+                    case INTEGER:
+                        Integer imin = (Integer) info.get("min");
+                        Integer imax = (Integer) info.get("max");
+                        tr.put(entry.getKey().toString(),(generator.nextInt(imax)) + imin);
+                        break;
+                }
+            }
+            transactions.add(tr);
+        }
+
+        return transactions;
+    }
+
 }
