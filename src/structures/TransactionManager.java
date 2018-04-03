@@ -560,4 +560,52 @@ public class TransactionManager {
     * We can keep them in a hashmap with key the name of the attribute. And then
     * as a value we have those arrays with the integers*/
 
+    /*Normal distribution*/
+    public ArrayList<HashMap<String,Object>> createNormalTransactions(int count){
+
+        Random generator = new Random();
+        ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+        for(int i =0; i < count; i++){
+            HashMap<String,Object> tr = new HashMap<>();
+            for(Map.Entry entry : data.entrySet()){
+                HashMap<String,Object> info = (HashMap<String, Object>) entry.getValue();
+                double gauss = generator.nextGaussian();
+                while(Math.abs(gauss) > 1.0){
+                    gauss = generator.nextGaussian();
+                }
+                switch ((String)info.get("type")){
+                    case  STRING:
+                        String[] list = (String[]) info.get("possible_values");
+                        if(list == null){
+                            int max = Integer.parseInt((String) info.get("max"));
+                            String name = (String) info.get("name");
+                            int value = (int)( Math.abs(gauss) * max);
+                            tr.put(entry.getKey().toString(),name + value);
+                        }
+                        else{
+                            tr.put(entry.getKey().toString(),list[(int)(Math.abs(gauss) * list.length)]);
+                        }
+                        break;
+                    case DOUBLE:
+                        Double min = (Double) info.get("min");
+                        Double max = (Double) info.get("max");
+                        tr.put(entry.getKey().toString(),(Math.abs(gauss*max)) + min);
+                        break;
+                    case LONG:
+                        Long lmin = (Long) info.get("min");
+                        Long lmax = (Long) info.get("max");
+                        tr.put(entry.getKey().toString(),((long)(Math.abs(gauss)*lmax)) + lmin);
+                        break;
+                    case INTEGER:
+                        Integer imin = (Integer) info.get("min");
+                        Integer imax = (Integer) info.get("max");
+                        tr.put(entry.getKey().toString(),((int)Math.abs(gauss) * imax) + imin);
+                        break;
+                }
+            }
+            transactions.add(tr);
+        }
+
+        return transactions;
+    }
 }

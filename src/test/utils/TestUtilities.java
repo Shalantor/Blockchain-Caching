@@ -36,7 +36,7 @@ public class TestUtilities {
         Node[] nodes = info.generateUniformInt(filePaths,configFilePath,7001,5000,"localhost");
 
         ArrayList<HashMap<String,Object>> transactions;
-        transactions = manager.createRandomTransactions(5);
+        transactions = manager.createNormalTransactions(5);
 
         for(HashMap<String,Object> t : transactions){
             System.out.println(t);
