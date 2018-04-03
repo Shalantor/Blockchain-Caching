@@ -38,8 +38,8 @@ public class BasicTestModule {
             int[] lightPerc = new int[]{50,30,20};
             String[] filePaths = new String[]{destPath,destPath2,destPath3};
 
-            //TestInfo info = new TestInfo(100,50,normalPerc,lightPerc);
-            //Node[] nodes = info.generateUniformInt(filePaths,configFilePath,7001,5000,"localhost");
+            TestInfo info = new TestInfo(100,50,normalPerc,lightPerc);
+            Node[] nodes = info.generateUniformInt(filePaths,configFilePath,7001,5000,"localhost");
         }
     }
 }

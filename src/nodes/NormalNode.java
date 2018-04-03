@@ -115,7 +115,7 @@ public class NormalNode extends Node{
 
             while (true) {
                 line = br.readLine();
-                if (line == null) {
+                if (line == null || line.length() == 0) {
                     break;
                 }
 

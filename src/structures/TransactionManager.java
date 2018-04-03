@@ -427,7 +427,8 @@ public class TransactionManager {
 
                     File next = listOfFiles[start];
                     BufferedReader br1 = new BufferedReader(new FileReader(sourcePath + next.getName()));
-                    output += br1.readLine() + "\n";
+                    String line = br1.readLine();
+                    output += line + "\n";
                     br1.close();
                     fileName += next.getName().substring(2,next.getName().lastIndexOf("_")) + "_";
                 }

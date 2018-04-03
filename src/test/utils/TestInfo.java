@@ -47,7 +47,6 @@ public class TestInfo {
             for(int j = 0; j < nodes; j++){
 
                 /*Create new node*/
-                System.out.println("File name is " + files[indexFile].getName());
                 NormalNode n = new NormalNode(config,filePaths[i] + files[indexFile].getName(),
                         port + indexNode,timeOut,host);
 
