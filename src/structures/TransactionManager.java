@@ -550,4 +550,14 @@ public class TransactionManager {
         return transactions;
     }
 
+    /*For a distribution, we could make choose the indexes in string lists
+    * by considering some distribution, for example zipf. For numbers we can bin
+    * some values in the possible ranges given. Then, considering the count, we
+    * choose the values based on the distribution.
+    * For example we have count 20. We make a distribution with 20 numbers in
+    * range 0 to size of possible values - 1. Then we choose those numbers the next
+    * time we have to choose a value for that attribute of the transaction.
+    * We can keep them in a hashmap with key the name of the attribute. And then
+    * as a value we have those arrays with the integers*/
+
 }
