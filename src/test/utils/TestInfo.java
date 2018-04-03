@@ -5,6 +5,8 @@ import nodes.Node;
 import nodes.NormalNode;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class TestInfo {
 
@@ -40,6 +42,7 @@ public class TestInfo {
             /*Folder and files in that folder*/
             File folder = new File(filePaths[i]);
             File[] files = folder.listFiles();
+            Arrays.sort(files, Collections.reverseOrder());
 
             /*Index for files*/
             int indexFile = 0;
@@ -57,6 +60,7 @@ public class TestInfo {
                 indexFile = (indexFile + 1) % files.length;
                 indexNode ++;
             }
+
         }
 
         /*Now light nodes*/
