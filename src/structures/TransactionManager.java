@@ -26,6 +26,9 @@ public class TransactionManager {
     /*Hash map of values in transaction*/
     private HashMap<String,Object> transactionFields = new HashMap<>();
 
+    /*Hash map of values of the specific example*/
+    private HashMap<String,HashMap<String,Object>> data = new HashMap<>();
+
     /*Arraylist with keys, ordered like they are read from file*/
     private ArrayList<String> keys = new ArrayList<>();
 
@@ -53,15 +56,34 @@ public class TransactionManager {
                 switch (value){
                     case STRING:
                         transactionFields.put(key,"");
+                        HashMap<String,Object> sData = new HashMap<>();
+                        sData.put("possible_values",Arrays.copyOfRange(info,2,info.length));
+                        sData.put("type",STRING);
+                        data.put(key,sData);
                         break;
                     case DOUBLE:
                         transactionFields.put(key,new Double(0));
+                        HashMap<String,Object> dData = new HashMap<>();
+                        dData.put("min",Double.parseDouble(info[2]));
+                        dData.put("max",Double.parseDouble(info[3]));
+                        dData.put("type",DOUBLE);
+                        data.put(key,dData);
                         break;
                     case INTEGER:
                         transactionFields.put(key,new Integer(0));
+                        HashMap<String,Object> iData = new HashMap<>();
+                        iData.put("min",Integer.parseInt(info[2]));
+                        iData.put("max",Integer.parseInt(info[3]));
+                        iData.put("type",INTEGER);
+                        data.put(key,iData);
                         break;
                     case LONG:
                         transactionFields.put(key,new Long(0));
+                        HashMap<String,Object> lData = new HashMap<>();
+                        lData.put("min",Long.parseLong(info[2]));
+                        lData.put("max",Long.parseLong(info[3]));
+                        lData.put("type",LONG);
+                        data.put(key,lData);
                         break;
                 }
             }
@@ -491,8 +513,6 @@ public class TransactionManager {
             }
 
         }
-
-
     }
 
 }

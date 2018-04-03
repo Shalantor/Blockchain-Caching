@@ -1,6 +1,8 @@
 package test.utils;
 
+import nodes.LightNode;
 import nodes.Node;
+import nodes.NormalNode;
 import structures.TransactionManager;
 
 public class TestUtilities {
@@ -13,7 +15,7 @@ public class TestUtilities {
     private String destPath3 = "src/test/examples/marketplace/three_interests/";
 
     public TestUtilities(){
-        
+
     }
 
     public void testLocal(){
@@ -29,5 +31,6 @@ public class TestUtilities {
 
         TestInfo info = new TestInfo(100,50,normalPerc,lightPerc);
         Node[] nodes = info.generateUniformInt(filePaths,configFilePath,7001,5000,"localhost");
+
     }
 }
