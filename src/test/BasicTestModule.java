@@ -31,6 +31,7 @@ public class BasicTestModule {
         if(testType == JUST_CHECK_FUNCTIONALITY){
             TransactionManager manager = new TransactionManager(managerFilePath);
             manager.generateInterestFiles(interestFilePath,4,10,destPath);
+            manager.generateMultipleInterestsFiles(destPath2,destPath,4,1);
             manager.generateMultipleInterestsFiles(destPath3,destPath,4,2);
 
             /*Percentages*/

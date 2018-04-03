@@ -407,7 +407,6 @@ public class TransactionManager {
         File[] listOfFiles = folder.listFiles();
 
         count = 0;
-        int index = 0;
         int length = listOfFiles.length;
         Arrays.sort(listOfFiles);
 
@@ -423,7 +422,7 @@ public class TransactionManager {
                 int start = 0;
                 for(int i = 1; i <= num; i++){
 
-                    start = (start + 10 + i) % listOfFiles.length;
+                    start = (start + 10*i) % listOfFiles.length;
 
                     File next = listOfFiles[start];
                     BufferedReader br1 = new BufferedReader(new FileReader(sourcePath + next.getName()));
@@ -436,7 +435,49 @@ public class TransactionManager {
                 fileName += fileCounter + ".txt";
                 fileCounter ++;
                 count ++;
-                index ++;
+                PrintWriter out = new PrintWriter(destPath + fileName);
+                out.println(output);
+                out.flush();
+                out.close();
+                if(count >= maxInterests){
+                    break;
+                }
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
+
+        }
+
+        /*Now do the same but for descending order*/
+        Arrays.sort(listOfFiles,Collections.reverseOrder());
+
+        count = 0;
+        for(File f: listOfFiles){
+            String output = "";
+            String fileName = "";
+            try(BufferedReader br = new BufferedReader(new FileReader(sourcePath + f.getName()))) {
+                output += br.readLine() + "\n";
+                br.close();
+                fileName += numName + "_" + f.getName().substring(2,f.getName().lastIndexOf("_")) + "_";
+
+                Random generator = new Random();
+                int start = 0;
+                for(int i = 1; i <= num; i++){
+
+                    start = (start + 10*i) % listOfFiles.length;
+
+                    File next = listOfFiles[start];
+                    BufferedReader br1 = new BufferedReader(new FileReader(sourcePath + next.getName()));
+                    String line = br1.readLine();
+                    output += line + "\n";
+                    br1.close();
+                    fileName += next.getName().substring(2,next.getName().lastIndexOf("_")) + "_";
+                }
+
+                fileName += fileCounter + ".txt";
+                fileCounter ++;
+                count ++;
                 PrintWriter out = new PrintWriter(destPath + fileName);
                 out.println(output);
                 out.flush();
@@ -450,6 +491,7 @@ public class TransactionManager {
             }
 
         }
+
 
     }
 
