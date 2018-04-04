@@ -155,4 +155,34 @@ public class MinerNode extends Node{
         }
         return null;
     }
+
+    /*Local options for generating block and adding transaction*/
+    public void addTransactionLocal(HashMap<String,Object> transaction){
+        pendingTransactions.add(transaction);
+        sizeInBytes += Block.calculateSingleTransactionSize(transaction);
+        if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
+            //System.out.println("SIZE IS " + sizeInBytes);
+            lastBlock = generateNewBlockLocal();
+        }
+    }
+
+
+    public Block generateNewBlockLocal(){
+        /*Check configuration*/
+        if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
+            /*Generate new block*/
+            System.out.println("Send message to full node");
+
+            Block block = new Block(lastBlock.index + 1,
+                    lastBlock.getHeaderAsString(),pendingTransactions);
+
+            /*clear list of previous transactions*/
+            pendingTransactions.clear();
+            sizeInBytes = lastBlock.getHeaderSize();
+            //System.out.println("Generated new block with size " + block.blockSize);
+            
+            return block;
+        }
+        return null;
+    }
 }
