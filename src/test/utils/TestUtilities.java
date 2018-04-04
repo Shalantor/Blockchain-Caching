@@ -1,8 +1,10 @@
 package test.utils;
 
 import nodes.LightNode;
+import nodes.MinerNode;
 import nodes.Node;
 import nodes.NormalNode;
+import structures.Block;
 import structures.TransactionManager;
 
 import java.util.ArrayList;
@@ -16,13 +18,15 @@ public class TestUtilities {
     private String destPath = "src/test/examples/marketplace/one_interest/";
     private String destPath2 = "src/test/examples/marketplace/two_interests/";
     private String destPath3 = "src/test/examples/marketplace/three_interests/";
+    private TransactionManager manager;
+    private Node[] nodes;
 
     public TestUtilities(){
 
     }
 
-    public void testLocal(){
-        TransactionManager manager = new TransactionManager(managerFilePath);
+    public void initLocal(int numNormal,int numLight){
+        manager = new TransactionManager(managerFilePath);
         manager.generateInterestFiles(interestFilePath,4,10,destPath);
         manager.generateMultipleInterestsFiles(destPath2,destPath,4,1);
         manager.generateMultipleInterestsFiles(destPath3,destPath,4,2);
@@ -32,14 +36,39 @@ public class TestUtilities {
         int[] lightPerc = new int[]{50,30,20};
         String[] filePaths = new String[]{destPath,destPath2,destPath3};
 
-        TestInfo info = new TestInfo(100,50,normalPerc,lightPerc);
-        Node[] nodes = info.generateUniformInt(filePaths,configFilePath,7001,5000,"localhost");
+        TestInfo info = new TestInfo(numNormal,numLight,normalPerc,lightPerc);
+        nodes = info.generateUniformInt(filePaths,configFilePath,7001,5000,"localhost");
 
+    }
+
+    public ArrayList<HashMap<String,Object>> getTransactionsUniform(int count){
         ArrayList<HashMap<String,Object>> transactions;
-        transactions = manager.createNormalTransactions(5);
+        transactions = manager.createRandomTransactions(count);
+        return transactions;
+    }
 
-        for(HashMap<String,Object> t : transactions){
-            System.out.println(t);
-        }
+    public ArrayList<HashMap<String,Object>> getTransactionsNormal(int count){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createNormalTransactions(count);
+        return transactions;
+    }
+
+    public HashMap<String,Object> getTransactionUniform(){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createRandomTransactions(1);
+        return transactions.get(0);
+    }
+
+    public HashMap<String,Object> getTransactionNormal(){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createNormalTransactions(1);
+        return transactions.get(0);
+    }
+
+    public MinerNode createMiner(){
+        /*Genesis block*/
+        Block genesisBlock = new Block(0,"genesis",getTransactionsUniform(1));
+        MinerNode miner = new MinerNode(genesisBlock,configFilePath,manager.getKeys(),7000,5000,"localhost");
+        return miner;
     }
 }
