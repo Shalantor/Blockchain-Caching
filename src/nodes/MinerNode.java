@@ -130,7 +130,7 @@ public class MinerNode extends Node{
             System.out.println("Send message to full node");
 
             Block block = new Block(lastBlock.index + 1,
-                    lastBlock.getHeaderAsString(),pendingTransactions);
+                    lastBlock.getHeaderAsString(),new ArrayList<>(pendingTransactions));
 
             /*clear list of previous transactions*/
             pendingTransactions.clear();
@@ -173,10 +173,9 @@ public class MinerNode extends Node{
         /*Check configuration*/
         if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
             /*Generate new block*/
-            System.out.println("Send message to full node");
 
             Block block = new Block(lastBlock.index + 1,
-                    lastBlock.getHeaderAsString(),pendingTransactions);
+                    lastBlock.getHeaderAsString(),new ArrayList<>(pendingTransactions));
 
             /*clear list of previous transactions*/
             pendingTransactions.clear();

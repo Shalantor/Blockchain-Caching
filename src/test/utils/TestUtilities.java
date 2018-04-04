@@ -19,7 +19,7 @@ public class TestUtilities {
     private String destPath2 = "src/test/examples/marketplace/two_interests/";
     private String destPath3 = "src/test/examples/marketplace/three_interests/";
     private TransactionManager manager;
-    private Node[] nodes;
+    public Node[] nodes;
 
     public TestUtilities(){
 

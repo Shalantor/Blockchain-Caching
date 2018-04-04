@@ -39,7 +39,7 @@ public class Interest {
             for(HashMap<String,Object> transaction : block.transactions){
                 value = transaction.get(interestName).toString();
                 if(interestValues.contains(value)){
-                    System.out.println("HERE AT STRING with value " + value);
+                    //System.out.println("HERE AT STRING with value " + value);
                     return true;
                 }
             }
@@ -52,14 +52,14 @@ public class Interest {
                     if(value instanceof Double){
                         if( Double.parseDouble(numericValue.toString()) <=
                                 Double.parseDouble(value.toString()) ){
-                            System.out.println("HERE AT DOUBLE with value " + value);
+                            //System.out.println("HERE AT DOUBLE with value " + value);
                             return true;
                         }
                     }
                     else if(value instanceof Long){
                         if( Long.parseLong(numericValue.toString()) <=
                                 Long.parseLong(value.toString()) ){
-                            System.out.println("HERE AT LONG with value " + value);
+                            //System.out.println("HERE AT LONG with value " + value);
                             return true;
                         }
 
@@ -67,7 +67,7 @@ public class Interest {
                     else if(value instanceof Integer){
                         if( Integer.parseInt(numericValue.toString()) <=
                                 Integer.parseInt(value.toString()) ){
-                            System.out.println("HERE AT INT with value " + value);
+                            //System.out.println("HERE AT INT with value " + value);
                             return true;
                         }
 
@@ -81,20 +81,20 @@ public class Interest {
                     if (value instanceof Double) {
                         if (Double.parseDouble(numericValue.toString()) >=
                                 Double.parseDouble(value.toString())) {
-                            System.out.println("HERE AT DOUBLE LOWER with value " + value);
+                            //System.out.println("HERE AT DOUBLE LOWER with value " + value);
                             return true;
                         }
                     } else if (value instanceof Long) {
                         if (Long.parseLong(numericValue.toString()) >=
                                 Long.parseLong(value.toString())) {
-                            System.out.println("HERE AT LONG LOWER with value " + value);
+                            //System.out.println("HERE AT LONG LOWER with value " + value);
                             return true;
                         }
 
                     } else if (value instanceof Integer) {
                         if (Integer.parseInt(numericValue.toString()) >=
                                 Integer.parseInt(value.toString())) {
-                            System.out.println("HERE AT INT LOWER with value " + value);
+                            //System.out.println("HERE AT INT LOWER with value " + value);
                             return true;
                         }
 
@@ -111,7 +111,7 @@ public class Interest {
             String value;
             value = transaction.get(interestName).toString();
             if(interestValues.contains(value)){
-                System.out.println("HERE AT STRING with value " + value);
+                //System.out.println("HERE AT STRING with value " + value);
                 return true;
             }
         }
@@ -122,14 +122,14 @@ public class Interest {
                 if(value instanceof Double){
                     if( Double.parseDouble(numericValue.toString()) <=
                             Double.parseDouble(value.toString()) ){
-                        System.out.println("HERE AT DOUBLE with value " + value);
+                        //System.out.println("HERE AT DOUBLE with value " + value);
                         return true;
                     }
                 }
                 else if(value instanceof Long){
                     if( Long.parseLong(numericValue.toString()) <=
                             Long.parseLong(value.toString()) ){
-                        System.out.println("HERE AT LONG with value " + value);
+                        //System.out.println("HERE AT LONG with value " + value);
                         return true;
                     }
 
@@ -137,7 +137,7 @@ public class Interest {
                 else if(value instanceof Integer){
                     if( Integer.parseInt(numericValue.toString()) <=
                             Integer.parseInt(value.toString()) ){
-                        System.out.println("HERE AT INT with value " + value);
+                        //System.out.println("HERE AT INT with value " + value);
                         return true;
                     }
 
@@ -149,20 +149,20 @@ public class Interest {
                 if (value instanceof Double) {
                     if (Double.parseDouble(numericValue.toString()) >=
                             Double.parseDouble(value.toString())) {
-                        System.out.println("HERE AT DOUBLE LOWER with value " + value);
+                        //System.out.println("HERE AT DOUBLE LOWER with value " + value);
                         return true;
                     }
                 } else if (value instanceof Long) {
                     if (Long.parseLong(numericValue.toString()) >=
                             Long.parseLong(value.toString())) {
-                        System.out.println("HERE AT LONG LOWER with value " + value);
+                        //System.out.println("HERE AT LONG LOWER with value " + value);
                         return true;
                     }
 
                 } else if (value instanceof Integer) {
                     if (Integer.parseInt(numericValue.toString()) >=
                             Integer.parseInt(value.toString())) {
-                        System.out.println("HERE AT INT LOWER with value " + value);
+                        //System.out.println("HERE AT INT LOWER with value " + value);
                         return true;
                     }
 
