@@ -157,13 +157,15 @@ public class MinerNode extends Node{
     }
 
     /*Local options for generating block and adding transaction*/
-    public void addTransactionLocal(HashMap<String,Object> transaction){
+    public Block addTransactionLocal(HashMap<String,Object> transaction){
         pendingTransactions.add(transaction);
         sizeInBytes += Block.calculateSingleTransactionSize(transaction);
         if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
             //System.out.println("SIZE IS " + sizeInBytes);
             lastBlock = generateNewBlockLocal();
+            return lastBlock;
         }
+        return null;
     }
 
 
@@ -180,7 +182,7 @@ public class MinerNode extends Node{
             pendingTransactions.clear();
             sizeInBytes = lastBlock.getHeaderSize();
             //System.out.println("Generated new block with size " + block.blockSize);
-            
+
             return block;
         }
         return null;
