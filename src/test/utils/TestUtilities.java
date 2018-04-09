@@ -68,7 +68,7 @@ public class TestUtilities {
     public MinerNode createMiner(){
         /*Genesis block*/
         Block genesisBlock = new Block(0,"genesis",getTransactionsUniform(1));
-        MinerNode miner = new MinerNode(genesisBlock,configFilePath,manager.getKeys(),7000,5000,"localhost");
+        MinerNode miner = new MinerNode(genesisBlock,configFilePath,null,7000,5000,"localhost");
         return miner;
     }
 }

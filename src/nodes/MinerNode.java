@@ -24,6 +24,7 @@ public class MinerNode extends Node{
     private static final String FULL_NODE_INFO = "full_node";
 
     public static final int NO_GROUP = -1;
+    public static final int GROUP_POPULARITY = 0;
 
     /*Store those configurations*/
     private long minBlockSize;
@@ -45,7 +46,7 @@ public class MinerNode extends Node{
     ArrayList<HashMap<String,Object>> pendingTransactions = new ArrayList<>();
 
 
-    public MinerNode(Block block,String configFilePath,List<String> interests,int port,int timeOut,String host) {
+    public MinerNode(Block block,String configFilePath,String interestPath,int port,int timeOut,String host) {
 
         super(port,timeOut,host);
 
