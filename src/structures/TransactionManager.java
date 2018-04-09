@@ -255,26 +255,27 @@ public class TransactionManager {
         count = 0;
         for(DoubleInterest d : doubleInterests){
             double value = 0;
-            for(int i = 0; i < breakPoints; i++){
+            for(int i = 0; i < breakPoints-1; i++){
                 try{
                     value += (d.getMaxValue() - d.getMinValue())/breakPoints;
 
-                    /*greater*/
+                    String qualifier = "";
+                    if(value <= (d.getMaxValue() - d.getMinValue())/2){
+                        qualifier = "lower";
+                    }
+                    else{
+                        qualifier = "greater";
+                    }
+
+                    /*create*/
                     String fileName = "1_D_" + fileCounter + ".txt";
                     fileCounter ++;
-                    count++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tdouble\t1\tgreater\t" + value);
+                    out.println(d.getName() + "\tdouble\t1\t" + qualifier + "\t" + value);
                     out.flush();
                     out.close();
 
-                    /*lower*/
-                    fileName = "1_D_" + fileCounter + ".txt";
-                    fileCounter ++;
-                    out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tdouble\t1\tlower\t" + value);
-                    out.flush();
-                    out.close();
+                    count++;
                 }
                 catch (IOException ex){
                     ex.printStackTrace();
@@ -289,27 +290,27 @@ public class TransactionManager {
         count = 0;
         for(LongInterest d : longInterests){
             long value = 0;
-            for(int i = 0; i < breakPoints; i++){
+            for(int i = 0; i < breakPoints-1; i++){
                 try{
                     value += (d.getMaxValue() - d.getMinValue())/breakPoints;
 
-                    /*greater*/
+                    String qualifier = "";
+                    if(value <= (d.getMaxValue() - d.getMinValue())/2){
+                        qualifier = "lower";
+                    }
+                    else{
+                        qualifier = "greater";
+                    }
+
+                    /*create*/
                     String fileName = "1_L_" + fileCounter + ".txt";
                     fileCounter ++;
-                    count ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tlong\t1\tgreater\t" + value);
+                    out.println(d.getName() + "\tlong\t1\t" + qualifier + "\t" + value);
                     out.flush();
                     out.close();
 
-                    /*lower*/
-                    fileName = "1_L_" + fileCounter + ".txt";
-                    fileCounter ++;
-                    count ++;
-                    out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tlong\t1\tlower\t" + value);
-                    out.flush();
-                    out.close();
+                    count++;
                 }
                 catch (IOException ex){
                     ex.printStackTrace();
@@ -324,27 +325,27 @@ public class TransactionManager {
         count = 0;
         for(IntegerInterest d : integerInterests){
             int value = 0;
-            for(int i = 0; i < breakPoints; i++){
+            for(int i = 0; i < breakPoints-1; i++){
                 try{
                     value += (d.getMaxValue() - d.getMinValue())/breakPoints;
 
-                    /*greater*/
+                    String qualifier = "";
+                    if(value <= (d.getMaxValue() - d.getMinValue())/2){
+                        qualifier = "lower";
+                    }
+                    else{
+                        qualifier = "greater";
+                    }
+
+                    /*create*/
                     String fileName = "1_I_" + fileCounter + ".txt";
                     fileCounter ++;
-                    count ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tinteger\t1\tgreater\t" + value);
+                    out.println(d.getName() + "\tinteger\t1\t" + qualifier + "\t" + value);
                     out.flush();
                     out.close();
 
-                    /*lower*/
-                    fileName = "1_I_" + fileCounter + ".txt";
-                    fileCounter ++;
-                    count ++;
-                    out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tinteger\t1\tlower\t" + value);
-                    out.flush();
-                    out.close();
+                    count++;
                 }
                 catch (IOException ex){
                     ex.printStackTrace();

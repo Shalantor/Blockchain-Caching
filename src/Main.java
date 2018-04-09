@@ -5,6 +5,7 @@ import java.util.Locale;
 
 public class Main {
     public static void main(String[] args) {
-
+        BasicTestModule module = new BasicTestModule(0);
+        module.startTest();
     }
 }

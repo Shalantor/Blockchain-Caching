@@ -31,6 +31,7 @@ public class BasicTestModule {
     public void startTest(){
         if(testType == JUST_CHECK_FUNCTIONALITY){
             TestUtilities t = new TestUtilities();
+            t.initLocal(200,100);
         }
     }
 }
