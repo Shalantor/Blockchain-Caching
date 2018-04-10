@@ -71,4 +71,8 @@ public class InterestInfo {
     public void addIndex(int index){
         indices.add(index);
     }
+
+    public void setIndices(ArrayList<Integer> indices) {
+        this.indices = indices;
+    }
 }
