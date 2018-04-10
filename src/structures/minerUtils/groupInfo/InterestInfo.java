@@ -2,7 +2,7 @@ package structures.minerUtils.groupInfo;
 
 import java.util.ArrayList;
 
-public class InterestInfo {
+public class InterestInfo implements Comparable<InterestInfo> {
 
     /*Possible names for type values*/
     private static final String STRING = "string";
@@ -74,5 +74,10 @@ public class InterestInfo {
 
     public void setIndices(ArrayList<Integer> indices) {
         this.indices = indices;
+    }
+
+    @Override
+    public int compareTo(InterestInfo info){
+        return count - info.count;
     }
 }
