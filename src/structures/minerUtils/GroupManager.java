@@ -30,4 +30,8 @@ public class GroupManager {
         return block;
     }
 
+    public void printInfo(){
+
+    }
+
 }

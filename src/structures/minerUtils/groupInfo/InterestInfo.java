@@ -15,19 +15,17 @@ public class InterestInfo {
     /*This info is for all interests*/
     private ArrayList<Integer> indices;
     private String type; /*Integer, Double, Long or String*/
-    private Integer count;
+    private Integer count = 0;
 
     /*Further info for numeric interests*/
     private String comparison; /*greater or lower*/
     private Object value;      /*A numeric value*/
 
-    public InterestInfo(String type){
-        this.type = type;
+    public InterestInfo(){
         indices = new ArrayList<>();
     }
 
-    public InterestInfo(String type,String comparison,Object value){
-        this(type);
+    public InterestInfo(String comparison,Object value){
         this.comparison = comparison;
         this.value = value;
     }
@@ -36,16 +34,8 @@ public class InterestInfo {
         return indices;
     }
 
-    public void setIndices(ArrayList<Integer> indices) {
-        this.indices = indices;
-    }
-
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public Integer getCount() {
@@ -77,7 +67,7 @@ public class InterestInfo {
         return value;
     }
 
-    public void setValue(Object value) {
-        this.value = value;
+    public void addIndex(int index){
+        indices.add(index);
     }
 }
