@@ -6,4 +6,4 @@ miner_node          localhost   7009
 full_node           localhost   7010
 min_block_size          1000
 max_block_size          20000
-group_content           false   0
+group_content           true   0

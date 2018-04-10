@@ -174,7 +174,8 @@ public class PopularityGroupManager extends GroupManager{
             HashMap<String,InterestInfo> infoMap = interestInfo.get(e.getKey());
             for(Map.Entry entry : infoMap.entrySet()){
                 System.out.print(entry.getKey() + " : ");
-                System.out.println(infoMap.get(entry.getKey()).getCount());
+                System.out.print(infoMap.get(entry.getKey()).getCount());
+                System.out.println(" ---> " + infoMap.get(entry.getKey()).getIndices());
             }
         }
     }

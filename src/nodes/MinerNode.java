@@ -40,7 +40,7 @@ public class MinerNode extends Node{
     private long sizeInBytes;
 
     /*Manager for grouping*/
-    private GroupManager groupManager;
+    public GroupManager groupManager;
 
     /*List of transactions to put into the new block. Based on the configuration, the
     * list will either be a general list with all blocks, or we will have a list for

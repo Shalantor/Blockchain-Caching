@@ -1,5 +1,6 @@
 package test;
 
+import nodes.MinerNode;
 import nodes.Node;
 import nodes.NormalNode;
 import structures.Block;
@@ -30,8 +31,29 @@ public class BasicTestModule {
 
     public void startTest(){
         if(testType == JUST_CHECK_FUNCTIONALITY){
-            TestUtilities t = new TestUtilities();
-            t.initLocal(200,100);
+            TransactionManager manager = new TransactionManager(managerFilePath);
+            Block block = new Block(0,"genesis",manager.createNormalTransactions(1));
+            MinerNode minerNode = new MinerNode(block,configFilePath,managerFilePath,7464,1000,"localhost");
+
+            ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+
+            for(int i = 0; i < 5;i++){
+                HashMap<String,Object> tr = new HashMap<>();
+                tr.put("sender","node1");
+                tr.put("receiver","node2");
+                tr.put("category","sports");
+                tr.put("price",2500.0);
+                tr.put("count",50);
+                tr.put("origin","europe");
+                tr.put("fee",10.0);
+                transactions.add(tr);
+            }
+
+            for(HashMap<String,Object> t : transactions){
+                minerNode.addTransaction(t);
+            }
+
+            minerNode.groupManager.printInfo();
         }
     }
 }
