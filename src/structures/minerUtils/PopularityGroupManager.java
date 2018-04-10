@@ -223,6 +223,18 @@ public class PopularityGroupManager extends GroupManager{
         return size;
     }
 
+    @Override
+    public Block generateNewBlock(ArrayList<HashMap<String,Object>> transactions,Block lastBlock){
+        Block block = new Block(lastBlock.index + 1,
+                lastBlock.getHeaderAsString(),new ArrayList<>(transactions));
+        transactions.clear();
+        return block;
+    }
+
+    public boolean canCreateBlock(long size,long minSize){
+        return size >= minSize;
+    }
+
     /*Print everyone and everything*/
     public void printInfo(){
         for(Map.Entry e : interestInfo.entrySet()){
@@ -236,5 +248,7 @@ public class PopularityGroupManager extends GroupManager{
             }
         }
     }
+
+
 
 }
