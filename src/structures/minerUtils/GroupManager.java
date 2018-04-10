@@ -23,4 +23,11 @@ public class GroupManager {
         return size >= minSize;
     }
 
+    public Block generateNewBlock(ArrayList<HashMap<String,Object>> transactions,Block lastBlock){
+        Block block = new Block(lastBlock.index + 1,
+                lastBlock.getHeaderAsString(),new ArrayList<>(transactions));
+        transactions.clear();
+        return block;
+    }
+
 }
