@@ -133,34 +133,26 @@ public class MinerNode extends Node{
 
 
     public Block generateNewBlock(){
-        /*Check configuration*/
-        if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
-            /*Generate new block*/
+        /*Generate new block*/
 
-            Block block = new Block(lastBlock.index + 1,
-                    lastBlock.getHeaderAsString(),new ArrayList<>(pendingTransactions));
+        Block block = groupManager.generateNewBlock(pendingTransactions,lastBlock);
+        sizeInBytes = lastBlock.getHeaderSize();
 
-            /*clear list of previous transactions*/
-            pendingTransactions.clear();
-            sizeInBytes = lastBlock.getHeaderSize();
+        JSONObject jsonObject = createNewBlockMessage(block);
 
-            JSONObject jsonObject = createNewBlockMessage(block);
-
-            /*Send to full node*/
-            try {
-                Socket socket = new Socket(fullNodeAddress,fullNodePort);
-                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-                out.write(jsonObject.toString() + "\n");
-                out.close();
-            }
-            catch (IOException ex){
-                ex.printStackTrace();
-            }
-
-            propagateBlock(block);
-            return block;
+        /*Send to full node*/
+        try {
+            Socket socket = new Socket(fullNodeAddress,fullNodePort);
+            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+            out.write(jsonObject.toString() + "\n");
+            out.close();
         }
-        return null;
+        catch (IOException ex){
+            ex.printStackTrace();
+        }
+
+        propagateBlock(block);
+        return block;
     }
 
     /*Local options for generating block and adding transaction*/
@@ -169,7 +161,6 @@ public class MinerNode extends Node{
         if(groupManager.canCreateBlock(sizeInBytes,minBlockSize)){
             lastBlock = groupManager.generateNewBlock(pendingTransactions,lastBlock);
             sizeInBytes = lastBlock.getHeaderSize();
-            System.out.println(lastBlock);
             return lastBlock;
         }
         return null;
