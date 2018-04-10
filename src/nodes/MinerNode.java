@@ -3,6 +3,7 @@ package nodes;
 import org.json.JSONObject;
 import structures.Block;
 import structures.minerUtils.GroupManager;
+import structures.minerUtils.PopularityGroupManager;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -84,6 +85,7 @@ public class MinerNode extends Node{
                     case GROUP_CONTENT:
                         if(Boolean.parseBoolean(value)){
                             groupContent = Integer.parseInt(info[2]);
+                            groupManager = new PopularityGroupManager(interestPath);
                         }
                         else{
                             groupContent = NO_GROUP;
