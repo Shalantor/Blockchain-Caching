@@ -2,6 +2,7 @@ package nodes;
 
 import org.json.JSONObject;
 import structures.Block;
+import structures.minerUtils.GroupManager;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -36,6 +37,9 @@ public class MinerNode extends Node{
 
     /*Current transactions size*/
     private long sizeInBytes;
+
+    /*Manager for grouping*/
+    private GroupManager groupManager;
 
     /*List of transactions to put into the new block. Based on the configuration, the
     * list will either be a general list with all blocks, or we will have a list for
@@ -78,7 +82,13 @@ public class MinerNode extends Node{
                         maxBlockSize = Long.parseLong(value);
                         break;
                     case GROUP_CONTENT:
-                        groupContent = Boolean.parseBoolean(value) ? 0 : NO_GROUP;
+                        if(Boolean.parseBoolean(value)){
+                            groupContent = Integer.parseInt(info[2]);
+                        }
+                        else{
+                            groupContent = NO_GROUP;
+                            groupManager = new GroupManager();
+                        }
                         break;
                     case NETWORK_TOPOLOGY:
                         networkTopology = Integer.parseInt(value);
@@ -115,10 +125,10 @@ public class MinerNode extends Node{
 
     /*Add transaction to pending ones*/
     public void addTransaction(HashMap<String,Object> transaction){
-        pendingTransactions.add(transaction);
-        sizeInBytes += Block.calculateSingleTransactionSize(transaction);
-        if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
-            //System.out.println("SIZE IS " + sizeInBytes);
+        sizeInBytes = groupManager.addTransaction(transaction,pendingTransactions, sizeInBytes);
+        if(groupManager.canCreateBlock(sizeInBytes,minBlockSize)){
+            System.out.println("SIZE IS " + sizeInBytes);
+            System.out.println("MIN SIZE IS" + minBlockSize);
             lastBlock = generateNewBlock();
         }
     }
@@ -128,7 +138,6 @@ public class MinerNode extends Node{
         /*Check configuration*/
         if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
             /*Generate new block*/
-            System.out.println("Send message to full node");
 
             Block block = new Block(lastBlock.index + 1,
                     lastBlock.getHeaderAsString(),new ArrayList<>(pendingTransactions));
@@ -136,7 +145,6 @@ public class MinerNode extends Node{
             /*clear list of previous transactions*/
             pendingTransactions.clear();
             sizeInBytes = lastBlock.getHeaderSize();
-            //System.out.println("Generated new block with size " + block.blockSize);
 
             JSONObject jsonObject = createNewBlockMessage(block);
 
@@ -159,10 +167,8 @@ public class MinerNode extends Node{
 
     /*Local options for generating block and adding transaction*/
     public Block addTransactionLocal(HashMap<String,Object> transaction){
-        pendingTransactions.add(transaction);
-        sizeInBytes += Block.calculateSingleTransactionSize(transaction);
-        if(groupContent == NO_GROUP && sizeInBytes >= minBlockSize){
-            //System.out.println("SIZE IS " + sizeInBytes);
+        sizeInBytes = groupManager.addTransaction(transaction,pendingTransactions, sizeInBytes);
+        if(groupManager.canCreateBlock(sizeInBytes,minBlockSize)){
             lastBlock = generateNewBlockLocal();
             return lastBlock;
         }

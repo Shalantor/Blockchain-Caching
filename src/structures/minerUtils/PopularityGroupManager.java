@@ -7,4 +7,6 @@ public class PopularityGroupManager extends GroupManager{
     public PopularityGroupManager(String interestFilePath){
         this.interestFilePath = interestFilePath;
     }
+
+
 }
