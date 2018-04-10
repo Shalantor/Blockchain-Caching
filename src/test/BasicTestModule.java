@@ -42,10 +42,10 @@ public class BasicTestModule {
                 tr.put("sender","node1");
                 tr.put("receiver","node2");
                 tr.put("category","sports");
-                tr.put("price",2500.0);
-                tr.put("count",50);
+                tr.put("price",2000.0);
+                tr.put("count",80);
                 tr.put("origin","europe");
-                tr.put("fee",10.0);
+                tr.put("fee",17.0);
                 transactions.add(tr);
             }
 

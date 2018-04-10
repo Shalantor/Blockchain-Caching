@@ -26,6 +26,7 @@ public class InterestInfo {
     }
 
     public InterestInfo(String comparison,Object value){
+        this();
         this.comparison = comparison;
         this.value = value;
     }

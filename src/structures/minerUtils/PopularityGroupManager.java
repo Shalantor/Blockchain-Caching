@@ -161,6 +161,63 @@ public class PopularityGroupManager extends GroupManager{
                     infoMap.put((String) entry.getValue(),newInfo);
                 }
             }
+            else if(type.equals(DOUBLE)){
+                for(Map.Entry doubleEntry : infoMap.entrySet()){
+                    String key = (String) doubleEntry.getKey();
+                    Double infoValue = Double.parseDouble(key.substring(0,key.indexOf("_")));
+                    String comparator = key.substring(key.indexOf("_")+1);
+                    Double transactionValue = (Double) entry.getValue();
+
+                    if(comparator.equals(GREATER) && transactionValue > infoValue){
+                        InterestInfo info = (InterestInfo) doubleEntry.getValue();
+                        info.setCount(info.getCount()+1);
+                        info.addIndex(transactions.size() - 1);
+                    }
+                    else if(comparator.equals(LOWER) && transactionValue < infoValue){
+                        InterestInfo info = (InterestInfo) doubleEntry.getValue();
+                        info.setCount(info.getCount()+1);
+                        info.addIndex(transactions.size() - 1);
+                    }
+                }
+            }
+            else if(type.equals(LONG)){
+                for(Map.Entry longEntry : infoMap.entrySet()){
+                    String key = (String) longEntry.getKey();
+                    Long infoValue = Long.parseLong(key.substring(0,key.indexOf("_")));
+                    String comparator = key.substring(key.indexOf("_")+1);
+                    Long transactionValue = (Long) entry.getValue();
+
+                    if(comparator.equals(GREATER) && transactionValue > infoValue){
+                        InterestInfo info = (InterestInfo) longEntry.getValue();
+                        info.setCount(info.getCount()+1);
+                        info.addIndex(transactions.size() - 1);
+                    }
+                    else if(comparator.equals(LOWER) && transactionValue < infoValue){
+                        InterestInfo info = (InterestInfo) longEntry.getValue();
+                        info.setCount(info.getCount()+1);
+                        info.addIndex(transactions.size() - 1);
+                    }
+                }
+            }
+            else if(type.equals(INTEGER)){
+                for(Map.Entry intEntry : infoMap.entrySet()){
+                    String key = (String) intEntry.getKey();
+                    Integer infoValue = Integer.parseInt(key.substring(0,key.indexOf("_")));
+                    String comparator = key.substring(key.indexOf("_")+1);
+                    Integer transactionValue = (Integer) entry.getValue();
+
+                    if(comparator.equals(GREATER) && transactionValue > infoValue){
+                        InterestInfo info = (InterestInfo) intEntry.getValue();
+                        info.setCount(info.getCount()+1);
+                        info.addIndex(transactions.size() - 1);
+                    }
+                    else if(comparator.equals(LOWER) && transactionValue < infoValue){
+                        InterestInfo info = (InterestInfo) intEntry.getValue();
+                        info.setCount(info.getCount()+1);
+                        info.addIndex(transactions.size() - 1);
+                    }
+                }
+            }
         }
 
         return size;
