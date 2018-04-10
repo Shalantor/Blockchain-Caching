@@ -26,6 +26,12 @@ public class InterestInfo {
         indices = new ArrayList<>();
     }
 
+    public InterestInfo(String type,String comparison,Object value){
+        this(type);
+        this.comparison = comparison;
+        this.value = value;
+    }
+
     public ArrayList<Integer> getIndices() {
         return indices;
     }
