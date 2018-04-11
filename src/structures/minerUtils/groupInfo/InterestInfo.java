@@ -17,6 +17,7 @@ public class InterestInfo implements Comparable<InterestInfo> {
     private String type; /*Integer, Double, Long or String*/
     private Integer count = 0;
     private boolean isRange;
+    private String name;
 
     /*Further info for numeric interests*/
     private String comparison; /*greater or lower*/
@@ -25,13 +26,15 @@ public class InterestInfo implements Comparable<InterestInfo> {
     private Object max;
     private int breakpoints;
 
-    public InterestInfo(boolean isRange){
+    public InterestInfo(boolean isRange,String type,String name){
         indices = new ArrayList<>();
         this.isRange = isRange;
+        this.type = type;
+        this.name = name;
     }
 
-    public InterestInfo(String comparison,Object[] values,int breakpoints){
-        this(false);
+    public InterestInfo(String comparison,Object[] values,int breakpoints,String type,String name){
+        this(false,type,name);
         this.comparison = comparison;
         this.value = values[0];
         min = values[1];
@@ -187,5 +190,11 @@ public class InterestInfo implements Comparable<InterestInfo> {
             }
         }
         return 0;
+
+    }
+
+    @Override
+    public String toString(){
+        return name + " : " + count;
     }
 }

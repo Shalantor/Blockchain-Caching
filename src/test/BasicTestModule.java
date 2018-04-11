@@ -37,12 +37,12 @@ public class BasicTestModule {
 
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
-            for(int i = 0; i < 5;i++){
+            for(int i = 0; i < 16;i++){
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node1");
                 tr.put("receiver","node2");
                 tr.put("category","sports");
-                tr.put("price",2000.0);
+                tr.put("price",1000.0);
                 tr.put("count",80);
                 tr.put("origin","europe");
                 tr.put("fee",17.0);
@@ -50,10 +50,10 @@ public class BasicTestModule {
             }
 
             for(HashMap<String,Object> t : transactions){
-                minerNode.addTransaction(t);
+                block = minerNode.addTransactionLocal(t);
             }
 
-            minerNode.groupManager.printInfo();
+            //minerNode.groupManager.printInfo();
         }
     }
 }

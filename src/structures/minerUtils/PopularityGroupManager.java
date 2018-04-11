@@ -51,7 +51,7 @@ public class PopularityGroupManager extends GroupManager{
                             String[] possibleValues = Arrays.copyOfRange(info,2,info.length);
                             HashMap<String,InterestInfo> interests = new HashMap<>();
                             for(String p: possibleValues){
-                                interests.put(p,new InterestInfo(false));
+                                interests.put(p,new InterestInfo(false,STRING,p));
                             }
                             interestInfo.put(key,interests);
                         }
@@ -78,7 +78,7 @@ public class PopularityGroupManager extends GroupManager{
                                 qualifier = "greater";
                             }
                             Double[] dValues = new Double[]{dValue,dMin,dMax};
-                            interests.put(dValue +"_" + qualifier,new InterestInfo(qualifier,dValues,breakPoints));
+                            interests.put(dValue +"_" + qualifier,new InterestInfo(qualifier,dValues,breakPoints,DOUBLE,dValue +"_" + qualifier));
                         }
                         interestInfo.put(key,interests);
                         interestTypes.put(key,DOUBLE);
@@ -101,7 +101,7 @@ public class PopularityGroupManager extends GroupManager{
                                 qualifier = "greater";
                             }
                             Long[] lValues = new Long[]{lValue,lMin,lMax};
-                            interests.put(lValue +"_" + qualifier,new InterestInfo(qualifier,lValues,breakPoints));
+                            interests.put(lValue +"_" + qualifier,new InterestInfo(qualifier,lValues,breakPoints,LONG,lValue +"_" + qualifier));
                         }
                         interestInfo.put(key,interests);
                         interestTypes.put(key,LONG);
@@ -124,7 +124,7 @@ public class PopularityGroupManager extends GroupManager{
                                 qualifier = "greater";
                             }
                             Integer[] iValues = new Integer[]{iValue,iMin,iMax};
-                            interests.put(iValue +"_" + qualifier,new InterestInfo(qualifier,iValues,breakPoints));
+                            interests.put(iValue +"_" + qualifier,new InterestInfo(qualifier,iValues,breakPoints,INTEGER,iValue +"_" + qualifier));
                         }
                         interestInfo.put(key,interests);
                         interestTypes.put(key,INTEGER);
@@ -157,8 +157,23 @@ public class PopularityGroupManager extends GroupManager{
     public Block generateNewBlock(ArrayList<HashMap<String,Object>> transactions,Block lastBlock){
 
         /*Get interest info with highest score*/
+        /*First sort interests of same transaction attribute*/
+        for(Map.Entry e : interestInfo.entrySet()){
 
-        return null;
+            HashMap<String,InterestInfo> infoMap = interestInfo.get(e.getKey());
+            ArrayList<InterestInfo> list = new ArrayList<>();
+            for(String key : infoMap.keySet()){
+                list.add(infoMap.get(key));
+            }
+            list.sort(InterestInfo::compareTo);
+
+            System.out.println(list);
+        }
+
+        Block b = new Block(0,"example",new ArrayList<>(transactions));
+        transactions.clear();
+
+        return b;
     }
 
     public boolean canCreateBlock(long size,long minSize){
@@ -208,7 +223,7 @@ public class PopularityGroupManager extends GroupManager{
                     info.addIndex(size - 1);
                 }
                 else{
-                    InterestInfo newInfo = new InterestInfo(true);
+                    InterestInfo newInfo = new InterestInfo(true,STRING,(String) entry.getValue());
                     newInfo.setCount(1);
                     newInfo.addIndex(size - 1);
                     infoMap.put((String) entry.getValue(),newInfo);
