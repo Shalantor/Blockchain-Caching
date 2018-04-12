@@ -31,7 +31,11 @@ public class PopularityGroupManager extends GroupManager{
     private long minBlockSize;
     private long maxBlockSize;
 
+    /*time stamps of transactions*/
+    ArrayList<Long> timeStamps;
+
     public PopularityGroupManager(String interestFilePath){
+        timeStamps = new ArrayList<>();
         interestInfo = new HashMap<>();
         interestTypes = new HashMap<>();
         /*Open and read from config file*/
@@ -150,6 +154,10 @@ public class PopularityGroupManager extends GroupManager{
                                ArrayList<HashMap<String,Object>> transactions,
                                long size){
         transactions.add(transaction);
+
+        /*timestamp*/
+        timeStamps.add(System.currentTimeMillis());
+
         size += Block.calculateSingleTransactionSize(transaction);
 
         /*count transactions*/
@@ -203,6 +211,7 @@ public class PopularityGroupManager extends GroupManager{
                 chosenTransactions.add(transactions.get(index));
                 currentSize += Block.calculateSingleTransactionSize(transactions.get(index));
                 transactions.remove(index);
+                timeStamps.remove(index);
             }
 
             /*Enough transactions?*/
