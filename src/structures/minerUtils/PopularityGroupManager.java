@@ -1,6 +1,7 @@
 package structures.minerUtils;
 
 import structures.Block;
+import structures.Interest;
 import structures.minerUtils.groupInfo.InterestInfo;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -156,8 +157,13 @@ public class PopularityGroupManager extends GroupManager{
     @Override
     public Block generateNewBlock(ArrayList<HashMap<String,Object>> transactions,Block lastBlock){
 
+        /*Store transactions we want*/
+        ArrayList<HashMap<String,Object>> chosenTransactions = new ArrayList<>();
+
         /*Get interest info with highest score*/
         /*First sort interests of same transaction attribute*/
+        InterestInfo mostPopular = null;
+        int howManyValues = 0;
         for(Map.Entry e : interestInfo.entrySet()){
 
             HashMap<String,InterestInfo> infoMap = interestInfo.get(e.getKey());
@@ -167,11 +173,32 @@ public class PopularityGroupManager extends GroupManager{
             }
             list.sort(InterestInfo::compareTo);
 
-            System.out.println(list);
+            /*Save best, so most popular*/
+            if(mostPopular == null){
+                mostPopular = list.get(list.size()-1);
+                howManyValues = list.size();
+            }
+            else{
+                float diff = (list.size() * 1.0F) / howManyValues;
+                InterestInfo current = list.get(list.size()-1);
+
+                if( (current.getCount() * 1.0F) > (diff * mostPopular.getCount()) ){
+                    mostPopular = current;
+                    howManyValues = list.size();
+                }
+            }
         }
 
-        Block b = new Block(0,"example",new ArrayList<>(transactions));
-        transactions.clear();
+        /*Now add the indices*/
+        ArrayList<Integer> indices = mostPopular.getIndices();
+        for(int index = indices.size() - 1; index >= 0; index--){
+            chosenTransactions.add(transactions.get(index));
+            transactions.remove(index);
+        }
+
+        /*Now check for required amount*/
+
+        Block b = new Block(0,"example",new ArrayList<>(chosenTransactions));
 
         return b;
     }
