@@ -19,7 +19,7 @@ public class GroupManager {
         return size;
     }
 
-    public boolean canCreateBlock(long size,long minSize){
+    public boolean canCreateBlock(long size,long minSize,long maxSize){
         return size >= minSize;
     }
 

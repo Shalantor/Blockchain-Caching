@@ -128,7 +128,7 @@ public class MinerNode extends Node{
     /*Add transaction to pending ones*/
     public void addTransaction(HashMap<String,Object> transaction){
         sizeInBytes = groupManager.addTransaction(transaction,pendingTransactions, sizeInBytes);
-        if(groupManager.canCreateBlock(sizeInBytes,minBlockSize)){
+        if(groupManager.canCreateBlock(sizeInBytes,minBlockSize,maxBlockSize)){
             lastBlock = generateNewBlock();
         }
     }
@@ -160,7 +160,7 @@ public class MinerNode extends Node{
     /*Local options for generating block and adding transaction*/
     public Block addTransactionLocal(HashMap<String,Object> transaction){
         sizeInBytes = groupManager.addTransaction(transaction,pendingTransactions, sizeInBytes);
-        if(groupManager.canCreateBlock(sizeInBytes,minBlockSize)){
+        if(groupManager.canCreateBlock(sizeInBytes,minBlockSize,maxBlockSize)){
             lastBlock = groupManager.generateNewBlock(pendingTransactions,lastBlock);
             sizeInBytes = lastBlock.getHeaderSize();
             return lastBlock;

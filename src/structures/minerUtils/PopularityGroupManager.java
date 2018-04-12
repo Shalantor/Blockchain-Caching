@@ -27,6 +27,10 @@ public class PopularityGroupManager extends GroupManager{
     /*holds the types of the interests*/
     private HashMap<String,String> interestTypes;
 
+    /*min and max block size*/
+    private long minBlockSize;
+    private long maxBlockSize;
+
     public PopularityGroupManager(String interestFilePath){
         interestInfo = new HashMap<>();
         interestTypes = new HashMap<>();
@@ -159,51 +163,66 @@ public class PopularityGroupManager extends GroupManager{
 
         /*Store transactions we want*/
         ArrayList<HashMap<String,Object>> chosenTransactions = new ArrayList<>();
+        long currentSize = 0;
+        long limit = ((maxBlockSize - minBlockSize) / 2 ) + minBlockSize;
 
-        /*Get interest info with highest score*/
-        /*First sort interests of same transaction attribute*/
-        InterestInfo mostPopular = null;
-        int howManyValues = 0;
-        for(Map.Entry e : interestInfo.entrySet()){
+        while(true){
+            /*Get interest info with highest score*/
+            /*First sort interests of same transaction attribute*/
+            InterestInfo mostPopular = null;
+            int howManyValues = 0;
+            for(Map.Entry e : interestInfo.entrySet()){
 
-            HashMap<String,InterestInfo> infoMap = interestInfo.get(e.getKey());
-            ArrayList<InterestInfo> list = new ArrayList<>();
-            for(String key : infoMap.keySet()){
-                list.add(infoMap.get(key));
-            }
-            list.sort(InterestInfo::compareTo);
+                HashMap<String,InterestInfo> infoMap = interestInfo.get(e.getKey());
+                ArrayList<InterestInfo> list = new ArrayList<>();
+                for(String key : infoMap.keySet()){
+                    list.add(infoMap.get(key));
+                }
+                list.sort(InterestInfo::compareTo);
 
-            /*Save best, so most popular*/
-            if(mostPopular == null){
-                mostPopular = list.get(list.size()-1);
-                howManyValues = list.size();
-            }
-            else{
-                float diff = (list.size() * 1.0F) / howManyValues;
-                InterestInfo current = list.get(list.size()-1);
-
-                if( (current.getCount() * 1.0F) > (diff * mostPopular.getCount()) ){
-                    mostPopular = current;
+                /*Save best, so most popular*/
+                if(mostPopular == null){
+                    mostPopular = list.get(list.size()-1);
                     howManyValues = list.size();
                 }
+                else{
+                    float diff = (list.size() * 1.0F) / howManyValues;
+                    InterestInfo current = list.get(list.size()-1);
+
+                    if( (current.getCount() * 1.0F) > (diff * mostPopular.getCount()) ){
+                        mostPopular = current;
+                        howManyValues = list.size();
+                    }
+                }
+
+            }
+
+            /*Now add the indices*/
+            ArrayList<Integer> indices = mostPopular.getIndices();
+            for(int index = indices.size() - 1; index >= 0; index--){
+                chosenTransactions.add(transactions.get(index));
+                currentSize += Block.calculateSingleTransactionSize(transactions.get(index));
+                transactions.remove(index);
+            }
+
+            /*Enough transactions?*/
+            if(currentSize >= limit){
+                break;
+            }
+            else{
+                /*count left over transactions*/
+                resetIndices(transactions);
             }
         }
-
-        /*Now add the indices*/
-        ArrayList<Integer> indices = mostPopular.getIndices();
-        for(int index = indices.size() - 1; index >= 0; index--){
-            chosenTransactions.add(transactions.get(index));
-            transactions.remove(index);
-        }
-
-        /*Now check for required amount*/
 
         Block b = new Block(0,"example",new ArrayList<>(chosenTransactions));
 
         return b;
     }
 
-    public boolean canCreateBlock(long size,long minSize){
+    public boolean canCreateBlock(long size,long minSize,long maxSize){
+        minBlockSize = minSize;
+        maxBlockSize = maxSize;
         return size >= (minSize * 1.5f);
     }
 
@@ -222,7 +241,7 @@ public class PopularityGroupManager extends GroupManager{
     }
 
     /*reset indices because those transactions were removed*/
-    public void resetIndices(int[] indices,ArrayList<HashMap<String,Object>> transactions){
+    public void resetIndices(ArrayList<HashMap<String,Object>> transactions){
 
         for(Map.Entry e : interestInfo.entrySet()){
             HashMap<String,InterestInfo> infoMap = interestInfo.get(e.getKey());
