@@ -30,6 +30,7 @@ public class PopularityGroupManager extends GroupManager{
     /*min and max block size*/
     private long minBlockSize;
     private long maxBlockSize;
+    private long timeLimit;
 
     /*time stamps of transactions*/
     ArrayList<Long> timeStamps;
@@ -38,6 +39,9 @@ public class PopularityGroupManager extends GroupManager{
         timeStamps = new ArrayList<>();
         interestInfo = new HashMap<>();
         interestTypes = new HashMap<>();
+
+        /*TODO: CHANGE HARDCODE, BEST WOULD BE TO READ FROM FILE*/
+        timeLimit = 10000;
         /*Open and read from config file*/
         try(BufferedReader br = new BufferedReader(new FileReader(interestFilePath))) {
             String line,key,value;
@@ -174,7 +178,27 @@ public class PopularityGroupManager extends GroupManager{
         long currentSize = 0;
         long limit = ((maxBlockSize - minBlockSize) / 2 ) + minBlockSize;
 
-        while(true){
+        /*First check for transactions that are too old*/
+        int pos = -1;
+        long currentTime = System.currentTimeMillis();
+        for(int i = timeStamps.size() - 1; i >= 0; i--){
+            if(currentTime - timeStamps.get(i) > timeLimit){
+                pos = i;
+                break;
+            }
+        }
+
+        /*Have we found any? if yes add to chosenTransactions*/
+        if(pos >= 0){
+            for(int i = pos; i>= 0; i--){
+                chosenTransactions.add(transactions.get(pos));
+                currentSize += Block.calculateSingleTransactionSize(transactions.get(pos));
+                transactions.remove(pos);
+                timeStamps.remove(pos);
+            }
+        }
+
+        while(currentSize < limit){
             /*Get interest info with highest score*/
             /*First sort interests of same transaction attribute*/
             InterestInfo mostPopular = null;
