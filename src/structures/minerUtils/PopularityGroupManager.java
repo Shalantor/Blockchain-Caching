@@ -35,6 +35,9 @@ public class PopularityGroupManager extends GroupManager{
     /*time stamps of transactions*/
     ArrayList<Long> timeStamps;
 
+    /*Transaction size approximation*/
+    private long singleTransactionSize;
+
     public PopularityGroupManager(String interestFilePath){
         timeStamps = new ArrayList<>();
         interestInfo = new HashMap<>();
@@ -162,7 +165,13 @@ public class PopularityGroupManager extends GroupManager{
         /*timestamp*/
         timeStamps.add(System.currentTimeMillis());
 
-        size += Block.calculateSingleTransactionSize(transaction);
+        long calculateSize = Block.calculateSingleTransactionSize(transaction);
+        size += calculateSize;
+
+        /*Approximate single transaction size*/
+        if(calculateSize > singleTransactionSize){
+            singleTransactionSize = calculateSize;
+        }
 
         /*count transactions*/
         countTransactions(transaction,transactions.size());
@@ -256,7 +265,12 @@ public class PopularityGroupManager extends GroupManager{
     public boolean canCreateBlock(long size,long minSize,long maxSize){
         minBlockSize = minSize;
         maxBlockSize = maxSize;
-        return size >= (minSize * 1.5f);
+        long diff = (maxBlockSize - minBlockSize)/2;
+
+        /*TODO: test different values for the below one*/
+        /*So if min = 1000, max = 2000, we start when size = 3000 */
+        /*TODO: incorporate time calculation for old transactions*/
+        return size >= 2*(minSize + diff);
     }
 
     /*Print everyone and everything*/
