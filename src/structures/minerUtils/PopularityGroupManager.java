@@ -38,6 +38,7 @@ public class PopularityGroupManager extends GroupManager{
 
     /*parameter to ignore min block size*/
     private boolean ignoreMinSize = false;
+    private long transactionsSize;
 
     /*time stamps of transactions*/
     ArrayList<Long> timeStamps;
@@ -184,6 +185,7 @@ public class PopularityGroupManager extends GroupManager{
         /*count transactions*/
         countTransactions(transaction,transactions.size());
 
+        transactionsSize = size;
         return size;
     }
 
@@ -216,8 +218,12 @@ public class PopularityGroupManager extends GroupManager{
         }
 
         /*Check for minimum block*/
-        if(currentSize >= minBlockSize){
+        if(currentSize >= minBlockSize && !ignoreMinSize){
             /*make it greater than limit*/
+            currentSize = limit + 1;
+        }
+
+        if(transactionsSize <= minBlockSize && ignoreMinSize){
             currentSize = limit + 1;
         }
 
@@ -347,6 +353,7 @@ public class PopularityGroupManager extends GroupManager{
         }
 
         /*time check*/
+        /*TODO: Consider this in generate block method*/
         if(timeStamps.size() > 0){
             if(System.currentTimeMillis() - timeStamps.get(0) > lastTimeLimit){
                 ignoreMinSize = true;
