@@ -310,8 +310,17 @@ public class PopularityGroupManager extends GroupManager{
                 resetIndices(transactions);
             }
 
-            numInterests ++;
+            numInterests++;
+
+            /*After trying for all values greater than limit, we can se limit to minblocksize*/
+            if(numInterests == interestInfo.keySet().size()){
+                alreadyChecked.clear();
+                limit = minBlockSize;
+            }
         }
+
+        /*reset*/
+        resetIndices(transactions);
 
         Block b = new Block(0,"example",new ArrayList<>(chosenTransactions));
 
