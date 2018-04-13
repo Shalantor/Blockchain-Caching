@@ -32,6 +32,13 @@ public class PopularityGroupManager extends GroupManager{
     private long maxBlockSize;
     private long timeLimit;
 
+    /*Absolute time limit for a transaction to be pending*/
+    /*This should be really large because we may have to violate the min block size*/
+    private long lastTimeLimit;
+
+    /*parameter to ignore min block size*/
+    private boolean ignoreMinSize = false;
+
     /*time stamps of transactions*/
     ArrayList<Long> timeStamps;
 
@@ -45,6 +52,7 @@ public class PopularityGroupManager extends GroupManager{
 
         /*TODO: CHANGE HARDCODE, BEST WOULD BE TO READ FROM FILE*/
         timeLimit = 10000;
+        lastTimeLimit = 20000;
         /*Open and read from config file*/
         try(BufferedReader br = new BufferedReader(new FileReader(interestFilePath))) {
             String line,key,value;
@@ -322,7 +330,7 @@ public class PopularityGroupManager extends GroupManager{
         /*reset*/
         resetIndices(transactions);
 
-        Block b = new Block(0,"example",new ArrayList<>(chosenTransactions));
+        Block b = new Block(lastBlock.index + 1,lastBlock.getHeaderAsString(),new ArrayList<>(chosenTransactions));
 
         return b;
     }
@@ -334,8 +342,19 @@ public class PopularityGroupManager extends GroupManager{
 
         /*TODO: test different values for the below one*/
         /*So if min = 1000, max = 2000, we start when size = 3000 */
-        /*TODO: incorporate time calculation for old transactions*/
-        return size >= 2*(minSize + diff);
+        if( size >= 2*(minSize + diff)){
+            return true;
+        }
+
+        /*time check*/
+        if(timeStamps.size() > 0){
+            if(System.currentTimeMillis() - timeStamps.get(0) > lastTimeLimit){
+                ignoreMinSize = true;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /*Print everyone and everything*/
