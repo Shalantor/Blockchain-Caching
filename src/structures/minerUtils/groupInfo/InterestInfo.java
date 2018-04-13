@@ -87,6 +87,10 @@ public class InterestInfo implements Comparable<InterestInfo> {
         this.indices = indices;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public int compareTo(InterestInfo info){
         return count - info.count;
