@@ -61,7 +61,7 @@ public class BasicTestModule {
                 transactions.add(tr);
             }
 
-            for(int i = 0; i < 1;i++){
+            for(int i = 0; i < 6;i++){
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node21");
                 tr.put("receiver","node17");
@@ -80,8 +80,7 @@ public class BasicTestModule {
                 }
             }
 
-            //minerNode.groupManager.resetIndices(transactions);
-            minerNode.groupManager.printInfo();
+            //minerNode.groupManager.printInfo();
         }
     }
 }

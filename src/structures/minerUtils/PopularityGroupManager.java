@@ -275,7 +275,6 @@ public class PopularityGroupManager extends GroupManager{
             }
 
             alreadyChecked.add(nameOfBest);
-            System.out.println(alreadyChecked);
             /*Now check size of chosen transactions*/
             ArrayList<Integer> indices = mostPopular.getIndices();
             int stop = -1;
@@ -292,17 +291,20 @@ public class PopularityGroupManager extends GroupManager{
             /*Enough space?*/
             if(currentSize + thisLoopSize <= maxBlockSize){
                 currentSize += thisLoopSize;
-                for(int index = indices.size() - 1; index > stop+1; index--) {
+                for(int i = indices.size() - 1; i > stop+1; i--) {
+                    int index = indices.get(i);
                     chosenTransactions.add(transactions.get(index));
                     transactions.remove(index);
                     timeStamps.remove(index);
                 }
+                resetIndices(transactions);
             }
             /*One interest has more than max block size transactions*/
             else if(currentSize + thisLoopSize > maxBlockSize){
                 /*In this case */
                 if(numInterests == 0){
-                    for(int index = indices.size() - 1; index > stop+1; index--) {
+                    for(int i = indices.size() - 1; i > stop+1; i--) {
+                        int index = indices.get(i);
                         chosenTransactions.add(transactions.get(index));
                         transactions.remove(index);
                         timeStamps.remove(index);
@@ -319,10 +321,6 @@ public class PopularityGroupManager extends GroupManager{
             /*Enough transactions?*/
             if(currentSize >= limit){
                 break;
-            }
-            else{
-                /*count left over transactions*/
-                resetIndices(transactions);
             }
 
             numInterests++;
