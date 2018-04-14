@@ -229,15 +229,14 @@ public class PopularityGroupManager extends GroupManager{
 
         /*Now the other transactions*/
         int numInterests = 0;
+        /*already checked KEYS ()*/
+        ArrayList<String> alreadyChecked = new ArrayList<>();
         while(currentSize < limit){
             /*Get interest info with highest score*/
             /*First sort interests of same transaction attribute*/
             int thisLoopSize = 0;
             InterestInfo mostPopular = null;
             int howManyValues = 0;
-
-            /*already checked KEYS ()*/
-            ArrayList<String> alreadyChecked = new ArrayList<>();
 
             /*name of key*/
             String nameOfBest = null;
@@ -275,6 +274,7 @@ public class PopularityGroupManager extends GroupManager{
             }
 
             alreadyChecked.add(nameOfBest);
+            System.out.println(nameOfBest);
             /*Now check size of chosen transactions*/
             ArrayList<Integer> indices = mostPopular.getIndices();
             int stop = -1;
@@ -298,7 +298,6 @@ public class PopularityGroupManager extends GroupManager{
                     timeStamps.remove(index);
                 }
                 resetIndices(transactions);
-                System.out.println("Gumo gumo noo");
             }
             /*One interest has more than max block size transactions*/
             else if(currentSize + thisLoopSize > maxBlockSize){
@@ -315,6 +314,11 @@ public class PopularityGroupManager extends GroupManager{
                 else{ /*This case the transactions added make the block too large*/
                     numInterests++;
                     resetIndices(transactions);
+                    /*After trying for all values greater than limit, we can se limit to minblocksize*/
+                    if(numInterests == interestInfo.keySet().size()){
+                        alreadyChecked.clear();
+                        limit = minBlockSize;
+                    }
                     continue;
                 }
             }
@@ -347,6 +351,8 @@ public class PopularityGroupManager extends GroupManager{
         long diff = (maxBlockSize - minBlockSize)/2;
 
         /*TODO: test different values for the below one*/
+        //System.out.println("SIZE IS " + size);
+        //System.out.println("DIFF SIZE IS " + 2*(minSize + diff));
         /*So if min = 1000, max = 2000, we start when size = 3000 */
         if( size >= 2*(minSize + diff)){
             return true;
