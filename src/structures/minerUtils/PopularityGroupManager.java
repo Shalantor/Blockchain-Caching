@@ -231,6 +231,8 @@ public class PopularityGroupManager extends GroupManager{
         int numInterests = 0;
         /*already checked KEYS ()*/
         ArrayList<String> alreadyChecked = new ArrayList<>();
+        /*Need split*/
+        boolean needSplit = false;
         while(currentSize < limit){
             /*Get interest info with highest score*/
             /*First sort interests of same transaction attribute*/
@@ -274,7 +276,11 @@ public class PopularityGroupManager extends GroupManager{
             }
 
             alreadyChecked.add(nameOfBest);
-            System.out.println(nameOfBest);
+            if(mostPopular == null){
+                alreadyChecked.clear();
+                needSplit = true;
+                continue;
+            }
             /*Now check size of chosen transactions*/
             ArrayList<Integer> indices = mostPopular.getIndices();
             int stop = -1;
@@ -318,6 +324,16 @@ public class PopularityGroupManager extends GroupManager{
                     if(numInterests == interestInfo.keySet().size()){
                         alreadyChecked.clear();
                         limit = minBlockSize;
+                    }
+                    else if(needSplit){
+                        for(int i = indices.size() - 1; i > stop+1; i--) {
+                            int index = indices.get(i);
+                            chosenTransactions.add(transactions.get(index));
+                            transactions.remove(index);
+                            timeStamps.remove(index);
+                        }
+                        resetIndices(transactions);
+                        break;
                     }
                     continue;
                 }

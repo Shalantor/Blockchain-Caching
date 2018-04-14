@@ -37,27 +37,39 @@ public class BasicTestModule {
 
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
-            for(int i = 0; i < 14;i++){
+            for(int i = 0; i < 10;i++){
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node1");
                 tr.put("receiver","node2");
                 tr.put("category","sports");
-                tr.put("price",1000.0);
-                tr.put("count",80);
+                tr.put("price",3500.0);
+                tr.put("count",60);
                 tr.put("origin","europe");
-                tr.put("fee",17.0);
+                tr.put("fee",12.0);
                 transactions.add(tr);
             }
 
-            for(int i = 0; i < 14;i++){
+            for(int i = 0; i < 9;i++){
+                HashMap<String,Object> tr = new HashMap<>();
+                tr.put("sender","node65");
+                tr.put("receiver","node42");
+                tr.put("category","toys");
+                tr.put("price",3500.0);
+                tr.put("count",60);
+                tr.put("origin","north_america");
+                tr.put("fee",12.0);
+                transactions.add(tr);
+            }
+
+            for(int i = 0; i < 9;i++){
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node78");
                 tr.put("receiver","node22");
                 tr.put("category","gaming");
                 tr.put("price",3500.0);
-                tr.put("count",50);
+                tr.put("count",60);
                 tr.put("origin","asia");
-                tr.put("fee",5.0);
+                tr.put("fee",12.0);
                 transactions.add(tr);
             }
 
