@@ -7,6 +7,8 @@ import java.util.HashMap;
 
 public class GroupManager {
 
+    private Block lastBlock = null;
+
     public GroupManager(){
 
     }
@@ -26,6 +28,7 @@ public class GroupManager {
     public Block generateNewBlock(ArrayList<HashMap<String,Object>> transactions,Block lastBlock){
         Block block = new Block(lastBlock.index + 1,
                 lastBlock.getHeaderAsString(),new ArrayList<>(transactions));
+        this.lastBlock = block;
         transactions.clear();
         return block;
     }
@@ -36,6 +39,10 @@ public class GroupManager {
 
     public void resetIndices(ArrayList<HashMap<String,Object>> transactions){
 
+    }
+
+    public long getNewSize(ArrayList<HashMap<String,Object>> transactions){
+        return lastBlock.getHeaderSize();
     }
 
 }

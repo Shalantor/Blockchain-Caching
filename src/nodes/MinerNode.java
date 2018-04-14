@@ -48,7 +48,7 @@ public class MinerNode extends Node{
     * hashmap with names and names and the values of some fields. We want many of them.
     * So we need a list of lists of those transactions*/
     /*For now no grouping*/
-    ArrayList<HashMap<String,Object>> pendingTransactions = new ArrayList<>();
+    public ArrayList<HashMap<String,Object>> pendingTransactions = new ArrayList<>();
 
 
     public MinerNode(Block block,String configFilePath,String interestPath,int port,int timeOut,String host) {
@@ -138,7 +138,7 @@ public class MinerNode extends Node{
         /*Generate new block*/
 
         Block block = groupManager.generateNewBlock(pendingTransactions,lastBlock);
-        sizeInBytes = lastBlock.getHeaderSize();
+        sizeInBytes = groupManager.getNewSize(pendingTransactions);
 
         JSONObject jsonObject = createNewBlockMessage(block);
 
@@ -162,7 +162,8 @@ public class MinerNode extends Node{
         sizeInBytes = groupManager.addTransaction(transaction,pendingTransactions, sizeInBytes);
         if(groupManager.canCreateBlock(sizeInBytes,minBlockSize,maxBlockSize)){
             lastBlock = groupManager.generateNewBlock(pendingTransactions,lastBlock);
-            sizeInBytes = lastBlock.getHeaderSize();
+            sizeInBytes = groupManager.getNewSize(pendingTransactions);
+            //System.out.println("TRANSACTIONS IN MINER ARE SIZE " + pendingTransactions.size());
             return lastBlock;
         }
         return null;

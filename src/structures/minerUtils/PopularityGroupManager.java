@@ -46,6 +46,9 @@ public class PopularityGroupManager extends GroupManager{
     /*Transaction size approximation*/
     private long singleTransactionSize;
 
+    /*latest block*/
+    private Block lastBlock;
+
     public PopularityGroupManager(String interestFilePath){
         timeStamps = new ArrayList<>();
         interestInfo = new HashMap<>();
@@ -186,12 +189,14 @@ public class PopularityGroupManager extends GroupManager{
         countTransactions(transaction,transactions.size());
 
         transactionsSize = size;
+        //System.out.println("Transactions in add are " + transactions.size());
         return size;
     }
 
     @Override
     public Block generateNewBlock(ArrayList<HashMap<String,Object>> transactions,Block lastBlock){
 
+        //System.out.println("TRANSACTIONS AT START ARE " + transactions.size());
         /*Store transactions we want*/
         ArrayList<HashMap<String,Object>> chosenTransactions = new ArrayList<>();
         long currentSize = 0;
@@ -320,6 +325,9 @@ public class PopularityGroupManager extends GroupManager{
                 }
             }
 
+            //System.out.println("INDICES SIZE IS " + indices.size());
+            //System.out.print("SIZE OF TRANSACTIONS IS " + (currentSize + thisLoopSize));
+            //System.out.println(" WITH LIMIT " + limit);
             /*Enough space?*/
             if(currentSize + thisLoopSize <= maxBlockSize){
                 currentSize += thisLoopSize;
@@ -359,6 +367,7 @@ public class PopularityGroupManager extends GroupManager{
                             timeStamps.remove(index);
                         }
                         resetIndices(transactions);
+                        //System.out.println("IM HERE NOW WITH SPLIT " + currentSize);
                         break;
                     }
                     continue;
@@ -367,6 +376,7 @@ public class PopularityGroupManager extends GroupManager{
 
             /*Enough transactions?*/
             if(currentSize >= limit){
+                //System.out.println("IM HERE NOW WITH CURRENT_SIZE " + currentSize);
                 break;
             }
 
@@ -382,8 +392,10 @@ public class PopularityGroupManager extends GroupManager{
         /*reset*/
         resetIndices(transactions);
 
-        System.out.println(nameOfBest);
+        //System.out.println("TRANSACTIONS IN MANAGER IS SIZE " + transactions.size());
+        //System.out.println("CHOSEN TRANSACTIONS SIZE IS " + chosenTransactions.size());
         Block b = new Block(lastBlock.index + 1,lastBlock.getHeaderAsString(),new ArrayList<>(chosenTransactions));
+        this.lastBlock = b;
 
         return b;
     }
@@ -524,4 +536,11 @@ public class PopularityGroupManager extends GroupManager{
         }
     }
 
+    public long getNewSize(ArrayList<HashMap<String,Object>> transactions){
+        long size = lastBlock.getHeaderSize();
+        for(HashMap<String,Object> tr : transactions){
+            size += Block.calculateSingleTransactionSize(tr);
+        }
+        return size;
+    }
 }

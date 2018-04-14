@@ -61,7 +61,7 @@ public class BasicTestModule {
                 transactions.add(tr);
             }
 
-            for(int i = 0; i < 9;i++){
+            for(int i = 0; i < 15;i++){
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node78");
                 tr.put("receiver","node22");
@@ -76,10 +76,12 @@ public class BasicTestModule {
             for(HashMap<String,Object> t : transactions){
                 block = minerNode.addTransactionLocal(t);
                 if(block != null){
-                    System.out.println(block);
+                    //System.out.println(block);
                 }
             }
 
+            //System.out.println("transactions all are size " + transactions.size());
+            //System.out.println("Remaining transactions in miner are " + minerNode.pendingTransactions.size());
             //minerNode.groupManager.printInfo();
         }
     }
