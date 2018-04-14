@@ -291,13 +291,14 @@ public class PopularityGroupManager extends GroupManager{
             /*Enough space?*/
             if(currentSize + thisLoopSize <= maxBlockSize){
                 currentSize += thisLoopSize;
-                for(int i = indices.size() - 1; i > stop+1; i--) {
+                for(int i = indices.size() - 1; i >= 0; i--) {
                     int index = indices.get(i);
                     chosenTransactions.add(transactions.get(index));
                     transactions.remove(index);
                     timeStamps.remove(index);
                 }
                 resetIndices(transactions);
+                System.out.println("Gumo gumo noo");
             }
             /*One interest has more than max block size transactions*/
             else if(currentSize + thisLoopSize > maxBlockSize){
