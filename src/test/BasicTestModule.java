@@ -37,7 +37,7 @@ public class BasicTestModule {
 
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
-            for(int i = 0; i < 50;i++){
+            for(int i = 0; i < 12;i++){
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node1");
                 tr.put("receiver","node2");
@@ -49,6 +49,30 @@ public class BasicTestModule {
                 transactions.add(tr);
             }
 
+            for(int i = 0; i < 15;i++){
+                HashMap<String,Object> tr = new HashMap<>();
+                tr.put("sender","node78");
+                tr.put("receiver","node22");
+                tr.put("category","gaming");
+                tr.put("price",3500.0);
+                tr.put("count",50);
+                tr.put("origin","asia");
+                tr.put("fee",5.0);
+                transactions.add(tr);
+            }
+
+            for(int i = 0; i < 1;i++){
+                HashMap<String,Object> tr = new HashMap<>();
+                tr.put("sender","node21");
+                tr.put("receiver","node17");
+                tr.put("category","toys");
+                tr.put("price",500.0);
+                tr.put("count",23);
+                tr.put("origin","australia");
+                tr.put("fee",10.0);
+                transactions.add(tr);
+            }
+
             for(HashMap<String,Object> t : transactions){
                 block = minerNode.addTransactionLocal(t);
                 if(block != null){
@@ -56,7 +80,8 @@ public class BasicTestModule {
                 }
             }
 
-            //minerNode.groupManager.printInfo();
+            //minerNode.groupManager.resetIndices(transactions);
+            minerNode.groupManager.printInfo();
         }
     }
 }

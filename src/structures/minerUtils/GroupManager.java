@@ -34,4 +34,8 @@ public class GroupManager {
 
     }
 
+    public void resetIndices(ArrayList<HashMap<String,Object>> transactions){
+
+    }
+
 }

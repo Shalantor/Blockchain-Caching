@@ -275,6 +275,7 @@ public class PopularityGroupManager extends GroupManager{
             }
 
             alreadyChecked.add(nameOfBest);
+            System.out.println(alreadyChecked);
             /*Now check size of chosen transactions*/
             ArrayList<Integer> indices = mostPopular.getIndices();
             int stop = -1;
@@ -385,11 +386,14 @@ public class PopularityGroupManager extends GroupManager{
             for(Map.Entry entry : infoMap.entrySet()){
                 InterestInfo info = (InterestInfo) entry.getValue();
                 info.setIndices(new ArrayList<>());
+                info.setCount(0);
             }
         }
 
+        int i = 1;
         for(HashMap<String,Object> transaction : transactions){
-            countTransactions(transaction,transaction.size());
+            countTransactions(transaction,i);
+            i++;
         }
 
     }
