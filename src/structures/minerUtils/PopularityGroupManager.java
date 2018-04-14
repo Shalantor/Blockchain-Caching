@@ -232,6 +232,8 @@ public class PopularityGroupManager extends GroupManager{
         /*already checked KEYS ()*/
         ArrayList<String> alreadyChecked = new ArrayList<>();
         /*Need split*/
+        String nameOfBest = "";
+        /*TODO:Numeric values are dominating, need to fix that with other algorithm*/
         boolean needSplit = false;
         while(currentSize < limit){
             /*Get interest info with highest score*/
@@ -241,7 +243,7 @@ public class PopularityGroupManager extends GroupManager{
             int howManyValues = 0;
 
             /*name of key*/
-            String nameOfBest = null;
+            nameOfBest = null;
             for(Map.Entry e : interestInfo.entrySet()){
 
                 /*Already checked this one so go to next*/
@@ -263,14 +265,38 @@ public class PopularityGroupManager extends GroupManager{
                     nameOfBest = e.getKey().toString();
                 }
                 else{
-                    float diff = (list.size() * 1.0F) / howManyValues;
+                    float diff = 1.0F;
+                    float curr;
+                    float popular;
                     InterestInfo current = list.get(list.size()-1);
 
-                    if( (current.getCount() * 1.0F) > (diff * mostPopular.getCount()) ){
-                        mostPopular = current;
-                        howManyValues = list.size();
-                        nameOfBest = e.getKey().toString();
+                    /*TODO:check this*/
+                    /*One of them not strings*/
+                    if(!mostPopular.getType().equals(STRING) || !current.getType().equals(STRING)){
+                        if(list.size() > howManyValues){
+                            diff = (list.size() * 1.0F) / howManyValues;
+                            curr = diff * current.getCount();
+                            popular = 1.0F * howManyValues;
+                        }
+                        else{
+                            diff = (howManyValues * 1.0F) / list.size();
+                            curr = 1.0F * current.getCount();
+                            popular = diff * howManyValues;
+                        }
+                        if( curr > popular ){
+                            mostPopular = current;
+                            howManyValues = list.size();
+                            nameOfBest = e.getKey().toString();
+                        }
                     }
+                    else{
+                        if(current.getCount() > mostPopular.getCount()){
+                            mostPopular = current;
+                            howManyValues = list.size();
+                            nameOfBest = e.getKey().toString();
+                        }
+                    }
+
                 }
 
             }
@@ -356,6 +382,7 @@ public class PopularityGroupManager extends GroupManager{
         /*reset*/
         resetIndices(transactions);
 
+        System.out.println(nameOfBest);
         Block b = new Block(lastBlock.index + 1,lastBlock.getHeaderAsString(),new ArrayList<>(chosenTransactions));
 
         return b;
