@@ -291,7 +291,7 @@ public class PopularityGroupManager extends GroupManager{
             /*Enough space?*/
             if(currentSize + thisLoopSize <= maxBlockSize){
                 currentSize += thisLoopSize;
-                for(int index = indices.size() - 1; index > stop; index--) {
+                for(int index = indices.size() - 1; index > stop+1; index--) {
                     chosenTransactions.add(transactions.get(index));
                     transactions.remove(index);
                     timeStamps.remove(index);
@@ -301,7 +301,7 @@ public class PopularityGroupManager extends GroupManager{
             else if(currentSize + thisLoopSize > maxBlockSize){
                 /*In this case */
                 if(numInterests == 0){
-                    for(int index = indices.size() - 1; index > stop; index--) {
+                    for(int index = indices.size() - 1; index > stop+1; index--) {
                         chosenTransactions.add(transactions.get(index));
                         transactions.remove(index);
                         timeStamps.remove(index);
@@ -353,7 +353,6 @@ public class PopularityGroupManager extends GroupManager{
         }
 
         /*time check*/
-        /*TODO: Consider this in generate block method*/
         if(timeStamps.size() > 0){
             if(System.currentTimeMillis() - timeStamps.get(0) > lastTimeLimit){
                 ignoreMinSize = true;

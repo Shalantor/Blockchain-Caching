@@ -37,7 +37,7 @@ public class BasicTestModule {
 
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
-            for(int i = 0; i < 16;i++){
+            for(int i = 0; i < 50;i++){
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node1");
                 tr.put("receiver","node2");
@@ -51,6 +51,9 @@ public class BasicTestModule {
 
             for(HashMap<String,Object> t : transactions){
                 block = minerNode.addTransactionLocal(t);
+                if(block != null){
+                    System.out.println(block);
+                }
             }
 
             //minerNode.groupManager.printInfo();
