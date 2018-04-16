@@ -24,7 +24,7 @@ public class LocalTestModule {
         Block block;
         HashMap<String,Object> transaction;
         Node[] nodes = testUtilities.nodes;
-        for(int i =0; i < 100; i++){
+        for(int i =0; i < 5; i++){
             while(true) {
                 /*Add transactions until enough for block*/
                 transaction = testUtilities.getTransactionNormal();
@@ -46,14 +46,14 @@ public class LocalTestModule {
 
         }
 
-        for(Node n : nodes){
+        /*for(Node n : nodes){
             if(n instanceof NormalNode){
                 System.out.println(((NormalNode) n).blocksInCache.size());
             }
             else if(n instanceof LightNode){
                 System.out.println(((LightNode) n).blocksInCache.size());
             }
-        }
+        }*/
 
     }
 

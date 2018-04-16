@@ -22,8 +22,8 @@ public class InterestInfo implements Comparable<InterestInfo> {
     /*Further info for numeric interests*/
     private String comparison; /*greater or lower*/
     private Object value;      /*A numeric value*/
-    private Object min;
-    private Object max;
+    private Object min = 0;
+    private Object max = 0;
     private int breakpoints;
 
     public InterestInfo(boolean isRange,String type,String name){
@@ -99,5 +99,51 @@ public class InterestInfo implements Comparable<InterestInfo> {
     @Override
     public String toString(){
         return name + " : " + count;
+    }
+
+    public int intervalMultiplier(){
+        if(type.equals(DOUBLE)){
+            Double tempMin =(Double) min;
+            Double tempMax =(Double) max;
+            Double tempValue = (Double) value;
+            Double rangeValue = (tempMax - tempMin) / breakpoints;
+            Double diff;
+            if(comparison.equals(GREATER)){
+                diff = tempMax - tempValue;
+            }
+            else{
+                diff = tempValue - tempMin;
+            }
+            return (int)Math.round(diff / rangeValue);
+        }
+        else if(type.equals(LONG)){
+            Long tempMin =(Long) min;
+            Long tempMax =(Long) max;
+            Long tempValue = (Long) value;
+            Long rangeValue = (tempMax - tempMin) / breakpoints;
+            Long diff;
+            if(comparison.equals(GREATER)){
+                diff = tempMax - tempValue;
+            }
+            else{
+                diff = tempValue - tempMin;
+            }
+            return Math.round(diff / rangeValue);
+        }
+        else if(type.equals(INTEGER)){
+            Integer tempMin =(Integer) min;
+            Integer tempMax =(Integer) max;
+            Integer tempValue = (Integer) value;
+            Integer rangeValue = (tempMax - tempMin) / breakpoints;
+            Integer diff;
+            if(comparison.equals(GREATER)){
+                diff = tempMax - tempValue;
+            }
+            else{
+                diff = tempValue - tempMin;
+            }
+            return Math.round(diff / rangeValue);
+        }
+        return 1;
     }
 }
