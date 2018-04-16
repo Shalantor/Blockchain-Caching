@@ -238,17 +238,18 @@ public class PopularityGroupManager extends GroupManager{
         ArrayList<String> alreadyChecked = new ArrayList<>();
         /*Need split*/
         String nameOfBest = "";
+        InterestInfo mostPopular = null;
         /*TODO:Numeric values are dominating, need to fix that with other algorithm*/
         boolean needSplit = false;
         while(currentSize < limit){
             /*Get interest info with highest score*/
             /*First sort interests of same transaction attribute*/
             int thisLoopSize = 0;
-            InterestInfo mostPopular = null;
             int howManyValues = 0;
 
             /*name of key*/
             nameOfBest = null;
+            mostPopular = null;
             for(Map.Entry e : interestInfo.entrySet()){
 
                 /*Already checked this one so go to next*/
@@ -256,6 +257,7 @@ public class PopularityGroupManager extends GroupManager{
                     continue;
                 }
 
+                /*Same interests*/
                 HashMap<String,InterestInfo> infoMap = interestInfo.get(e.getKey());
                 ArrayList<InterestInfo> list = new ArrayList<>();
                 for(String key : infoMap.keySet()){
@@ -266,7 +268,7 @@ public class PopularityGroupManager extends GroupManager{
                 /*Save best, so most popular*/
                 if(mostPopular == null){
                     mostPopular = list.get(list.size()-1);
-                    howManyValues = list.size();
+                    howManyValues = list.size() / mostPopular.intervalMultiplier();
                     nameOfBest = e.getKey().toString();
                 }
                 else{
@@ -279,18 +281,19 @@ public class PopularityGroupManager extends GroupManager{
                     /*One of them not strings*/
                     if(!mostPopular.getType().equals(STRING) || !current.getType().equals(STRING)){
                         if(list.size() > howManyValues){
-                            diff = (list.size() * 1.0F) / howManyValues;
+                            diff = (list.size() * 1.0F / current.intervalMultiplier()) / howManyValues;
                             curr = diff * current.getCount();
                             popular = 1.0F * howManyValues;
                         }
                         else{
-                            diff = (howManyValues * 1.0F) / list.size();
+                            diff = (howManyValues * 1.0F) / (list.size()/ current.intervalMultiplier());
                             curr = 1.0F * current.getCount();
                             popular = diff * howManyValues;
                         }
+
                         if( curr > popular ){
                             mostPopular = current;
-                            howManyValues = list.size();
+                            howManyValues = list.size() / mostPopular.intervalMultiplier();
                             nameOfBest = e.getKey().toString();
                         }
                     }
@@ -325,11 +328,8 @@ public class PopularityGroupManager extends GroupManager{
                 }
             }
 
-            //System.out.println("INDICES SIZE IS " + indices.size());
-            //System.out.print("SIZE OF TRANSACTIONS IS " + (currentSize + thisLoopSize));
-            //System.out.println(" WITH LIMIT " + limit);
             /*Enough space?*/
-            if(currentSize + thisLoopSize <= maxBlockSize){
+            if(currentSize + thisLoopSize <= maxBlockSize && currentSize + thisLoopSize >= limit){
                 currentSize += thisLoopSize;
                 for(int i = indices.size() - 1; i >= 0; i--) {
                     int index = indices.get(i);
@@ -338,6 +338,7 @@ public class PopularityGroupManager extends GroupManager{
                     timeStamps.remove(index);
                 }
                 resetIndices(transactions);
+                continue;
             }
             /*One interest has more than max block size transactions*/
             else if(currentSize + thisLoopSize > maxBlockSize){
@@ -354,7 +355,7 @@ public class PopularityGroupManager extends GroupManager{
                 else{ /*This case the transactions added make the block too large*/
                     numInterests++;
                     resetIndices(transactions);
-                    /*After trying for all values greater than limit, we can se limit to minblocksize*/
+                    /*After trying for all values greater than limit, we set limit to minblocksize*/
                     if(numInterests == interestInfo.keySet().size()){
                         alreadyChecked.clear();
                         limit = minBlockSize;
@@ -367,7 +368,6 @@ public class PopularityGroupManager extends GroupManager{
                             timeStamps.remove(index);
                         }
                         resetIndices(transactions);
-                        //System.out.println("IM HERE NOW WITH SPLIT " + currentSize);
                         break;
                     }
                     continue;
@@ -391,10 +391,14 @@ public class PopularityGroupManager extends GroupManager{
 
         /*reset*/
         resetIndices(transactions);
-
-        //System.out.println("TRANSACTIONS IN MANAGER IS SIZE " + transactions.size());
-        //System.out.println("CHOSEN TRANSACTIONS SIZE IS " + chosenTransactions.size());
+        System.out.print(nameOfBest + "  ");
+        System.out.print(mostPopular.getCount());
+        System.out.println("  " + mostPopular.getName());
         Block b = new Block(lastBlock.index + 1,lastBlock.getHeaderAsString(),new ArrayList<>(chosenTransactions));
+
+        //for(HashMap<String,Object> tr : chosenTransactions){
+          //  System.out.println(tr);
+        //}
         this.lastBlock = b;
 
         return b;
