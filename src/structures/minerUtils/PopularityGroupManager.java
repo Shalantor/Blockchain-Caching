@@ -266,7 +266,7 @@ public class PopularityGroupManager extends GroupManager{
                 list.sort(InterestInfo::compareTo);
 
                 /*Save best, so most popular*/
-                if(mostPopular == null){
+                if(mostPopular == null && !list.get(list.size()-1).isRange()){
                     mostPopular = list.get(list.size()-1);
                     howManyValues = list.size() / mostPopular.intervalMultiplier();
                     nameOfBest = e.getKey().toString();
@@ -279,10 +279,10 @@ public class PopularityGroupManager extends GroupManager{
 
                     if(current.getType().equals(STRING) && current.isRange()){
                         /*TODO: Change hardcode. Best would be to have a aproximation
-                        * of a size of a trannsaction*/
+                        * of a size of a transaction*/
+                        //System.out.println("IS RANGE " + e.getKey().toString());
                         if(current.getCount() >= 5){
                             mostPopular = list.get(list.size()-1);
-                            howManyValues = list.size() / mostPopular.intervalMultiplier();
                             nameOfBest = e.getKey().toString();
                             break;
                         }
@@ -304,6 +304,9 @@ public class PopularityGroupManager extends GroupManager{
                             curr = 1.0F * current.getCount();
                             popular = diff * howManyValues;
                         }
+
+                        //System.out.println("CURRENT: " + e.getKey().toString() + " " + current.getName() + " SCORE " + curr);
+                        //System.out.println("BEST: " + nameOfBest + " " + mostPopular.getName() + " SCORE " + popular);
 
                         if( curr > popular ){
                             mostPopular = current;
