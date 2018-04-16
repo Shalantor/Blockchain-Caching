@@ -305,8 +305,8 @@ public class PopularityGroupManager extends GroupManager{
                             popular = diff * howManyValues;
                         }
 
-                        //System.out.println("CURRENT: " + e.getKey().toString() + " " + current.getName() + " SCORE " + curr);
-                        //System.out.println("BEST: " + nameOfBest + " " + mostPopular.getName() + " SCORE " + popular);
+                        //System.out.println("CURRENT: " + e.getKey().toString() + " " + current.getName() + " SCORE " + curr + " WITH COUNT " + current.getCount());
+                        //System.out.println("BEST: " + nameOfBest + " " + mostPopular.getName() + " SCORE " + popular + " WITH COUNT " + mostPopular.getCount());
 
                         if( curr > popular ){
                             mostPopular = current;
@@ -323,16 +323,21 @@ public class PopularityGroupManager extends GroupManager{
                     }
 
                 }
+                //System.out.println();
 
             }
 
             alreadyChecked.add(nameOfBest);
+
+            /*We have already tried everything, so now need to split*/
             if(mostPopular == null){
                 alreadyChecked.clear();
                 needSplit = true;
+                //System.out.println("NEED SPLIT");
                 continue;
             }
-            /*Now check size of chosen transactions*/
+
+            /*Check size of chosen transactions*/
             ArrayList<Integer> indices = mostPopular.getIndices();
             int stop = -1;
             for(int index = indices.size() - 1; index >= 0; index--){
@@ -346,7 +351,7 @@ public class PopularityGroupManager extends GroupManager{
             }
 
             /*Enough space?*/
-            if(currentSize + thisLoopSize <= maxBlockSize && currentSize + thisLoopSize >= limit){
+            if(currentSize + thisLoopSize <= maxBlockSize){
                 currentSize += thisLoopSize;
                 for(int i = indices.size() - 1; i >= 0; i--) {
                     int index = indices.get(i);
@@ -355,7 +360,7 @@ public class PopularityGroupManager extends GroupManager{
                     timeStamps.remove(index);
                 }
                 resetIndices(transactions);
-                continue;
+
             }
             /*One interest has more than max block size transactions*/
             else if(currentSize + thisLoopSize > maxBlockSize){
@@ -367,6 +372,7 @@ public class PopularityGroupManager extends GroupManager{
                         transactions.remove(index);
                         timeStamps.remove(index);
                     }
+                    //System.out.println("ONE HAS TOO MANY");
                     break;
                 }
                 else{ /*This case the transactions added make the block too large*/
@@ -403,14 +409,15 @@ public class PopularityGroupManager extends GroupManager{
             if(numInterests == interestInfo.keySet().size()){
                 alreadyChecked.clear();
                 limit = minBlockSize;
+                //System.out.println("CHANGE LIMIT");
             }
         }
 
         /*reset*/
         resetIndices(transactions);
-        System.out.print(nameOfBest + "  ");
-        System.out.print(mostPopular.getCount());
-        System.out.println("  " + mostPopular.getName());
+        //System.out.print(nameOfBest + "  ");
+        //System.out.print(mostPopular.getCount());
+        //System.out.println("  " + mostPopular.getName());
         Block b = new Block(lastBlock.index + 1,lastBlock.getHeaderAsString(),new ArrayList<>(chosenTransactions));
 
         //for(HashMap<String,Object> tr : chosenTransactions){
