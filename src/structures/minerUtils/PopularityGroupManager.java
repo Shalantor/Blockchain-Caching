@@ -277,16 +277,30 @@ public class PopularityGroupManager extends GroupManager{
                     float popular;
                     InterestInfo current = list.get(list.size()-1);
 
+                    if(current.getType().equals(STRING) && current.isRange()){
+                        /*TODO: Change hardcode. Best would be to have a aproximation
+                        * of a size of a trannsaction*/
+                        if(current.getCount() >= 5){
+                            mostPopular = list.get(list.size()-1);
+                            howManyValues = list.size() / mostPopular.intervalMultiplier();
+                            nameOfBest = e.getKey().toString();
+                            break;
+                        }
+                        else{
+                            continue;
+                        }
+                    }
                     /*TODO:check this*/
                     /*One of them not strings*/
                     if(!mostPopular.getType().equals(STRING) || !current.getType().equals(STRING)){
-                        if(list.size() > howManyValues){
-                            diff = (list.size() * 1.0F / current.intervalMultiplier()) / howManyValues;
+                        int listSize = list.size() / current.intervalMultiplier();
+                        if(listSize >= howManyValues){
+                            diff = (listSize * 1.0F) / howManyValues;
                             curr = diff * current.getCount();
                             popular = 1.0F * howManyValues;
                         }
                         else{
-                            diff = (howManyValues * 1.0F) / (list.size()/ current.intervalMultiplier());
+                            diff = (howManyValues * 1.0F) / listSize;
                             curr = 1.0F * current.getCount();
                             popular = diff * howManyValues;
                         }
@@ -300,7 +314,7 @@ public class PopularityGroupManager extends GroupManager{
                     else{
                         if(current.getCount() > mostPopular.getCount()){
                             mostPopular = current;
-                            howManyValues = list.size();
+                            howManyValues = list.size()/ mostPopular.intervalMultiplier();
                             nameOfBest = e.getKey().toString();
                         }
                     }

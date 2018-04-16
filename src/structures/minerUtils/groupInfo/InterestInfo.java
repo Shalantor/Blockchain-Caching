@@ -146,4 +146,8 @@ public class InterestInfo implements Comparable<InterestInfo> {
         }
         return 1;
     }
+
+    public boolean isRange() {
+        return isRange;
+    }
 }
