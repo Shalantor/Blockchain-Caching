@@ -213,6 +213,21 @@ public class Block {
         return 92;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Block block = (Block) o;
+        return index == block.index &&
+                Objects.equals(transactionHash, block.transactionHash);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(index, transactionHash);
+    }
+
     /*Below stuff is for testing*/
     @Override
     public String toString(){
