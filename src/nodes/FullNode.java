@@ -18,8 +18,6 @@ import java.util.List;
 /*Has all the block chain stored*/
 public class FullNode extends Node{
 
-    public List<Block> blockChain = new LinkedList<>();
-
     private static final String NETWORK_TOPOLOGY = "network_topology";
     private static final String MINER_INFO = "miner_node";
     private static final String STORAGE_OPTION = "storage";
@@ -30,7 +28,6 @@ public class FullNode extends Node{
     /*Initialize with genesis block*/
     public FullNode(String configFilePath,Block genesisBlock,int port,int timeOut,String host){
         super(port,timeOut,host);
-        blockChain.add(genesisBlock);
 
         /*Get configurations*/
         try (BufferedReader br = new BufferedReader(new FileReader(configFilePath))) {
@@ -71,28 +68,23 @@ public class FullNode extends Node{
             System.out.println("Io exception occurred");
             ex.printStackTrace();
         }
+
+        /*Genesis block gets added to blockchain*/
+        storageManager.addBlock(genesisBlock);
     }
 
     public void addBlock(Block block){
-        blockChain.add(block);
+        storageManager.addBlock(block);
     }
 
     /*Some node wants separate blocks*/
     public ArrayList<Block> getSeparateBlocks(List<Integer> indexes){
-        ArrayList<Block> blocks = new ArrayList<>();
-        for(Integer index: indexes){
-            blocks.add(blockChain.get(index));
-        }
-        return blocks;
+        return storageManager.getSeparateBlocks(indexes);
     }
 
     /*Some node wants block in intervals*/
     public ArrayList<Block> getBlocksInIntervals(List<Integer> indexes){
-        ArrayList<Block> blocks = new ArrayList<>();
-        for(int i=0; i < indexes.size(); i += 2){
-            blocks.addAll(blockChain.subList(indexes.get(i),indexes.get(i+1)+1 ));
-        }
-        return blocks;
+        return storageManager.getBlocksInIntervals(indexes);
     }
 
     @Override
@@ -131,7 +123,7 @@ public class FullNode extends Node{
         else if((Integer)jsonObject.get("type") == BLOCK_FROM_MINER){
             Block block = new Block((JSONObject) jsonObject.get("block"),this);
             addBlock(block);
-            System.out.println("GOT MESSAGE FROM MINER, my length is " + blockChain.size());
+            //System.out.println("GOT MESSAGE FROM MINER, my length is " + blockChain.size());
         }
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
             System.out.println("FULL NODE PROPAGATE BLOCK");
@@ -140,7 +132,7 @@ public class FullNode extends Node{
     }
 
     public int getSize(){
-        return blockChain.size();
+        return storageManager.getSize();
     }
 
 }
