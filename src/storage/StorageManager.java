@@ -14,7 +14,7 @@ import java.util.List;
 public class StorageManager {
 
     /*hash map with type of transaction attributes*/
-    private HashMap<String,String> types;
+    public HashMap<String,String> types;
 
     public StorageManager(String transactionPath){
         types = new HashMap<>();
