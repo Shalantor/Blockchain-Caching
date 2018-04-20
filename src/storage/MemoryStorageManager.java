@@ -158,7 +158,18 @@ public class MemoryStorageManager extends StorageManager{
                     pos = Math.abs(pos + 1);
                 }
 
-                for(int j = 0; j < pos; j++){
+                int start=0,end=0;
+
+                if(i.numericType == Interest.NUMERIC_GREATER){
+                    start = pos;
+                    end = list.size();
+                }
+                else{
+                    start = 0;
+                    end = pos;
+                }
+
+                for(int j = start; j < end; j++){
                     blocks.add(blockChain.get(list.get(0).blockIndex));
                 }
 
@@ -166,7 +177,7 @@ public class MemoryStorageManager extends StorageManager{
         }
 
         /*Now remove duplicates*/
-        
+
 
         return blocks;
     }
