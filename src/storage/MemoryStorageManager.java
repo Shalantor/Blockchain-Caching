@@ -1,8 +1,10 @@
 package storage;
 
+import storage.storageUtils.BlockExplorer;
 import structures.Block;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MemoryStorageManager extends StorageManager{
@@ -10,11 +12,16 @@ public class MemoryStorageManager extends StorageManager{
     /*List representing the blockchain*/
     private ArrayList<Block> blockChain;
 
-    /**/
+    /*Hashmap that acts as an index. Strings are just key values. Key is the
+    * value for the attribute and key is a list of indices.
+    * For numeric values it is a little more complex. The key is again the attribute value
+    * but the value leads to an array sorted by the values.*/
+    private HashMap<String,ArrayList<BlockExplorer>> blockChainIndex;
 
     public MemoryStorageManager(String transactionPath){
         super(transactionPath);
         blockChain = new ArrayList<>();
+        blockChainIndex = new HashMap<>();
     }
 
     @Override
