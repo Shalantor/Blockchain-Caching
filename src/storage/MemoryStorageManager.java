@@ -4,15 +4,12 @@ import storage.storageUtils.BlockExplorer;
 import structures.Block;
 
 import javax.print.DocFlavor;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MemoryStorageManager extends StorageManager{
 
     /*List representing the blockchain*/
-    private ArrayList<Block> blockChain;
+    private List<Block> blockChain;
     private static final String STRING = "string";
     private static final String DOUBLE = "double";
     private static final String INTEGER = "integer";
@@ -77,6 +74,41 @@ public class MemoryStorageManager extends StorageManager{
                     }
                 }
                 /*Case of numeric variable*/
+                else{
+
+                    /*check which type*/
+                    Object value = null;
+                    if(types.get(key).equals(DOUBLE)){
+                        value = (Double) tr.get(key);
+                    }
+                    else if(types.get(key).equals(LONG)){
+                        value = (Long) tr.get(key);
+                    }
+                    else if(types.get(key).equals(INTEGER)){
+                        value = (Integer) tr.get(key);
+                    }
+
+                    if(blockChainIndex.get(key) == null){
+                        ArrayList<BlockExplorer> list = new ArrayList<>();
+                        list.add(new BlockExplorer(block.index,value));
+                        blockChainIndex.put(key,list);
+                    }
+                    else{
+                        ArrayList<BlockExplorer> list = blockChainIndex.get(key);
+                        BlockExplorer explorer = new BlockExplorer(block.index,value);
+
+                        /*binary search collection*/
+                        int pos = Collections.binarySearch(list,explorer,BlockExplorer::compareTo);
+
+                        /*check result*/
+                        if(pos >= 0){
+                            list.add(pos,explorer);
+                        }
+                        else{
+                            list.add(Math.abs(pos+1),explorer);
+                        }
+                    }
+                }
 
             }
         }
