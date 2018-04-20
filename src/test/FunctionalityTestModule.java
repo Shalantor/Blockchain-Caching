@@ -30,7 +30,7 @@ public class FunctionalityTestModule {
 
 
         /*Create full node, with port 7012*/
-        FullNode fullNode = new FullNode("src/test/resources/node_config.txt",
+        FullNode fullNode = new FullNode("src/test/resources/node_config.txt","src/test/examples/marketplace_example.txt",
                 genesisBlock, STOP,1000,"localhost");
 
         /*create miner node with port 7011*/

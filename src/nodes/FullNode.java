@@ -21,12 +21,16 @@ public class FullNode extends Node{
     private static final String NETWORK_TOPOLOGY = "network_topology";
     private static final String MINER_INFO = "miner_node";
     private static final String STORAGE_OPTION = "storage";
+    private static final String STRING = "string";
+    private static final String DOUBLE = "double";
+    private static final String INTEGER = "integer";
+    private static final String LONG = "long";
 
     /*storage manager*/
     private StorageManager storageManager;
 
     /*Initialize with genesis block*/
-    public FullNode(String configFilePath,Block genesisBlock,int port,int timeOut,String host){
+    public FullNode(String configFilePath,String transactionPath,Block genesisBlock,int port,int timeOut,String host){
         super(port,timeOut,host);
 
         /*Get configurations*/
@@ -57,7 +61,7 @@ public class FullNode extends Node{
                         break;
                     case STORAGE_OPTION:
                         if(Integer.parseInt(value) == 0){
-                            storageManager = new MemoryStorageManager();
+                            storageManager = new MemoryStorageManager(transactionPath);
                         }
                         break;
                 }

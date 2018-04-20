@@ -7,9 +7,13 @@ import java.util.List;
 
 public class MemoryStorageManager extends StorageManager{
 
+    /*List representing the blockchain*/
     private ArrayList<Block> blockChain;
 
-    public MemoryStorageManager(){
+    /**/
+
+    public MemoryStorageManager(String transactionPath){
+        super(transactionPath);
         blockChain = new ArrayList<>();
     }
 
@@ -39,5 +43,10 @@ public class MemoryStorageManager extends StorageManager{
     @Override
     public int getSize(){
         return blockChain.size();
+    }
+
+    @Override
+    public void indexBlock(Block block){
+
     }
 }

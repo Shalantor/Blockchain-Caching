@@ -36,7 +36,7 @@ public class PropagationTestModule {
                              LightNode[] lightNodes,
                              NormalNode[] normalNodes){
         /*Print stats*/
-        System.out.println("Full node blockchain size: " + fullNode.blockChain.size());
+        System.out.println("Full node blockchain size: " + fullNode.getSize());
 
         for(int i=0; i < normalNodes.length; i++){
             System.out.println("Normal node with port " +normalNodes[i].port+" blockchain size: " + normalNodes[i].blocksInCache.size());
