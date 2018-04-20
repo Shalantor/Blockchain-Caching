@@ -5,6 +5,7 @@ package structures;
 import nodes.Node;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import storage.storageUtils.BlockExplorer;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
@@ -13,7 +14,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-public class Block {
+public class Block implements Comparable<Block>{
 
     /*Every block has these fields*/
     /*This is the block header*/
@@ -226,6 +227,11 @@ public class Block {
     public int hashCode() {
 
         return Objects.hash(index, transactionHash);
+    }
+
+    @Override
+    public int compareTo(Block block){
+        return index = block.index;
     }
 
     /*Below stuff is for testing*/

@@ -117,6 +117,7 @@ public class MemoryStorageManager extends StorageManager{
 
     @Override
     public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests){
+
         ArrayList<Block> blocks = new ArrayList<>();
 
         for(Interest i : interests){
@@ -126,7 +127,10 @@ public class MemoryStorageManager extends StorageManager{
                 for(String value : i.interestValues){
                     ArrayList<BlockExplorer> indices = blockChainIndex.get(value);
                     for(BlockExplorer b : indices){
-                        blocks.add(blockChain.get(b.blockIndex));
+                        Block retrievedBlock = blockChain.get(b.blockIndex);
+                        if(!blocks.contains(retrievedBlock)){
+                            blocks.add(blockChain.get(b.blockIndex));
+                        }
                     }
                 }
 
@@ -170,14 +174,17 @@ public class MemoryStorageManager extends StorageManager{
                 }
 
                 for(int j = start; j < end; j++){
-                    blocks.add(blockChain.get(list.get(0).blockIndex));
+                    Block retrievedBlock = blockChain.get(list.get(j).blockIndex);
+                    if(!blocks.contains(retrievedBlock)){
+                        blocks.add(blockChain.get(list.get(j).blockIndex));
+                    }
                 }
 
             }
         }
 
-        /*Now remove duplicates*/
-
+        /*Now sort*/
+        blocks.sort(Block::compareTo);
 
         return blocks;
     }
