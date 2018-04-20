@@ -2,6 +2,8 @@ package nodes;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import storage.MemoryStorageManager;
+import storage.StorageManager;
 import structures.Block;
 
 import java.io.BufferedReader;
@@ -21,6 +23,9 @@ public class FullNode extends Node{
     private static final String NETWORK_TOPOLOGY = "network_topology";
     private static final String MINER_INFO = "miner_node";
     private static final String STORAGE_OPTION = "storage";
+
+    /*storage manager*/
+    private StorageManager storageManager;
 
     /*Initialize with genesis block*/
     public FullNode(String configFilePath,Block genesisBlock,int port,int timeOut,String host){
@@ -54,6 +59,9 @@ public class FullNode extends Node{
                         minerPort = Integer.parseInt(info[2]);
                         break;
                     case STORAGE_OPTION:
+                        if(Integer.parseInt(value) == 0){
+                            storageManager = new MemoryStorageManager();
+                        }
                         break;
                 }
 
