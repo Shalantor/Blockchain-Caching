@@ -131,7 +131,42 @@ public class MemoryStorageManager extends StorageManager{
                 }
 
             }
+            else if(i.type == Interest.NUMERIC_TYPE){
+
+                /*Check type*/
+                Object value = null;
+                String name = i.interestName;
+                if(types.get(name).equals(DOUBLE)){
+                    value = (Double) i.numericValue;
+                }
+                else if(types.get(name).equals(LONG)){
+                    value = (Long) i.numericValue;
+                }
+                else if(types.get(name).equals(INTEGER)){
+                    value = (Integer) i.numericValue;
+                }
+
+                /*Get list of block explorers and create new one to search*/
+                ArrayList<BlockExplorer> list = blockChainIndex.get(name);
+                BlockExplorer explorer = new BlockExplorer(0,value);
+
+                /*Binary search*/
+                int pos = Collections.binarySearch(list,explorer,BlockExplorer::compareTo);
+
+                /*Not found adjust position*/
+                if(pos < 0){
+                    pos = Math.abs(pos + 1);
+                }
+
+                for(int j = 0; j < pos; j++){
+                    blocks.add(blockChain.get(list.get(0).blockIndex));
+                }
+
+            }
         }
+
+        /*Now remove duplicates*/
+        
 
         return blocks;
     }
