@@ -1,6 +1,7 @@
 package storage;
 
 import structures.Block;
+import structures.Interest;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -62,5 +63,9 @@ public class StorageManager {
 
     public void indexBlock(Block block){
 
+    }
+
+    public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests){
+        return null;
     }
 }

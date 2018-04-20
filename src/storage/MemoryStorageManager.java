@@ -2,6 +2,7 @@ package storage;
 
 import storage.storageUtils.BlockExplorer;
 import structures.Block;
+import structures.Interest;
 
 import javax.print.DocFlavor;
 import java.util.*;
@@ -112,5 +113,26 @@ public class MemoryStorageManager extends StorageManager{
 
             }
         }
+    }
+
+    @Override
+    public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests){
+        ArrayList<Block> blocks = new ArrayList<>();
+
+        for(Interest i : interests){
+            if(i.type == Interest.STRING_TYPE){
+
+                /*values that the node is interested in*/
+                for(String value : i.interestValues){
+                    ArrayList<BlockExplorer> indices = blockChainIndex.get(value);
+                    for(BlockExplorer b : indices){
+                        blocks.add(blockChain.get(b.blockIndex));
+                    }
+                }
+
+            }
+        }
+
+        return blocks;
     }
 }

@@ -4,7 +4,7 @@ package storage.storageUtils;
 public class BlockExplorer implements Comparable<BlockExplorer>{
 
     /*Index in blockchain*/
-    private int blockIndex;
+    public int blockIndex;
 
     /*Value, only used for numeric values*/
     public Object value;
