@@ -1,8 +1,6 @@
 package test;
 
-import nodes.MinerNode;
-import nodes.Node;
-import nodes.NormalNode;
+import nodes.*;
 import structures.Block;
 import structures.Interest;
 import structures.TransactionManager;
@@ -12,10 +10,12 @@ import test.utils.TestUtilities;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class BasicTestModule {
 
     public static final int JUST_CHECK_FUNCTIONALITY = 0;
+    public static final int CHECK_FULL_NODE = 1;
 
     private int testType;
     private String interestFilePath = "src/test/examples/marketplace_example.txt";
@@ -83,6 +83,26 @@ public class BasicTestModule {
             //System.out.println("transactions all are size " + transactions.size());
             //System.out.println("Remaining transactions in miner are " + minerNode.pendingTransactions.size());
             //minerNode.groupManager.printInfo();
+        }
+        else if(testType == CHECK_FULL_NODE){
+            /*Test full node*/
+            TransactionManager manager = new TransactionManager(managerFilePath);
+            Block genesis = new Block(0,"genesis",manager.createNormalTransactions(1));
+            FullNode fullNode = new FullNode(configFilePath,interestFilePath,genesis,9090,5000,"localhost");
+
+            ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+
+            /*how many blocks*/
+            for(int i =0; i < 500; i++){
+                transactions = manager.createNormalTransactions(10);
+                Block block = new Block(i+1,"pilabi",transactions);
+                fullNode.addBlock(block);
+            }
+
+            /*Indices we want back*/
+            List<Integer> indices = new ArrayList<>(Arrays.asList(1,10));
+
+            System.out.println(fullNode.getBlocksInIntervals(indices));
         }
     }
 }
