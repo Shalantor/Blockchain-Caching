@@ -93,8 +93,8 @@ public class BasicTestModule {
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
             /*how many blocks*/
-            for(int i =0; i < 500; i++){
-                transactions = manager.createNormalTransactions(10);
+            for(int i =0; i < 5; i++){
+                transactions = manager.createNormalTransactions(1);
                 Block block = new Block(i+1,"pilabi",transactions);
                 fullNode.addBlock(block);
             }
@@ -102,7 +102,7 @@ public class BasicTestModule {
             /*Indices we want back*/
             List<Integer> indices = new ArrayList<>(Arrays.asList(1,10));
 
-            System.out.println(fullNode.getBlocksInIntervals(indices));
+            System.out.println(fullNode.storageManager.blockChainIndex);
         }
     }
 }

@@ -1,5 +1,6 @@
 package storage;
 
+import storage.storageUtils.BlockExplorer;
 import structures.Block;
 import structures.Interest;
 
@@ -13,6 +14,7 @@ import java.util.List;
 /*Super class for storage. Currently only used by the full node to index transactions and blocks.
 * But could also be used by a normal node in a future udpate*/
 public class StorageManager {
+    public HashMap<String,ArrayList<BlockExplorer>> blockChainIndex;
 
     /*hash map with type of transaction attributes*/
     public HashMap<String,String> types;

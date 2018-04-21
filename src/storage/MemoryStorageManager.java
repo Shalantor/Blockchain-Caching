@@ -3,8 +3,6 @@ package storage;
 import storage.storageUtils.BlockExplorer;
 import structures.Block;
 import structures.Interest;
-
-import javax.print.DocFlavor;
 import java.util.*;
 
 public class MemoryStorageManager extends StorageManager{
@@ -20,17 +18,18 @@ public class MemoryStorageManager extends StorageManager{
     * value for the attribute and key is a list of indices.
     * For numeric values it is a little more complex. The key is again the attribute value
     * but the value leads to an array sorted by the values.*/
-    private HashMap<String,ArrayList<BlockExplorer>> blockChainIndex;
 
-    public MemoryStorageManager(String transactionPath){
+    public MemoryStorageManager(String transactionPath,Block genesisBlock){
         super(transactionPath);
         blockChain = new ArrayList<>();
         blockChainIndex = new HashMap<>();
+        blockChain.add(genesisBlock);
     }
 
     @Override
     public void addBlock(Block block){
         blockChain.add(block);
+        indexBlock(block);
     }
 
     @Override
@@ -64,6 +63,7 @@ public class MemoryStorageManager extends StorageManager{
 
                 /*Case of string variable*/
                 if(types.get(key).equals(STRING)){
+                    //System.out.println("STRING TYPE " + key);
                     String value = (String) tr.get(key);
                     if(blockChainIndex.get(value) == null){
                         ArrayList<BlockExplorer> list = new ArrayList<>();

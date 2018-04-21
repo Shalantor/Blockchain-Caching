@@ -27,7 +27,7 @@ public class FullNode extends Node{
     private static final String LONG = "long";
 
     /*storage manager*/
-    private StorageManager storageManager;
+    public StorageManager storageManager;
 
     /*Initialize with genesis block*/
     public FullNode(String configFilePath,String transactionPath,Block genesisBlock,int port,int timeOut,String host){
@@ -61,7 +61,7 @@ public class FullNode extends Node{
                         break;
                     case STORAGE_OPTION:
                         if(Integer.parseInt(value) == 0){
-                            storageManager = new MemoryStorageManager(transactionPath);
+                            storageManager = new MemoryStorageManager(transactionPath,genesisBlock);
                         }
                         break;
                 }
@@ -73,8 +73,6 @@ public class FullNode extends Node{
             ex.printStackTrace();
         }
 
-        /*Genesis block gets added to blockchain*/
-        storageManager.addBlock(genesisBlock);
     }
 
     public void addBlock(Block block){

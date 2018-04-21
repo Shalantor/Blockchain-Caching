@@ -50,4 +50,9 @@ public class BlockExplorer implements Comparable<BlockExplorer>{
         return 0;
     }
 
+    @Override
+    public String toString(){
+        return this.blockIndex + "";
+    }
+
 }
