@@ -93,14 +93,38 @@ public class BasicTestModule {
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
             /*how many blocks*/
-            for(int i =0; i < 10; i++){
-                transactions = manager.createNormalTransactions(1);
-                Block block = new Block(i+1,"pilabi",transactions);
-                fullNode.addBlock(block);
+            for(int i =0; i < 5; i++){
+                transactions = new ArrayList<>();
+                HashMap<String,Object> tr = new HashMap<>();
+                tr.put("sender","node78");
+                tr.put("receiver","node22");
+                tr.put("category","gaming");
+                tr.put("price",1000.0);
+                tr.put("count",60);
+                tr.put("origin","asia");
+                tr.put("fee",12.0);
+                transactions.add(tr);
+
+                fullNode.addBlock(new Block(i+1,"pilabi",transactions));
+            }
+
+            for(int i =5; i < 10; i++){
+                transactions = new ArrayList<>();
+                HashMap<String,Object> tr = new HashMap<>();
+                tr.put("sender","node78");
+                tr.put("receiver","node22");
+                tr.put("category","gaming");
+                tr.put("price",3500.0);
+                tr.put("count",60);
+                tr.put("origin","asia");
+                tr.put("fee",12.0);
+                transactions.add(tr);
+
+                fullNode.addBlock(new Block(i+1,"pilabi",transactions));
             }
 
             /*Indices we want back*/
-            NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_S_1_7.txt",9898,1000,"localhost");
+            NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_D_21.txt",9898,1000,"localhost");
 
             System.out.println(fullNode.storageManager.blockChainIndex);
             System.out.println("-------------------------------------");
