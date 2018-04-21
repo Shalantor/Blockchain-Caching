@@ -231,7 +231,7 @@ public class Block implements Comparable<Block>{
 
     @Override
     public int compareTo(Block block){
-        return index = block.index;
+        return index - block.index;
     }
 
     /*Below stuff is for testing*/

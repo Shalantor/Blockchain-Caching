@@ -93,16 +93,24 @@ public class BasicTestModule {
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
             /*how many blocks*/
-            for(int i =0; i < 5; i++){
+            for(int i =0; i < 10; i++){
                 transactions = manager.createNormalTransactions(1);
                 Block block = new Block(i+1,"pilabi",transactions);
                 fullNode.addBlock(block);
             }
 
             /*Indices we want back*/
-            List<Integer> indices = new ArrayList<>(Arrays.asList(1,10));
+            NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_S_1_7.txt",9898,1000,"localhost");
 
             System.out.println(fullNode.storageManager.blockChainIndex);
+            System.out.println("-------------------------------------");
+            HashMap<String,Interest> interests = normalNode.interests;
+            ArrayList<Interest> interestsToSend = new ArrayList<>();
+            for( String key : interests.keySet()){
+                interestsToSend.add(interests.get(key));
+            }
+
+            System.out.println(fullNode.storageManager.getBlockFromInterests(interestsToSend));
         }
     }
 }

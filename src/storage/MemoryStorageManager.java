@@ -119,6 +119,7 @@ public class MemoryStorageManager extends StorageManager{
     public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests){
 
         ArrayList<Block> blocks = new ArrayList<>();
+        HashMap<Integer,Block> returnSet = new HashMap<>();
 
         for(Interest i : interests){
             if(i.type == Interest.STRING_TYPE){
@@ -126,11 +127,12 @@ public class MemoryStorageManager extends StorageManager{
                 /*values that the node is interested in*/
                 for(String value : i.interestValues){
                     ArrayList<BlockExplorer> indices = blockChainIndex.get(value);
+                    if(indices == null){
+                        continue;
+                    }
                     for(BlockExplorer b : indices){
                         Block retrievedBlock = blockChain.get(b.blockIndex);
-                        if(!blocks.contains(retrievedBlock)){
-                            blocks.add(blockChain.get(b.blockIndex));
-                        }
+                        returnSet.put(retrievedBlock.index,retrievedBlock);
                     }
                 }
 
@@ -175,12 +177,15 @@ public class MemoryStorageManager extends StorageManager{
 
                 for(int j = start; j < end; j++){
                     Block retrievedBlock = blockChain.get(list.get(j).blockIndex);
-                    if(!blocks.contains(retrievedBlock)){
-                        blocks.add(blockChain.get(list.get(j).blockIndex));
-                    }
+                    returnSet.put(retrievedBlock.index,retrievedBlock);
                 }
 
             }
+        }
+
+        /*Make to list*/
+        for(Map.Entry entry : returnSet.entrySet()){
+            blocks.add((Block) entry.getValue());
         }
 
         /*Now sort*/
