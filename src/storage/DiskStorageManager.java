@@ -66,4 +66,28 @@ public class DiskStorageManager extends StorageManager{
         return blocks;
     }
 
+    @Override
+    public ArrayList<Block> getBlocksInIntervals(List<Integer> indexes){
+        ArrayList<Block> blocks = new ArrayList<>();
+
+        for(int i=0; i < indexes.size(); i += 2){
+            BasicDBObject options = new BasicDBObject("$gte",i);
+            options.append("$lte", i+1);
+            BasicDBObject query = new BasicDBObject("index",options);
+            DBCursor cursor = dbCollection.find(query);
+            while (cursor.hasNext()){
+                JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
+                jsonObject.remove("_id");
+                blocks.add(new Block(jsonObject,node));
+            }
+        }
+
+        return blocks;
+    }
+
+    @Override
+    public int getSize(){
+        return size;
+    }
+
 }
