@@ -2,6 +2,7 @@ package nodes;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import storage.DiskStorageManager;
 import storage.MemoryStorageManager;
 import storage.StorageManager;
 import structures.Block;
@@ -62,6 +63,9 @@ public class FullNode extends Node{
                     case STORAGE_OPTION:
                         if(Integer.parseInt(value) == 0){
                             storageManager = new MemoryStorageManager(transactionPath,genesisBlock);
+                        }
+                        else if(Integer.parseInt(value) == 1){
+                            storageManager = new DiskStorageManager(transactionPath);
                         }
                         break;
                 }

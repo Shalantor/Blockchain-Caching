@@ -7,4 +7,4 @@ full_node           localhost   7010
 min_block_size          1000
 max_block_size          2000
 group_content           true   0
-storage             0
+storage             1
