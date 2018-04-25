@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import structures.Block;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DiskStorageManager extends StorageManager{
 
@@ -38,7 +40,7 @@ public class DiskStorageManager extends StorageManager{
             ex.printStackTrace();
         }
 
-        addBlock(genesis);
+        //addBlock(genesis);
     }
 
     @Override
@@ -46,6 +48,22 @@ public class DiskStorageManager extends StorageManager{
         size += 1;
         JSONObject jsonBlock = node.blockToJSON(block);
         dbCollection.insert((DBObject) JSON.parse(jsonBlock.toString()));
+    }
+
+    @Override
+    public ArrayList<Block> getSeparateBlocks(List<Integer> indexes){
+        ArrayList<Block> blocks = new ArrayList<>();
+
+        for(Integer index: indexes){
+            DBCursor cursor = dbCollection.find(new BasicDBObject("index",index));
+            while (cursor.hasNext()){
+               JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
+               jsonObject.remove("_id");
+               blocks.add(new Block(jsonObject,node));
+            }
+        }
+
+        return blocks;
     }
 
 }
