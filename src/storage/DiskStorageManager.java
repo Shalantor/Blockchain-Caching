@@ -1,6 +1,10 @@
 package storage;
 
 import com.mongodb.*;
+import com.mongodb.util.JSON;
+import nodes.Node;
+import org.json.JSONObject;
+import structures.Block;
 
 import java.net.UnknownHostException;
 
@@ -14,14 +18,17 @@ public class DiskStorageManager extends StorageManager{
     /*Database connection*/
     private DBCollection dbCollection;
 
-    /*Most recent blocks here*/
+    /*Associated node*/
+    private Node node;
+
+    /*Size of blockchain*/
     private int size;
 
-    public DiskStorageManager(String transactionPath){
+    public DiskStorageManager(String transactionPath,Block genesis, Node node){
         super(transactionPath);
         size = 0;
-        /*Test mongo database*/
 
+        this.node = node;
         try{
             MongoClient client = new MongoClient(DATABASE_ADDRESS,27017);
             DB db = client.getDB(DATABASE_NAME);
@@ -31,7 +38,14 @@ public class DiskStorageManager extends StorageManager{
             ex.printStackTrace();
         }
 
+        addBlock(genesis);
     }
 
+    @Override
+    public void addBlock(Block block){
+        size += 1;
+        JSONObject jsonBlock = node.blockToJSON(block);
+        dbCollection.insert((DBObject) JSON.parse(jsonBlock.toString()));
+    }
 
 }

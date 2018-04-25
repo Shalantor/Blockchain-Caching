@@ -65,7 +65,7 @@ public class FullNode extends Node{
                             storageManager = new MemoryStorageManager(transactionPath,genesisBlock);
                         }
                         else if(Integer.parseInt(value) == 1){
-                            storageManager = new DiskStorageManager(transactionPath);
+                            storageManager = new DiskStorageManager(transactionPath,genesisBlock,this);
                         }
                         break;
                 }

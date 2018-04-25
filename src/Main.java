@@ -22,6 +22,5 @@ public class Main {
         Block genesis = new Block(0,"genesis",manager.createNormalTransactions(1));
 
         FullNode fullNode = new FullNode(configFilePath,interestFilePath,genesis,9898,5000,"localhost");
-
     }
 }
