@@ -40,6 +40,7 @@ public class DiskStorageManager extends StorageManager{
             MongoClient client = new MongoClient(DATABASE_ADDRESS,27017);
             DB db = client.getDB(DATABASE_NAME);
             dbCollection = db.getCollection(COLLECTION_NAME);
+            dbCollection.drop();
         }
         catch (UnknownHostException ex){
             ex.printStackTrace();

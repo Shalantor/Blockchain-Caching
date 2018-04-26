@@ -27,7 +27,7 @@ public class Main {
         FullNode fullNode = new FullNode(configFilePath,interestFilePath,genesis,9898,5000,"localhost");
 
         for(int i = 1; i <= 20; i++){
-            fullNode.addBlock(new Block(i,"pilabi",manager.createNormalTransactions(1)));
+            //fullNode.addBlock(new Block(i,"pilabi",manager.createNormalTransactions(1)));
         }
 
         /*Indices we want to get*/
