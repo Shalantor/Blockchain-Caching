@@ -26,11 +26,20 @@ public class Main {
         /*Full node initialize*/
         FullNode fullNode = new FullNode(configFilePath,interestFilePath,genesis,9898,5000,"localhost");
 
+        for(int i = 1; i <= 20; i++){
+            fullNode.addBlock(new Block(i,"pilabi",manager.createNormalTransactions(1)));
+        }
+
         /*Indices we want to get*/
         List<Integer> indices = new ArrayList<>();
-        indices.add(0);
+        indices.add(1);
+        indices.add(5);
 
         /*call to full node*/
-        fullNode.getSeparateBlocks(indices);
+        ArrayList<Block> receive = fullNode.getBlocksInIntervals(indices);
+
+        for(Block b : receive){
+            System.out.println(b.index);
+        }
     }
 }

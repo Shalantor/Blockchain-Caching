@@ -45,7 +45,7 @@ public class DiskStorageManager extends StorageManager{
             ex.printStackTrace();
         }
 
-        //addBlock(genesis);
+        addBlock(genesis);
     }
 
     @Override
@@ -76,10 +76,12 @@ public class DiskStorageManager extends StorageManager{
         ArrayList<Block> blocks = new ArrayList<>();
 
         for(int i=0; i < indexes.size(); i += 2){
-            BasicDBObject options = new BasicDBObject("$gte",i);
-            options.append("$lte", i+1);
-            BasicDBObject query = new BasicDBObject("index",options);
+
+            BasicDBObject query = new BasicDBObject("index", new BasicDBObject("$gte",
+                    indexes.get(i)).append("$lte", indexes.get(i+1)));
+
             DBCursor cursor = dbCollection.find(query);
+
             while (cursor.hasNext()){
                 JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
                 jsonObject.remove("_id");
