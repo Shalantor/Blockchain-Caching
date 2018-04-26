@@ -102,6 +102,7 @@ public class DiskStorageManager extends StorageManager{
     public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests){
 
         ArrayList<Block> blocks = new ArrayList<>();
+        HashMap<Integer,Block> returnSet = new HashMap<>();
 
         for(Interest i : interests){
             if(i.type == Interest.STRING_TYPE){
@@ -116,7 +117,8 @@ public class DiskStorageManager extends StorageManager{
                 while (cursor.hasNext()){
                     JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
                     jsonObject.remove("_id");
-                    blocks.add(new Block(jsonObject,node));
+                    Block blockToAdd = new Block(jsonObject,node);
+                    returnSet.put(blockToAdd.index,blockToAdd);
                 }
             }
             else if(i.type == Interest.NUMERIC_TYPE){
@@ -152,10 +154,16 @@ public class DiskStorageManager extends StorageManager{
                 while (cursor.hasNext()){
                     JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
                     jsonObject.remove("_id");
-                    blocks.add(new Block(jsonObject,node));
+                    Block blockToAdd = new Block(jsonObject,node);
+                    returnSet.put(blockToAdd.index,blockToAdd);
                 }
 
             }
+        }
+
+        /*Make to list*/
+        for(Map.Entry entry : returnSet.entrySet()){
+            blocks.add((Block) entry.getValue());
         }
 
         /*Now sort*/
