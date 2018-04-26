@@ -100,10 +100,10 @@ public class BasicTestModule {
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node78");
                 tr.put("receiver","node22");
-                tr.put("category","electronics");
+                tr.put("category","books");
                 tr.put("price",1000.0);
                 tr.put("count",60);
-                tr.put("origin","asia");
+                tr.put("origin","arctic");
                 tr.put("fee",12.0);
                 transactions.add(tr);
 
@@ -115,10 +115,10 @@ public class BasicTestModule {
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node78");
                 tr.put("receiver","node22");
-                tr.put("category","clothing");
+                tr.put("category","books");
                 tr.put("price",4500.0);
                 tr.put("count",60);
-                tr.put("origin","asia");
+                tr.put("origin","arctic");
                 tr.put("fee",12.0);
                 transactions.add(tr);
 
@@ -126,7 +126,7 @@ public class BasicTestModule {
             }
 
             /*Indices we want back*/
-            NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_D_23.txt",9898,1000,"localhost");
+            NormalNode normalNode = new NormalNode(configFilePath,destPath2 + "2_S_1_S_1_14.txt",9898,1000,"localhost");
 
             System.out.println(fullNode.storageManager.blockChainIndex);
             System.out.println("-------------------------------------");
