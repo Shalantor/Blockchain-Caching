@@ -252,6 +252,7 @@ public class Node implements Runnable{
         jsonObject.put("source",source);
         jsonObject.put("host",host);
         jsonObject.put("port",port);
+        jsonObject.put("timeout",10);   /*TODO:Change hard coded number of hops*/
         return jsonObject;
     }
 
@@ -427,7 +428,7 @@ public class Node implements Runnable{
                             }
                             //System.out.println("Recipient port is " + recipientPort + " and i am " + port);
                             if(recipientPort == minerPort || recipientPort == fullNodePort ){
-                                System.out.println("Got to stop now");
+                                //System.out.println("Got to stop now");
                                 return;
                             }
                             if( i == recipients){
@@ -456,4 +457,60 @@ public class Node implements Runnable{
         }
     }
 
+    /*Propagate interests in network*/
+    public void propagateInterestRequest(JSONObject jsonObject){
+        if(networkTopology == NETWORK_LOCAL){
+
+            /*check if message get propagated based on timeout*/
+            int timeOut = jsonObject.getInt("timeout");
+
+            if(timeOut == 0){
+                return;
+            }
+
+            /*check if message gets propagated by this node*/
+            int estimatePort = jsonObject.getInt("next_port");
+
+            /*Only every last node in the interval propagates the block,
+            so we have no duplicates. Only in the local configuration!!*/
+            if(estimatePort == port){
+                jsonObject.put("port",port);
+                int recipientPort = port;
+                if(networkTopology == NETWORK_LOCAL){
+                    for(int i =1; i <= recipients; i++){
+                        try {
+                            recipientPort = port + i;
+                            if(recipientPort > portEnd){
+                                recipientPort = portStart;
+                            }
+                            //System.out.println("Recipient port is " + recipientPort + " and i am " + port);
+                            if(recipientPort == minerPort || recipientPort == fullNodePort ){
+                                //System.out.println("Got to stop now");
+                                return;
+                            }
+                            if( i == recipients){
+                                jsonObject.put("next_port",recipientPort);
+                            }
+                            else{
+                                jsonObject.put("next_port",-1);
+                            }
+                            Socket socket = new Socket("localhost", recipientPort);
+                            try {
+                                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                                out.write(jsonObject.toString() + "\n");
+                                out.close();
+                            }
+                            catch (IOException ex){
+                                ex.printStackTrace();
+                            }
+                        }
+                        catch (IOException ex){
+                            System.out.println("El no socketo de la creato");
+                            System.exit(1);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
