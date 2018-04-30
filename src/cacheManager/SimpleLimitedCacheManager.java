@@ -154,6 +154,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
         return  false;
     }
 
+    /*TODO: make nodes use this*/
     @Override
     public void evaluateInterests(JSONObject receivedInterests,
                                   HashMap<String,Interest> ownInterests,

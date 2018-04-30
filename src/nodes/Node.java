@@ -457,6 +457,7 @@ public class Node implements Runnable{
         }
     }
 
+    /*TODO: Is same as propagateBlock but better test it. Only difference is timeout*/
     /*Propagate interests in network*/
     public void propagateInterestRequest(JSONObject jsonObject){
         if(networkTopology == NETWORK_LOCAL){
