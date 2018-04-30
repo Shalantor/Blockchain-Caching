@@ -487,17 +487,14 @@ public class Node implements Runnable{
                             if(recipientPort > portEnd){
                                 recipientPort = portStart;
                             }
-                            //System.out.println("Recipient port is " + recipientPort + " and i am " + port);
-                            if(recipientPort == minerPort || recipientPort == fullNodePort ){
-                                //System.out.println("Got to stop now");
-                                return;
-                            }
+
                             if( i == recipients){
                                 jsonObject.put("next_port",recipientPort);
                             }
                             else{
                                 jsonObject.put("next_port",-1);
                             }
+                            
                             Socket socket = new Socket("localhost", recipientPort);
                             try {
                                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
