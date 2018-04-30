@@ -223,6 +223,8 @@ public class NormalNode extends Node{
             catch (IOException ex){
                 ex.printStackTrace();
             }
+
+            propagateInterestRequest(jsonObject);
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REQUEST_TO_NORMAL){
             JSONObject jsonReply = createBlockReply(blocksInCache);
