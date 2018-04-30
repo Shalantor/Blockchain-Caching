@@ -70,6 +70,7 @@ public class Node implements Runnable{
     @Override
     public void run(){
         while (running){
+            /*TODO: CHECK IF WE WAIT FOR ANSWERS TO INTEREST REQUEST IN LOOP*/
             try{
                 listener.setSoTimeout(timeOut);
                 readSocket = listener.accept();
@@ -468,6 +469,8 @@ public class Node implements Runnable{
             if(timeOut == 0){
                 return;
             }
+
+            jsonObject.put("timeout",timeOut-1);
 
             /*check if message gets propagated by this node*/
             int estimatePort = jsonObject.getInt("next_port");
