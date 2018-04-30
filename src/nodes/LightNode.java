@@ -216,14 +216,9 @@ public class LightNode extends Node{
             propagateBlock(jsonObject);
         }
         else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
-            JSONArray jsonArray = jsonObject.getJSONArray("interests");
-            ArrayList<Interest> interests = new ArrayList<>();
 
-            for(int i =0; i < jsonArray.length(); i++){
-                interests.add(JSONToInterest(jsonArray.getJSONObject(0)));
-            }
+            cacheManager.evaluateInterests(jsonObject,interests,this);
 
-            /*TODO:Here can evaluate interests*/
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REPLY_FROM_NORMAL) {
             JSONArray jsonArray = jsonObject.getJSONArray("blocks");
@@ -232,7 +227,8 @@ public class LightNode extends Node{
             for(int i =0; i < jsonArray.length(); i++){
                 blocks.add(new Block((JSONObject) jsonArray.get(i),this));
             }
-            /*TODO:Here can evaluate blocks*/
+
+            cacheManager.addReceivedBlocks(blocks,blocksInCache);
         }
     }
 
