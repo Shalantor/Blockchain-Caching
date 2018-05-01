@@ -15,9 +15,45 @@ public class ScoreCacheManager extends CacheManager{
     sorted. Lowest index = highest score*/
     public ArrayList<SavedNode> bestNodes;
 
+    /*Keep the score of the blocks in a */
+
     public ScoreCacheManager(long timeLimit,long cacheSize){
         this.timeLimit = timeLimit;
         this.cacheSize = cacheSize;
+    }
+
+    @Override
+    public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
+
+        /*check if cache empty*/
+        if(blocksInCache.size() == 0){
+            blocksInCache.add(block);
+            sizeOfCachedBlocks += block.blockSize;
+            return true;
+        }
+
+        /*Check last block in cache*/
+        if(blocksInCache.get(blocksInCache.size() - 1).index < block.index){
+            blocksInCache.add(block);
+            sizeOfCachedBlocks += block.blockSize;
+            return true;
+        }
+        else if(blocksInCache.get(blocksInCache.size() - 1).index == block.index){
+            return false;
+        }
+
+        /*Insert into sorted array list in cache*/
+        for(int i = 0; i < blocksInCache.size(); i++){
+            if(blocksInCache.get(i).index > block.index ){
+                blocksInCache.add(i,block);
+                break;
+            }
+            else if(blocksInCache.get(i).index == block.index ){
+                return false;
+            }
+        }
+        sizeOfCachedBlocks += block.blockSize;
+        return true;
     }
 
     @Override
@@ -64,4 +100,6 @@ public class ScoreCacheManager extends CacheManager{
         }
 
     }
+
+
 }

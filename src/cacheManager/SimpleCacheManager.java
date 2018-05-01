@@ -108,7 +108,6 @@ public class SimpleCacheManager extends CacheManager{
 
     }
 
-    /*TODO:Check blocks*/
     @Override
     public void addReceivedBlocks(ArrayList<Block> receivedBlocks,
                                   ArrayList<Block> blocksInCache,HashMap<String,Interest> interests){
