@@ -111,6 +111,11 @@ public class SimpleLimitedCacheManager extends CacheManager{
         /*Insert them based on the order of their indexes*/
         int start = 0;
         for(Block receivedBlock : receivedBlocks){
+
+            if(!checkBlock(receivedBlock,interests)){
+                continue;
+            }
+
             /*Cache empty?*/
             if(blocksInCache.size() == 0){
                 blocksInCache.add(receivedBlock);
