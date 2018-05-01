@@ -83,7 +83,7 @@ public class NormalNode extends Node{
                     case CACHE_CONFIG:
                         cacheManager = CacheManager.createManager(
                                 Integer.parseInt(value),
-                                timeRestraint,maxCacheSize);
+                                timeRestraint,maxCacheSize,Integer.parseInt(info[2]));
                         break;
                     case NETWORK_TOPOLOGY:
                         networkTopology = Integer.parseInt(value);
