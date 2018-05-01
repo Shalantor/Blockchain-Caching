@@ -494,7 +494,7 @@ public class Node implements Runnable{
                             else{
                                 jsonObject.put("next_port",-1);
                             }
-                            
+
                             Socket socket = new Socket("localhost", recipientPort);
                             try {
                                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
