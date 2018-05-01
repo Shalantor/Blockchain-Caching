@@ -49,26 +49,25 @@ public class ScoreCacheManager extends CacheManager{
             return true;
         }
 
+        if(blocksInCache.contains(scoreBlock)){
+            return false;
+        }
+
         /*Check last block in cache*/
-        if(blocksInCache.get(blocksInCache.size() - 1).getBlock().index < block.index){
+        if(blocksInCache.get(blocksInCache.size() - 1).getScore() < scoreBlock.getScore()){
             blocksInCache.add(scoreBlock);
             sizeOfCachedBlocks += block.blockSize;
             return true;
         }
-        else if(blocksInCache.get(blocksInCache.size() - 1).getBlock().index == block.index){
-            return false;
-        }
 
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
-            if(blocksInCache.get(i).getBlock().index > block.index ){
+            if(blocksInCache.get(i).getScore() > scoreBlock.getScore() ){
                 blocksInCache.add(i,scoreBlock);
                 break;
             }
-            else if(blocksInCache.get(i).getBlock().index == block.index ){
-                return false;
-            }
         }
+
         sizeOfCachedBlocks += block.blockSize;
 
         /*Check if there are too many blocks*/
@@ -83,7 +82,6 @@ public class ScoreCacheManager extends CacheManager{
     @Override
     public void addReceivedBlocks(ArrayList<Block> receivedBlocks, HashMap<String,Interest> interests) {
         /*Insert them based on the order of their indexes*/
-        int start = 0;
         for(Block receivedBlock : receivedBlocks){
 
             if(!checkBlock(receivedBlock,interests)){
@@ -92,34 +90,35 @@ public class ScoreCacheManager extends CacheManager{
 
             ScoreBlock scoreBlock = new ScoreBlock(receivedBlock,calculateScore(receivedBlock,interests));
 
+
+            if(blocksInCache.contains(scoreBlock)){
+                continue;
+            }
+
             /*Cache empty?*/
             if(blocksInCache.size() == 0){
                 blocksInCache.add(scoreBlock);
                 sizeOfCachedBlocks += receivedBlock.blockSize;
                 continue;
             }
-            /*block with greater index than the others in cache?*/
-            if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).getBlock().index){
+
+            /*block with greater score than the others in cache?*/
+            if(scoreBlock.getScore() > blocksInCache.get(blocksInCache.size()-1).getScore()){
                 blocksInCache.add(scoreBlock);
                 sizeOfCachedBlocks += receivedBlock.blockSize;
                 continue;
             }
+
             /*insert in sorted array list*/
-            for(int i = start; i < blocksInCache.size(); i++){
-                if(receivedBlock.index == blocksInCache.get(i).getBlock().index){
-                    start = i;
-                    break;
-                }
-                else if(receivedBlock.index < blocksInCache.get(i).getBlock().index){
-                    start = i;
+            for(int i = 0; i < blocksInCache.size(); i++){
+                if(scoreBlock.getScore() < blocksInCache.get(i).getScore()){
                     blocksInCache.add(i,scoreBlock);
                     sizeOfCachedBlocks += receivedBlock.blockSize;
                     break;
                 }
             }
         }
-
-        /*TODO:Should remove based on score*/
+        
         /*Check if there are too many blocks*/
         while(sizeOfCachedBlocks > cacheSize){
             sizeOfCachedBlocks -= blocksInCache.get(0).getBlock().blockSize;
