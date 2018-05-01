@@ -82,43 +82,15 @@ public class ScoreCacheManager extends CacheManager{
     @Override
     public void addReceivedBlocks(ArrayList<Block> receivedBlocks, HashMap<String,Interest> interests) {
         /*Insert them based on the order of their indexes*/
-        for(Block receivedBlock : receivedBlocks){
+        for(Block receivedBlock : receivedBlocks) {
 
-            if(!checkBlock(receivedBlock,interests)){
+            if (!checkBlock(receivedBlock, interests)) {
                 continue;
             }
 
-            ScoreBlock scoreBlock = new ScoreBlock(receivedBlock,calculateScore(receivedBlock,interests));
-
-
-            if(blocksInCache.contains(scoreBlock)){
-                continue;
-            }
-
-            /*Cache empty?*/
-            if(blocksInCache.size() == 0){
-                blocksInCache.add(scoreBlock);
-                sizeOfCachedBlocks += receivedBlock.blockSize;
-                continue;
-            }
-
-            /*block with greater score than the others in cache?*/
-            if(scoreBlock.getScore() > blocksInCache.get(blocksInCache.size()-1).getScore()){
-                blocksInCache.add(scoreBlock);
-                sizeOfCachedBlocks += receivedBlock.blockSize;
-                continue;
-            }
-
-            /*insert in sorted array list*/
-            for(int i = 0; i < blocksInCache.size(); i++){
-                if(scoreBlock.getScore() < blocksInCache.get(i).getScore()){
-                    blocksInCache.add(i,scoreBlock);
-                    sizeOfCachedBlocks += receivedBlock.blockSize;
-                    break;
-                }
-            }
+            addBlock(receivedBlock);
         }
-        
+
         /*Check if there are too many blocks*/
         while(sizeOfCachedBlocks > cacheSize){
             sizeOfCachedBlocks -= blocksInCache.get(0).getBlock().blockSize;

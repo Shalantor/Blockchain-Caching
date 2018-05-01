@@ -124,31 +124,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
                 continue;
             }
 
-            /*Cache empty?*/
-            if(blocksInCache.size() == 0){
-                blocksInCache.add(receivedBlock);
-                sizeOfCachedBlocks += receivedBlock.blockSize;
-                continue;
-            }
-            /*block with greater index than the others in cache?*/
-            if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).index){
-                blocksInCache.add(receivedBlock);
-                sizeOfCachedBlocks += receivedBlock.blockSize;
-                continue;
-            }
-            /*insert in sorted array list*/
-            for(int i = start; i < blocksInCache.size(); i++){
-                if(receivedBlock.index == blocksInCache.get(i).index){
-                    start = i;
-                    break;
-                }
-                else if(receivedBlock.index < blocksInCache.get(i).index){
-                    start = i;
-                    blocksInCache.add(i,receivedBlock);
-                    sizeOfCachedBlocks += receivedBlock.blockSize;
-                    break;
-                }
-            }
+            addBlock(receivedBlock);
         }
 
         /*Check if there are too many blocks*/
