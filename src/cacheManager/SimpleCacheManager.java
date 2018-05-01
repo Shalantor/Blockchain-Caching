@@ -24,13 +24,16 @@ public class SimpleCacheManager extends CacheManager{
     sorted. Lowest index = highest score*/
     public ArrayList<SavedNode> bestNodes = new ArrayList<>();
 
+    private ArrayList<Block> blocksInCache;
+
 
     public SimpleCacheManager(long timeLimit,long cacheSize){
         this.timeLimit = timeLimit;
+        blocksInCache = new ArrayList<>();
     }
 
     @Override
-    public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
+    public boolean addBlock(Block block){
 
         /*check if cache empty*/
         if(blocksInCache.size() == 0){
@@ -109,8 +112,7 @@ public class SimpleCacheManager extends CacheManager{
     }
 
     @Override
-    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,
-                                  ArrayList<Block> blocksInCache,HashMap<String,Interest> interests){
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks, HashMap<String,Interest> interests){
 
         /*Insert them based on the order of their indexes*/
 
@@ -242,4 +244,7 @@ public class SimpleCacheManager extends CacheManager{
         bestNodes.clear();
     }
 
+    public ArrayList<Block> getBlocksInCache() {
+        return blocksInCache;
+    }
 }

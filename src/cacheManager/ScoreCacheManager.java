@@ -24,15 +24,17 @@ public class ScoreCacheManager extends CacheManager{
     public ArrayList<SavedNode> bestNodes;
 
     /*Keep the score of the blocks in an array list*/
+    private ArrayList<Block> blocksInCache;
 
     public ScoreCacheManager(long timeLimit,long cacheSize,int scoreBound){
         this.timeLimit = timeLimit;
         this.cacheSize = cacheSize;
         this.scoreBound = scoreBound;
+        blocksInCache = new ArrayList<>();
     }
 
     @Override
-    public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
+    public boolean addBlock(Block block){
 
         /*check if cache empty*/
         if(blocksInCache.size() == 0){
@@ -73,8 +75,7 @@ public class ScoreCacheManager extends CacheManager{
     }
 
     @Override
-    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,
-                                  ArrayList<Block> blocksInCache,HashMap<String,Interest> interests) {
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks, HashMap<String,Interest> interests) {
         /*Insert them based on the order of their indexes*/
         int start = 0;
         for(Block receivedBlock : receivedBlocks){
@@ -255,5 +256,9 @@ public class ScoreCacheManager extends CacheManager{
     @Override
     public void removeSavedNodes(){
         bestNodes.clear();
+    }
+
+    public ArrayList<Block> getBlocksInCache() {
+        return blocksInCache;
     }
 }

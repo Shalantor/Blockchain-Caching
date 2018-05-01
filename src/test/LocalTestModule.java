@@ -48,10 +48,10 @@ public class LocalTestModule {
 
         for(Node n : nodes){
             if(n instanceof NormalNode){
-                System.out.println(((NormalNode) n).blocksInCache.size());
+                System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
             }
             else if(n instanceof LightNode){
-                System.out.println(((LightNode) n).blocksInCache.size());
+                System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
             }
         }
 

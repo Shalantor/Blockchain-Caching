@@ -44,9 +44,6 @@ public class NormalNode extends Node{
     /*Interest name with the corresponding interest object*/
     public HashMap<String, Interest> interests = new HashMap<>();
 
-    /*ArrayList of interested blocks*/
-    public ArrayList<Block> blocksInCache = new ArrayList<>();
-
     /*Cache manager*/
     public CacheManager cacheManager;
 
@@ -184,7 +181,7 @@ public class NormalNode extends Node{
 
     public boolean checkBlock(Block block){
         if( cacheManager.checkBlock(block,interests)){
-            cacheManager.addBlock(blocksInCache,block);
+            cacheManager.addBlock(block);
             return true;
         }
         return false;
@@ -200,7 +197,7 @@ public class NormalNode extends Node{
 
     public void printBlocks(){
         System.out.println("NORMAL NODE BLOCKS");
-        for(Block block : blocksInCache){
+        for(Block block : cacheManager.getBlocksInCache()){
             System.out.println(block);
         }
     }
@@ -229,7 +226,7 @@ public class NormalNode extends Node{
             propagateInterestRequest(jsonObject);
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REQUEST_TO_NORMAL){
-            JSONObject jsonReply = createBlockReply(blocksInCache);
+            JSONObject jsonReply = createBlockReply(cacheManager.getBlocksInCache());
             /*Now send answer*/
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -257,7 +254,7 @@ public class NormalNode extends Node{
                 blocks.add(new Block((JSONObject) jsonArray.get(i),this));
             }
 
-            cacheManager.addReceivedBlocks(blocks,blocksInCache,interests);
+            cacheManager.addReceivedBlocks(blocks,interests);
         }
     }
 

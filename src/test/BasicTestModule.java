@@ -164,7 +164,7 @@ public class BasicTestModule {
                 normalNode.checkBlock(new Block(i+1,"pilabi",transactions));
             }
 
-            System.out.println("Blocks in cache are " + normalNode.blocksInCache.size());
+            System.out.println("Blocks in cache are " + normalNode.cacheManager.getBlocksInCache().size());
 
         }
     }

@@ -17,8 +17,9 @@ public class CacheManager {
     private static final int CACHE_LIMIT_SIMPLE = 1;
     private static final int SCORE_CACHE = 2;
 
+    private ArrayList<Block> blocksInCache;
 
-    public boolean addBlock(ArrayList<Block> blocksInCache, Block block){
+    public boolean addBlock(Block block){
         blocksInCache.add(block);
         return true;
     }
@@ -45,8 +46,7 @@ public class CacheManager {
 
     }
 
-    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,
-                                  ArrayList<Block> blocksInCache,HashMap<String,Interest> interests){
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,HashMap<String,Interest> interests){
 
     }
 
@@ -56,5 +56,9 @@ public class CacheManager {
 
     public void removeSavedNodes(){
 
+    }
+
+    public ArrayList<Block> getBlocksInCache() {
+        return blocksInCache;
     }
 }

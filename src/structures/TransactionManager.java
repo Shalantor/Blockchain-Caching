@@ -188,7 +188,7 @@ public class TransactionManager {
             ex.printStackTrace();
         }
 
-        /*Now that interests are stored lets interest files for the nodes. the file names
+        /*Now that interests are stored lets create interest files for the nodes. the file names
         * have a specific format. There are files with only 1 interest and it goes on until
         * a set amount of max interests. Available formats:
         * S : string interest file

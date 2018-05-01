@@ -39,11 +39,11 @@ public class PropagationTestModule {
         System.out.println("Full node blockchain size: " + fullNode.getSize());
 
         for(int i=0; i < normalNodes.length; i++){
-            System.out.println("Normal node with port " +normalNodes[i].port+" blockchain size: " + normalNodes[i].blocksInCache.size());
+            System.out.println("Normal node with port " +normalNodes[i].port+" blockchain size: " + normalNodes[i].cacheManager.getBlocksInCache().size());
         }
 
         for(int i=0; i < lightNodes.length; i++){
-            System.out.println("light node blockchain size: " + lightNodes[i].blocksInCache.size());
+            System.out.println("light node blockchain size: " + lightNodes[i].cacheManager.getBlocksInCache().size());
         }
     }
 

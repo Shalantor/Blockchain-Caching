@@ -46,11 +46,8 @@ public class LightNode extends Node{
     /*Interest name with the corresponding interest object*/
     private HashMap<String, Interest> interests = new HashMap<>();
 
-    /*ArrayList of interested blocks*/
-    public ArrayList<Block> blocksInCache = new ArrayList<>();
-
     /*Cache manager*/
-    private CacheManager cacheManager;
+    public CacheManager cacheManager;
 
     /*The constructor as of now*/
     public LightNode(String configFilePath,String interestFilePath,int port,int timeOut,String host){
@@ -204,7 +201,7 @@ public class LightNode extends Node{
             propagateInterestRequest(jsonObject);
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REQUEST_TO_NORMAL){
-            JSONObject jsonReply = createIndicesReply(blocksInCache);
+            JSONObject jsonReply = createIndicesReply(cacheManager.getBlocksInCache());
             /*Now send answer*/
             try {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
@@ -233,7 +230,7 @@ public class LightNode extends Node{
                 blocks.add(new Block((JSONObject) jsonArray.get(i),this));
             }
 
-            cacheManager.addReceivedBlocks(blocks,blocksInCache,interests);
+            cacheManager.addReceivedBlocks(blocks,interests);
         }
     }
 
@@ -305,7 +302,7 @@ public class LightNode extends Node{
     public boolean checkBlock(Block block){
         if( cacheManager.checkBlock(block,interests)){
             StrippedBlock strippedBlock = new StrippedBlock(block,interests);
-            cacheManager.addBlock(blocksInCache,strippedBlock);
+            cacheManager.addBlock(strippedBlock);
             return true;
         }
         return false;
@@ -313,7 +310,7 @@ public class LightNode extends Node{
 
     public void printBlocks(){
         System.out.println("LIGHT NODE BLOCKS");
-        for(Block block : blocksInCache){
+        for(Block block : cacheManager.getBlocksInCache()){
             System.out.println(block);
         }
     }
