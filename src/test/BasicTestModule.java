@@ -18,6 +18,7 @@ public class BasicTestModule {
 
     public static final int JUST_CHECK_FUNCTIONALITY = 0;
     public static final int CHECK_FULL_NODE = 1;
+    public static final int CHECK_NORMAL_NODE = 2;
 
     private int testType;
     private String interestFilePath = "src/test/examples/marketplace_example.txt";
@@ -137,6 +138,34 @@ public class BasicTestModule {
             }
 
             System.out.println(fullNode.storageManager.getBlockFromInterests(interestsToSend));
+        }
+        else if(testType == CHECK_NORMAL_NODE){
+            /*Test normal node*/
+            TransactionManager manager = new TransactionManager(managerFilePath);
+
+            /*Normal node to check*/
+            NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_S_1_2.txt",9898,1000,"localhost");
+
+            ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+
+            /*how many blocks*/
+            for(int i =0; i < 5; i++){
+                transactions = new ArrayList<>();
+                HashMap<String,Object> tr = new HashMap<>();
+                tr.put("sender","node78");
+                tr.put("receiver","node22");
+                tr.put("category","electronics");
+                tr.put("price",1000.0);
+                tr.put("count",60);
+                tr.put("origin","arctic");
+                tr.put("fee",12.0);
+                transactions.add(tr);
+
+                normalNode.checkBlock(new Block(i+1,"pilabi",transactions));
+            }
+
+            System.out.println("Blocks in cache are " + normalNode.blocksInCache.size());
+
         }
     }
 }
