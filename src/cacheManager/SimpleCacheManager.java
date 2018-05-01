@@ -110,7 +110,8 @@ public class SimpleCacheManager extends CacheManager{
 
     /*TODO:Check blocks*/
     @Override
-    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,ArrayList<Block> blocksInCache){
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,
+                                  ArrayList<Block> blocksInCache,HashMap<String,Interest> interests){
 
         /*Insert them based on the order of their indexes*/
         int start = 0;

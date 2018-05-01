@@ -255,7 +255,7 @@ public class NormalNode extends Node{
                 blocks.add(new Block((JSONObject) jsonArray.get(i),this));
             }
 
-            cacheManager.addReceivedBlocks(blocks,blocksInCache);
+            cacheManager.addReceivedBlocks(blocks,blocksInCache,interests);
         }
     }
 

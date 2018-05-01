@@ -42,7 +42,8 @@ public class CacheManager {
 
     }
 
-    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,ArrayList<Block> blocksInCache){
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,
+                                  ArrayList<Block> blocksInCache,HashMap<String,Interest> interests){
 
     }
 
