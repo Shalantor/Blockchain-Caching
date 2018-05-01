@@ -16,15 +16,19 @@ public class ScoreCacheManager extends CacheManager{
     private long cacheSize;
     private long sizeOfCachedBlocks;
 
+    /*Block must have at least this score*/
+    private int scoreBound;
+
     /*Which nodes we got the best interests from. This is
     sorted. Lowest index = highest score*/
     public ArrayList<SavedNode> bestNodes;
 
     /*Keep the score of the blocks in a */
 
-    public ScoreCacheManager(long timeLimit,long cacheSize){
+    public ScoreCacheManager(long timeLimit,long cacheSize,int scoreBound){
         this.timeLimit = timeLimit;
         this.cacheSize = cacheSize;
+        this.scoreBound = scoreBound;
     }
 
     @Override
@@ -106,6 +110,19 @@ public class ScoreCacheManager extends CacheManager{
 
     }
 
+    @Override
+    public boolean checkBlock(Block block, Map<String,Interest> interests){
+        int score = 0;
+        for (Map.Entry entry : interests.entrySet()){
+            Interest interest = (Interest)entry.getValue();
+            if(interest.checkBlock(block)){
+                score += interest.weight;
+            }
+        }
+
+        return score >= scoreBound;
+    }
+
     /*TODO: make nodes use this*/
     @Override
     public void evaluateInterests(JSONObject receivedInterests,
@@ -182,4 +199,8 @@ public class ScoreCacheManager extends CacheManager{
 
     }
 
+    @Override
+    public void removeSavedNodes(){
+        bestNodes.clear();
+    }
 }
