@@ -24,7 +24,7 @@ public class CacheManager {
         return true;
     }
 
-    public void removeOldBlocks(ArrayList<Block> blocksInCache){
+    public void removeOldBlocks(){
 
     }
 

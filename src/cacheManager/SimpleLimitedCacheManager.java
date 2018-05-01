@@ -70,7 +70,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
     }
 
     @Override
-    public void removeOldBlocks(ArrayList<Block> blocksInCache){
+    public void removeOldBlocks(){
         /*Binary search blocks and then remove. Blocks in cache are order with timestamps*/
         int size = blocksInCache.size();
         int start = 0,end = size-1;
