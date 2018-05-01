@@ -62,7 +62,6 @@ public class SimpleLimitedCacheManager extends CacheManager{
     @Override
     public void removeOldBlocks(ArrayList<Block> blocksInCache){
         /*Binary search blocks and then remove. Blocks in cache are order with timestamps*/
-        /*Binary search blocks and then remove. Blocks in cache are order with timestamps*/
         int size = blocksInCache.size();
         int start = 0,end = size-1;
         int pos = (start + end ) / 2;
@@ -105,6 +104,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
 
     }
 
+    /*TODO:Check block*/
     @Override
     public void addReceivedBlocks(ArrayList<Block> receivedBlocks, ArrayList<Block> blocksInCache) {
         /*Insert them based on the order of their indexes*/
