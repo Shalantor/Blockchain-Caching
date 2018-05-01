@@ -188,9 +188,11 @@ public class LightNode extends Node{
             }
             JSONObject jsonReply = createInterestAnswer("light",interestsToSend);
 
+            /*TODO: Test his below*/
             /*Now send answer*/
             try {
-                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                Socket originSocket = new Socket(jsonObject.getString("orig_host"),jsonObject.getInt("orig_port"));
+                OutputStreamWriter out = new OutputStreamWriter(originSocket.getOutputStream());
                 out.write(jsonReply.toString()+ "\n");
                 out.close();
             }
