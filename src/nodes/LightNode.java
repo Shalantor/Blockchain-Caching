@@ -78,6 +78,7 @@ public class LightNode extends Node{
                         break;
                     case TIME_RESTRAINT:
                         timeRestraint = Long.parseLong(value);
+                        break;
                     case CACHE_CONFIG:
                         cacheManager = CacheManager.createManager(
                                 Integer.parseInt(value),
