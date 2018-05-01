@@ -23,7 +23,7 @@ public class ScoreCacheManager extends CacheManager{
     sorted. Lowest index = highest score*/
     public ArrayList<SavedNode> bestNodes;
 
-    /*Keep the score of the blocks in a */
+    /*Keep the score of the blocks in an arraylist*/
 
     public ScoreCacheManager(long timeLimit,long cacheSize,int scoreBound){
         this.timeLimit = timeLimit;

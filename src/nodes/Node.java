@@ -251,6 +251,8 @@ public class Node implements Runnable{
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type",INTEREST_REQUEST_TO_NORMAL);
         jsonObject.put("source",source);
+        jsonObject.put("orig_host",host);
+        jsonObject.put("orig_port",port);
         jsonObject.put("host",host);
         jsonObject.put("port",port);
         jsonObject.put("timeout",10);   /*TODO:Change hard coded number of hops*/

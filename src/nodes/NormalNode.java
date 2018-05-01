@@ -215,8 +215,10 @@ public class NormalNode extends Node{
             JSONObject jsonReply = createInterestAnswer("normal",interestsToSend);
 
             /*Now send answer*/
+            /*TODO:Test this below*/
             try {
-                OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
+                Socket originSocket = new Socket(jsonObject.getString("orig_host"),jsonObject.getInt("orig_port"));
+                OutputStreamWriter out = new OutputStreamWriter(originSocket.getOutputStream());
                 out.write(jsonReply.toString() + "\n");
                 out.close();
             }
