@@ -23,7 +23,7 @@ public class ScoreCacheManager extends CacheManager{
     sorted. Lowest index = highest score*/
     public ArrayList<SavedNode> bestNodes;
 
-    /*Keep the score of the blocks in an arraylist*/
+    /*Keep the score of the blocks in an array list*/
 
     public ScoreCacheManager(long timeLimit,long cacheSize,int scoreBound){
         this.timeLimit = timeLimit;
@@ -62,7 +62,60 @@ public class ScoreCacheManager extends CacheManager{
             }
         }
         sizeOfCachedBlocks += block.blockSize;
+
+        /*Check if there are too many blocks*/
+        if(sizeOfCachedBlocks > cacheSize){
+            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
+            blocksInCache.remove(0);
+        }
+
         return true;
+    }
+
+    @Override
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks,
+                                  ArrayList<Block> blocksInCache,HashMap<String,Interest> interests) {
+        /*Insert them based on the order of their indexes*/
+        int start = 0;
+        for(Block receivedBlock : receivedBlocks){
+
+            if(!checkBlock(receivedBlock,interests)){
+                continue;
+            }
+
+            /*Cache empty?*/
+            if(blocksInCache.size() == 0){
+                blocksInCache.add(receivedBlock);
+                sizeOfCachedBlocks += receivedBlock.blockSize;
+                continue;
+            }
+            /*block with greater index than the others in cache?*/
+            if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).index){
+                blocksInCache.add(receivedBlock);
+                sizeOfCachedBlocks += receivedBlock.blockSize;
+                continue;
+            }
+            /*insert in sorted array list*/
+            for(int i = start; i < blocksInCache.size(); i++){
+                if(receivedBlock.index == blocksInCache.get(i).index){
+                    start = i;
+                    break;
+                }
+                else if(receivedBlock.index < blocksInCache.get(i).index){
+                    start = i;
+                    blocksInCache.add(i,receivedBlock);
+                    sizeOfCachedBlocks += receivedBlock.blockSize;
+                    break;
+                }
+            }
+        }
+
+        /*TODO:Should remove based on score*/
+        /*Check if there are too many blocks*/
+        while(sizeOfCachedBlocks > cacheSize){
+            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
+            blocksInCache.remove(0);
+        }
     }
 
     @Override

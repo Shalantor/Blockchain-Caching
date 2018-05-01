@@ -56,6 +56,13 @@ public class SimpleLimitedCacheManager extends CacheManager{
             }
         }
         sizeOfCachedBlocks += block.blockSize;
+
+        /*Check if there are too many blocks*/
+        if(sizeOfCachedBlocks > cacheSize){
+            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
+            blocksInCache.remove(0);
+        }
+
         return true;
     }
 
