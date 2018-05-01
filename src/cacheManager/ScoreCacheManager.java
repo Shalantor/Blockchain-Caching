@@ -1,5 +1,6 @@
 package cacheManager;
 
+import cacheManager.CacheUtils.ScoreBlock;
 import nodes.Node;
 import org.json.JSONArray;
 import org.json.JSONObject;
