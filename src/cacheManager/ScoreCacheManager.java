@@ -25,7 +25,10 @@ public class ScoreCacheManager extends CacheManager{
     public ArrayList<SavedNode> bestNodes;
 
     /*Keep the score of the blocks in an array list*/
-    private ArrayList<Block> blocksInCache;
+    private ArrayList<ScoreBlock> blocksInCache;
+
+    /*Latest score*/
+    private int latestScore;
 
     public ScoreCacheManager(long timeLimit,long cacheSize,int scoreBound){
         this.timeLimit = timeLimit;
@@ -37,30 +40,32 @@ public class ScoreCacheManager extends CacheManager{
     @Override
     public boolean addBlock(Block block){
 
+        ScoreBlock scoreBlock = new ScoreBlock(block,latestScore);
+
         /*check if cache empty*/
         if(blocksInCache.size() == 0){
-            blocksInCache.add(block);
+            blocksInCache.add(scoreBlock);
             sizeOfCachedBlocks += block.blockSize;
             return true;
         }
 
         /*Check last block in cache*/
-        if(blocksInCache.get(blocksInCache.size() - 1).index < block.index){
-            blocksInCache.add(block);
+        if(blocksInCache.get(blocksInCache.size() - 1).getBlock().index < block.index){
+            blocksInCache.add(scoreBlock);
             sizeOfCachedBlocks += block.blockSize;
             return true;
         }
-        else if(blocksInCache.get(blocksInCache.size() - 1).index == block.index){
+        else if(blocksInCache.get(blocksInCache.size() - 1).getBlock().index == block.index){
             return false;
         }
 
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
-            if(blocksInCache.get(i).index > block.index ){
-                blocksInCache.add(i,block);
+            if(blocksInCache.get(i).getBlock().index > block.index ){
+                blocksInCache.add(i,scoreBlock);
                 break;
             }
-            else if(blocksInCache.get(i).index == block.index ){
+            else if(blocksInCache.get(i).getBlock().index == block.index ){
                 return false;
             }
         }
@@ -68,7 +73,7 @@ public class ScoreCacheManager extends CacheManager{
 
         /*Check if there are too many blocks*/
         if(sizeOfCachedBlocks > cacheSize){
-            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
+            sizeOfCachedBlocks -= blocksInCache.get(0).getBlock().blockSize;
             blocksInCache.remove(0);
         }
 
@@ -85,27 +90,29 @@ public class ScoreCacheManager extends CacheManager{
                 continue;
             }
 
+            ScoreBlock scoreBlock = new ScoreBlock(receivedBlock,calculateScore(receivedBlock,interests));
+
             /*Cache empty?*/
             if(blocksInCache.size() == 0){
-                blocksInCache.add(receivedBlock);
+                blocksInCache.add(scoreBlock);
                 sizeOfCachedBlocks += receivedBlock.blockSize;
                 continue;
             }
             /*block with greater index than the others in cache?*/
-            if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).index){
-                blocksInCache.add(receivedBlock);
+            if(receivedBlock.index > blocksInCache.get(blocksInCache.size()-1).getBlock().index){
+                blocksInCache.add(scoreBlock);
                 sizeOfCachedBlocks += receivedBlock.blockSize;
                 continue;
             }
             /*insert in sorted array list*/
             for(int i = start; i < blocksInCache.size(); i++){
-                if(receivedBlock.index == blocksInCache.get(i).index){
+                if(receivedBlock.index == blocksInCache.get(i).getBlock().index){
                     start = i;
                     break;
                 }
-                else if(receivedBlock.index < blocksInCache.get(i).index){
+                else if(receivedBlock.index < blocksInCache.get(i).getBlock().index){
                     start = i;
-                    blocksInCache.add(i,receivedBlock);
+                    blocksInCache.add(i,scoreBlock);
                     sizeOfCachedBlocks += receivedBlock.blockSize;
                     break;
                 }
@@ -115,7 +122,7 @@ public class ScoreCacheManager extends CacheManager{
         /*TODO:Should remove based on score*/
         /*Check if there are too many blocks*/
         while(sizeOfCachedBlocks > cacheSize){
-            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
+            sizeOfCachedBlocks -= blocksInCache.get(0).getBlock().blockSize;
             blocksInCache.remove(0);
         }
     }
@@ -167,6 +174,13 @@ public class ScoreCacheManager extends CacheManager{
 
     @Override
     public boolean checkBlock(Block block, Map<String,Interest> interests){
+
+        latestScore = calculateScore(block,interests);
+
+        return latestScore >= scoreBound;
+    }
+
+    private int calculateScore(Block block, Map<String,Interest> interests){
         int score = 0;
         for (Map.Entry entry : interests.entrySet()){
             Interest interest = (Interest)entry.getValue();
@@ -174,8 +188,7 @@ public class ScoreCacheManager extends CacheManager{
                 score += interest.weight;
             }
         }
-
-        return score >= scoreBound;
+        return score;
     }
 
     /*TODO: make nodes use this*/
@@ -260,6 +273,13 @@ public class ScoreCacheManager extends CacheManager{
     }
 
     public ArrayList<Block> getBlocksInCache() {
-        return blocksInCache;
+
+        ArrayList<Block> returnBlocks = new ArrayList<>();
+
+        for(ScoreBlock scoreBlock : blocksInCache){
+            returnBlocks.add(scoreBlock.getBlock());
+        }
+
+        return returnBlocks;
     }
 }
