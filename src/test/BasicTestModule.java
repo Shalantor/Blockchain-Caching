@@ -162,8 +162,24 @@ public class BasicTestModule {
                 tr.put("fee",12.0);
                 transactions.add(tr);
 
-                normalNode.checkBlock(new Block(i,"pilabi",transactions));
+                blocks.add(new Block(i+1,"pilabi",transactions));
             }
+            normalNode.cacheManager.addReceivedBlocks(blocks,normalNode.interests);
+
+            transactions = new ArrayList<>();
+            /*how many blocks*/
+            for(int i =0; i <= 2; i++){
+                HashMap<String,Object> tr = new HashMap<>();
+                tr.put("sender","node78");
+                tr.put("receiver","node22");
+                tr.put("category","electronics");
+                tr.put("price",1000.0);
+                tr.put("count",60);
+                tr.put("origin","arctic");
+                tr.put("fee",12.0);
+                transactions.add(tr);
+            }
+            normalNode.checkBlock(new Block(0,"pilabi",transactions));
 
             for(Block b: normalNode.cacheManager.getBlocksInCache()){
                 System.out.println(b.index);
