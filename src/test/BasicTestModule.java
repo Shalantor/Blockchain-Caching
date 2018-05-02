@@ -146,10 +146,11 @@ public class BasicTestModule {
             /*Normal node to check*/
             NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_S_1_2.txt",9898,1000,"localhost");
 
-            ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+            ArrayList<HashMap<String,Object>> transactions;
+            ArrayList<Block> blocks = new ArrayList<>();
 
             /*how many blocks*/
-            for(int i =0; i < 5; i++){
+            for(int i =0; i <= 5; i++){
                 transactions = new ArrayList<>();
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node78");
@@ -161,7 +162,11 @@ public class BasicTestModule {
                 tr.put("fee",12.0);
                 transactions.add(tr);
 
-                normalNode.checkBlock(new Block(i+1,"pilabi",transactions));
+                normalNode.checkBlock(new Block(i,"pilabi",transactions));
+            }
+
+            for(Block b: normalNode.cacheManager.getBlocksInCache()){
+                System.out.println(b.index);
             }
 
             System.out.println("Blocks in cache are " + normalNode.cacheManager.getBlocksInCache().size());

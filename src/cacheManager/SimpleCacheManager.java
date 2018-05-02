@@ -115,7 +115,7 @@ public class SimpleCacheManager extends CacheManager{
     public void addReceivedBlocks(ArrayList<Block> receivedBlocks, HashMap<String,Interest> interests){
 
         /*Insert them based on the order of their indexes*/
-        
+
         for(Block receivedBlock : receivedBlocks){
 
             if(!checkBlock(receivedBlock,interests)){

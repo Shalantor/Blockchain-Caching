@@ -10,7 +10,7 @@ import structures.SavedNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+/*TODO: Check add block, add received blocks and generally the score manager*/
 public class SimpleLimitedCacheManager extends CacheManager{
 
     private long timeLimit;

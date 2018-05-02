@@ -53,16 +53,9 @@ public class ScoreCacheManager extends CacheManager{
             return false;
         }
 
-        /*Check last block in cache*/
-        if(blocksInCache.get(blocksInCache.size() - 1).getScore() < scoreBlock.getScore()){
-            blocksInCache.add(scoreBlock);
-            sizeOfCachedBlocks += block.blockSize;
-            return true;
-        }
-
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
-            if(blocksInCache.get(i).getScore() > scoreBlock.getScore() ){
+            if(blocksInCache.get(i).getScore() >= scoreBlock.getScore() ){
                 blocksInCache.add(i,scoreBlock);
                 break;
             }
