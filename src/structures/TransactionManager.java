@@ -1,5 +1,6 @@
 package structures;
 
+import org.apache.commons.math3.distribution.ZipfDistribution;
 import structures.managerUtils.DoubleInterest;
 import structures.managerUtils.IntegerInterest;
 import structures.managerUtils.LongInterest;
@@ -612,7 +613,45 @@ public class TransactionManager {
 
     /*Create zipfian distribution*/
     public ArrayList<HashMap<String,Object>> createZipfianTransactions(int count){
+
+        ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+
+        /*Generate zipf distributions */
+        HashMap<String,ZipfDistribution> dist = new HashMap<>();
+        for(Map.Entry entry : data.entrySet()){
+            ZipfDistribution zipfDistribution = null;
+            HashMap<String,Object> info = (HashMap<String, Object>) entry.getValue();
+            switch ((String)info.get("type")){
+                case  STRING:
+                    String[] list = (String[]) info.get("possible_values");
+                    if(list == null){
+                        int max = Integer.parseInt((String) info.get("max"));
+                        zipfDistribution = new ZipfDistribution(max+1,1);
+                    }
+                    else{
+                        zipfDistribution = new ZipfDistribution(list.length,1);
+                    }
+                    break;
+                case DOUBLE:
+                    Double min = (Double) info.get("min");
+                    Double max = (Double) info.get("max");
+                    zipfDistribution = new ZipfDistribution((int)(max-min),1);
+
+                    break;
+                case LONG:
+                    Long lmin = (Long) info.get("min");
+                    Long lmax = (Long) info.get("max");
+                    zipfDistribution = new ZipfDistribution((int)(lmax-lmin),1);
+                    break;
+                case INTEGER:
+                    Integer imin = (Integer) info.get("min");
+                    Integer imax = (Integer) info.get("max");
+                    zipfDistribution = new ZipfDistribution((int)(imax-imin),1);
+                    break;
+            }
+            dist.put(entry.getKey().toString(),zipfDistribution);
+        }
         
-        return null;
+        return transactions;
     }
 }
