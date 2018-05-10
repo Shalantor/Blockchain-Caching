@@ -629,7 +629,7 @@ public class TransactionManager {
                         zipfDistribution = new ZipfDistribution(max+1,1);
                     }
                     else{
-                        zipfDistribution = new ZipfDistribution(list.length,1);
+                        zipfDistribution = new ZipfDistribution(list.length-1,1);
                     }
                     break;
                 case DOUBLE:
@@ -651,7 +651,45 @@ public class TransactionManager {
             }
             dist.put(entry.getKey().toString(),zipfDistribution);
         }
-        
+
+        /*Now generate */
+        for(int i =0; i < count; i++){
+            HashMap<String,Object> tr = new HashMap<>();
+            for(Map.Entry entry : data.entrySet()){
+                HashMap<String,Object> info = (HashMap<String, Object>) entry.getValue();
+                ZipfDistribution zipfDistribution = dist.get(entry.getKey().toString());
+                switch ((String)info.get("type")){
+                    case  STRING:
+                        String[] list = (String[]) info.get("possible_values");
+                        if(list == null){
+                            int max = Integer.parseInt((String) info.get("max"));
+                            String name = (String) info.get("name");
+                            tr.put(entry.getKey().toString(),name + zipfDistribution.sample());
+                        }
+                        else{
+                            tr.put(entry.getKey().toString(),list[zipfDistribution.sample()]);
+                        }
+                        break;
+                    case DOUBLE:
+                        Double min = (Double) info.get("min");
+                        Double max = (Double) info.get("max");
+                        tr.put(entry.getKey().toString(),(double) zipfDistribution.sample());
+                        break;
+                    case LONG:
+                        Long lmin = (Long) info.get("min");
+                        Long lmax = (Long) info.get("max");
+                        tr.put(entry.getKey().toString(),((long)zipfDistribution.sample()));
+                        break;
+                    case INTEGER:
+                        Integer imin = (Integer) info.get("min");
+                        Integer imax = (Integer) info.get("max");
+                        tr.put(entry.getKey().toString(),zipfDistribution.sample());
+                        break;
+                }
+            }
+            transactions.add(tr);
+        }
+
         return transactions;
     }
 }
