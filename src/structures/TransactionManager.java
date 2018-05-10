@@ -1,6 +1,7 @@
 package structures;
 
 import org.apache.commons.math3.distribution.ExponentialDistribution;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.apache.commons.math3.distribution.ZipfDistribution;
 import structures.managerUtils.DoubleInterest;
@@ -569,13 +570,14 @@ public class TransactionManager {
 
         Random generator = new Random();
         ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+        NormalDistribution normal = new NormalDistribution();
         for(int i =0; i < count; i++){
             HashMap<String,Object> tr = new HashMap<>();
             for(Map.Entry entry : data.entrySet()){
                 HashMap<String,Object> info = (HashMap<String, Object>) entry.getValue();
-                double gauss = generator.nextGaussian();
+                double gauss = normal.sample();
                 while(Math.abs(gauss) > 1.0){
-                    gauss = generator.nextGaussian();
+                    gauss = normal.sample();
                 }
                 switch ((String)info.get("type")){
                     case  STRING:
