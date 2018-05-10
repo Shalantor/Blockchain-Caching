@@ -89,6 +89,18 @@ public class TestUtilities {
         return transactions.get(0);
     }
 
+    public HashMap<String,Object> getTransactionPoisson(){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createPoissonTransactions(1);
+        return transactions.get(0);
+    }
+
+    public HashMap<String,Object> getTransactionsPoisson(int count){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createPoissonTransactions(count);
+        return transactions.get(0);
+    }
+
     public MinerNode createMiner(){
         /*Genesis block*/
         Block genesisBlock = new Block(0,"genesis",getTransactionsUniform(1));

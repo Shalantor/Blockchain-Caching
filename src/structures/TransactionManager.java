@@ -1,6 +1,7 @@
 package structures;
 
 import org.apache.commons.math3.distribution.ExponentialDistribution;
+import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.apache.commons.math3.distribution.ZipfDistribution;
 import structures.managerUtils.DoubleInterest;
 import structures.managerUtils.IntegerInterest;
@@ -755,4 +756,70 @@ public class TransactionManager {
 
         return transactions;
     }
+
+    /*Poisson distribution. With l = 4, the values after 10 are insignificant
+    * so we can safely assume that this is the max value.*/
+    public ArrayList<HashMap<String,Object>> createPoissonTransactions(int count){
+
+        ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+
+        /*Generate exponential distribution */
+        PoissonDistribution pois = new PoissonDistribution(4);
+        int maxPois = 10;
+
+        /*Now generate */
+        for(int i =0; i < count; i++){
+            HashMap<String,Object> tr = new HashMap<>();
+            for(Map.Entry entry : data.entrySet()){
+                HashMap<String,Object> info = (HashMap<String, Object>) entry.getValue();
+                int poisValue = pois.sample();
+                while(poisValue > 10){
+                    poisValue = pois.sample();
+                }
+                switch ((String)info.get("type")){
+                    case  STRING:
+                        String[] list = (String[]) info.get("possible_values");
+                        if(list == null){
+                            int max = Integer.parseInt((String) info.get("max"));
+                            String name = (String) info.get("name");
+                            int pos = poisValue * (max / maxPois);
+                            tr.put(entry.getKey().toString(),name + pos);
+                        }
+                        else{
+                            int newPoisValue = poisValue;
+                            while (newPoisValue >= list.length){
+                                newPoisValue = pois.sample();
+                            }
+                            tr.put(entry.getKey().toString(),list[newPoisValue]);
+                        }
+                        break;
+                    case DOUBLE:
+                        Double min = (Double) info.get("min");
+                        Double max = (Double) info.get("max");
+                        double value = (double)(poisValue * (max / maxPois));
+                        value = value < min ? value + min : value;
+                        tr.put(entry.getKey().toString(),value);
+                        break;
+                    case LONG:
+                        Long lmin = (Long) info.get("min");
+                        Long lmax = (Long) info.get("max");
+                        long lvalue = (long) (poisValue * (lmax / maxPois));
+                        lvalue = lvalue < lmin ? lvalue + lmin : lvalue;
+                        tr.put(entry.getKey().toString(),lvalue);
+                        break;
+                    case INTEGER:
+                        Integer imin = (Integer) info.get("min");
+                        Integer imax = (Integer) info.get("max");
+                        int ivalue = (int) (poisValue * (imax / maxPois));
+                        ivalue = ivalue < imin ? ivalue + imin : ivalue;
+                        tr.put(entry.getKey().toString(),ivalue);
+                        break;
+                }
+            }
+            transactions.add(tr);
+        }
+
+        return transactions;
+    }
+
 }
