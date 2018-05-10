@@ -609,4 +609,10 @@ public class TransactionManager {
 
         return transactions;
     }
+
+    /*Create zipfian distribution*/
+    public ArrayList<HashMap<String,Object>> createZipfianTransactions(int count){
+        
+        return null;
+    }
 }
