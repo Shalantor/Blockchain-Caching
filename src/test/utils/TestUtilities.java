@@ -77,6 +77,18 @@ public class TestUtilities {
         return transactions.get(0);
     }
 
+    public HashMap<String,Object> getTransactionExponential(){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createExponentialTransactions(1);
+        return transactions.get(0);
+    }
+
+    public HashMap<String,Object> getTransactionsExponential(int count){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createExponentialTransactions(count);
+        return transactions.get(0);
+    }
+
     public MinerNode createMiner(){
         /*Genesis block*/
         Block genesisBlock = new Block(0,"genesis",getTransactionsUniform(1));

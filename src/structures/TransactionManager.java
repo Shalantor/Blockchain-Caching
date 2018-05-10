@@ -1,5 +1,6 @@
 package structures;
 
+import org.apache.commons.math3.distribution.ExponentialDistribution;
 import org.apache.commons.math3.distribution.ZipfDistribution;
 import structures.managerUtils.DoubleInterest;
 import structures.managerUtils.IntegerInterest;
@@ -673,17 +674,79 @@ public class TransactionManager {
                     case DOUBLE:
                         Double min = (Double) info.get("min");
                         Double max = (Double) info.get("max");
-                        tr.put(entry.getKey().toString(),(double) zipfDistribution.sample());
+                        tr.put(entry.getKey().toString(),(double) zipfDistribution.sample() + min);
                         break;
                     case LONG:
                         Long lmin = (Long) info.get("min");
                         Long lmax = (Long) info.get("max");
-                        tr.put(entry.getKey().toString(),((long)zipfDistribution.sample()));
+                        tr.put(entry.getKey().toString(),((long)zipfDistribution.sample()) + lmin);
                         break;
                     case INTEGER:
                         Integer imin = (Integer) info.get("min");
                         Integer imax = (Integer) info.get("max");
-                        tr.put(entry.getKey().toString(),zipfDistribution.sample());
+                        tr.put(entry.getKey().toString(),zipfDistribution.sample() + imin);
+                        break;
+                }
+            }
+            transactions.add(tr);
+        }
+
+        return transactions;
+    }
+
+    /*Create exponential distribution. With a mean of 1 the exponential distribution
+    * after the value 5 is insignificant. So we can assume that 5 is the max value*/
+    public ArrayList<HashMap<String,Object>> createExponentialTransactions(int count){
+
+        ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
+
+        /*Generate exponential distribution */
+        ExponentialDistribution exp = new ExponentialDistribution(1);
+        int maxExp = 5;
+
+        /*Now generate */
+        for(int i =0; i < count; i++){
+            HashMap<String,Object> tr = new HashMap<>();
+            for(Map.Entry entry : data.entrySet()){
+                HashMap<String,Object> info = (HashMap<String, Object>) entry.getValue();
+                double expValue = exp.sample();
+                while(expValue > 5.0){
+                    expValue = exp.sample();
+                }
+                switch ((String)info.get("type")){
+                    case  STRING:
+                        String[] list = (String[]) info.get("possible_values");
+                        if(list == null){
+                            int max = Integer.parseInt((String) info.get("max"));
+                            String name = (String) info.get("name");
+                            int pos = (int) (expValue * (max / maxExp));
+                            tr.put(entry.getKey().toString(),name + pos);
+                        }
+                        else{
+                            int pos = (int) (expValue * (list.length / maxExp));
+                            tr.put(entry.getKey().toString(),list[pos]);
+                        }
+                        break;
+                    case DOUBLE:
+                        Double min = (Double) info.get("min");
+                        Double max = (Double) info.get("max");
+                        double value = expValue * (max / maxExp);
+                        value = value < min ? value + min : value;
+                        tr.put(entry.getKey().toString(),value);
+                        break;
+                    case LONG:
+                        Long lmin = (Long) info.get("min");
+                        Long lmax = (Long) info.get("max");
+                        long lvalue = (long) (expValue * (lmax / maxExp));
+                        lvalue = lvalue < lmin ? lvalue + lmin : lvalue;
+                        tr.put(entry.getKey().toString(),lvalue);
+                        break;
+                    case INTEGER:
+                        Integer imin = (Integer) info.get("min");
+                        Integer imax = (Integer) info.get("max");
+                        int ivalue = (int) (expValue * (imax / maxExp));
+                        ivalue = ivalue < imin ? ivalue + imin : ivalue;
+                        tr.put(entry.getKey().toString(),ivalue);
                         break;
                 }
             }
