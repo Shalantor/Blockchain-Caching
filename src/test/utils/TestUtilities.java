@@ -65,6 +65,18 @@ public class TestUtilities {
         return transactions.get(0);
     }
 
+    public HashMap<String,Object> getTransactionZipfian(){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createZipfianTransactions(1);
+        return transactions.get(0);
+    }
+
+    public HashMap<String,Object> getTransactionsZipfian(int count){
+        ArrayList<HashMap<String,Object>> transactions;
+        transactions = manager.createZipfianTransactions(count);
+        return transactions.get(0);
+    }
+
     public MinerNode createMiner(){
         /*Genesis block*/
         Block genesisBlock = new Block(0,"genesis",getTransactionsUniform(1));

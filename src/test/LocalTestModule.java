@@ -27,7 +27,7 @@ public class LocalTestModule {
         for(int i =0; i < 500; i++){
             while(true) {
                 /*Add transactions until enough for block*/
-                transaction = testUtilities.getTransactionNormal();
+                transaction = testUtilities.getTransactionZipfian();
                 block = minerNode.addTransactionLocal(transaction);
                 if (block != null) {
                     break;
