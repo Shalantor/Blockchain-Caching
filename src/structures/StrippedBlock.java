@@ -14,6 +14,8 @@ public class StrippedBlock extends Block{
 
     public StrippedBlock(Block block, HashMap<String,Interest> interests){
         index = block.index;
+        /*TODO: Make below thing less hacky*/
+        super.index = block.index;
         removeTransactions(block.transactions,interests);
         blockSize = Block.calculateTransactionSize(keptTransactions,16);/*16 is for two header fields*/
     }

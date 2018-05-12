@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 import structures.SavedNode;
+import structures.StrippedBlock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public class SimpleCacheManager extends CacheManager{
         else if(blocksInCache.get(blocksInCache.size() - 1).index == block.index){
             return false;
         }
+
 
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
