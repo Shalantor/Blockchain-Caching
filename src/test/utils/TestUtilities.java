@@ -41,6 +41,13 @@ public class TestUtilities {
 
     }
 
+    public void initManager(){
+        manager = new TransactionManager(managerFilePath);
+        manager.generateInterestFiles(interestFilePath,4,10,destPath);
+        manager.generateMultipleInterestsFiles(destPath2,destPath,4,1);
+        manager.generateMultipleInterestsFiles(destPath3,destPath,4,2);
+    }
+
     public ArrayList<HashMap<String,Object>> getTransactionsUniform(int count){
         ArrayList<HashMap<String,Object>> transactions;
         transactions = manager.createRandomTransactions(count);

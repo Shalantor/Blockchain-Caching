@@ -19,6 +19,7 @@ public class BasicTestModule {
     public static final int JUST_CHECK_FUNCTIONALITY = 0;
     public static final int CHECK_FULL_NODE = 1;
     public static final int CHECK_NORMAL_NODE = 2;
+    public static final int CHECK_LIGHT_NODE = 3;
 
     private int testType;
     private String interestFilePath = "src/test/examples/marketplace_example.txt";
@@ -187,6 +188,42 @@ public class BasicTestModule {
 
             System.out.println("Blocks in cache are " + normalNode.cacheManager.getBlocksInCache().size());
 
+        }
+        else if(testType == CHECK_LIGHT_NODE){
+            TestUtilities testUtilities = new TestUtilities();
+            testUtilities.initManager();
+
+            /*create miner node*/
+            MinerNode minerNode = testUtilities.createMiner();
+
+            /*Create light node*/
+            LightNode lightNode = new LightNode(configFilePath,destPath + "1_S_1_2.txt",9898,1000,"localhost");
+
+            /*How many blocks to create?*/
+            Block block;
+            HashMap<String,Object> tr;
+
+            for(int i =0; i < 10; i++){
+                while(true) {
+                    /*Add transactions until enough for block*/
+                    tr = new HashMap<>();
+                    tr.put("sender","node78");
+                    tr.put("receiver","node22");
+                    tr.put("category","electronics");
+                    tr.put("price",1000.0);
+                    tr.put("count",60);
+                    tr.put("origin","arctic");
+                    tr.put("fee",12.0);
+                    block = minerNode.addTransactionLocal(tr);
+                    if (block != null) {
+                        break;
+                    }
+                }
+                lightNode.checkBlock(block);
+
+            }
+            System.out.print("SIZE OF BLOCK LIST: ");
+            System.out.println(lightNode.cacheManager.getBlocksInCache().size());
         }
     }
 }
