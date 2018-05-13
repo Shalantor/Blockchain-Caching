@@ -29,6 +29,9 @@ public class TestUtilities {
         destPath = EXAMPLE_START + path + "/one_interest/";
         destPath2 = EXAMPLE_START + path + "/two_interests/";
         destPath3 = EXAMPLE_START + path + "/three_interests/";
+
+        /*Delete directories*/
+
     }
 
     public void initLocal(int numNormal,int numLight){
