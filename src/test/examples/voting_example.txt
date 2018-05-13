@@ -2,5 +2,6 @@ voter               string    node   -    100
 candidate           string    sly ratchet paul geralt clank franklin atreus
 candidate_age       integer   0  80  5
 candidate_origin    string    germany greece novalis skyrim nether mars sun midgard italy
+candidate_party     string    dwarves giants eagles bulls crows 
 voter_age           integer   0  100 5
 voter_origin        string    italy france luxemburg andorra spain portugal iceland
