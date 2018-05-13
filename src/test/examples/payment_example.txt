@@ -1,6 +1,6 @@
 sender       string   node   -   100
 receiver     string   node   -   100
-amount       double   0    2000.0   4
-fees         double   0    30.0 4
-num_inputs   integer  1    10   4
-num_outputs  integer  1    10   4
+amount       double   0    2000.0   10
+fees         double   0    30.0 10
+num_inputs   integer  1    10   5
+num_outputs  integer  1    10   5
