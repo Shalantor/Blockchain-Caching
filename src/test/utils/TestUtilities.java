@@ -12,17 +12,23 @@ import java.util.HashMap;
 
 public class TestUtilities {
 
-    private String interestFilePath = "src/test/examples/marketplace_example.txt";
+    private static final String EXAMPLE_END = "_example.txt";
+    private static final String EXAMPLE_START = "src/test/examples/";
+    private String interestFilePath;
     private String configFilePath = "src/test/resources/node_config.txt";
-    private String managerFilePath = "src/test/examples/marketplace_example.txt";
-    private String destPath = "src/test/examples/marketplace/one_interest/";
-    private String destPath2 = "src/test/examples/marketplace/two_interests/";
-    private String destPath3 = "src/test/examples/marketplace/three_interests/";
+    private String managerFilePath;
+    private String destPath;
+    private String destPath2;
+    private String destPath3;
     private TransactionManager manager;
     public Node[] nodes;
 
-    public TestUtilities(){
-
+    public TestUtilities(String path){
+        interestFilePath = EXAMPLE_START + path + EXAMPLE_END;
+        managerFilePath = interestFilePath;
+        destPath = EXAMPLE_START + path + "/one_interest/";
+        destPath2 = EXAMPLE_START + path + "/two_interests/";
+        destPath3 = EXAMPLE_START + path + "/three_interests/";
     }
 
     public void initLocal(int numNormal,int numLight){

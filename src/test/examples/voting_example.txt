@@ -1,4 +1,4 @@
 voter      string    node   -    100
-candidate  string    sly ratchet paul geralt
+candidate  string    sly ratchet paul geralt clank franklin atreus
 age        integer   0  80  4
 origin     string    germany greece novalis skyrim nether mars sun

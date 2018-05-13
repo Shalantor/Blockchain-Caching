@@ -190,7 +190,7 @@ public class BasicTestModule {
 
         }
         else if(testType == CHECK_LIGHT_NODE){
-            TestUtilities testUtilities = new TestUtilities();
+            TestUtilities testUtilities = new TestUtilities("marketplace");
             testUtilities.initManager();
 
             /*create miner node*/

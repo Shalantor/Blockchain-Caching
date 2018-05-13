@@ -345,7 +345,7 @@ public class TransactionManager {
                     String fileName = "1_I_" + fileCounter + ".txt";
                     fileCounter ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tinteger\t1\t" + qualifier + "\t" + value);
+                    out.println(d.getName() + "\tinteger\t1\t" + qualifier + "\t" + (int)value);
                     out.flush();
                     out.close();
 
