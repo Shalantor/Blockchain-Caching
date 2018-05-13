@@ -17,7 +17,7 @@ public class LocalTestModule {
     private static final String PAYMENT = "payment";
 
     public static void main(String[] args) {
-        TestUtilities testUtilities = new TestUtilities(VOTING);
+        TestUtilities testUtilities = new TestUtilities(MARKETPLACE);
 
         /*create normal and light nodes. The nodes are now setup*/
         testUtilities.initLocal(100,50);

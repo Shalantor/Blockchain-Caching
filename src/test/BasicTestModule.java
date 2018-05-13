@@ -3,12 +3,15 @@ package test;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import nodes.*;
+import org.apache.commons.io.FileUtils;
 import structures.Block;
 import structures.Interest;
 import structures.TransactionManager;
 import test.utils.TestInfo;
 import test.utils.TestUtilities;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

@@ -4,9 +4,12 @@ import nodes.LightNode;
 import nodes.MinerNode;
 import nodes.Node;
 import nodes.NormalNode;
+import org.apache.commons.io.FileUtils;
 import structures.Block;
 import structures.TransactionManager;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,6 +34,19 @@ public class TestUtilities {
         destPath3 = EXAMPLE_START + path + "/three_interests/";
 
         /*Delete directories*/
+        try{
+            FileUtils.deleteDirectory(new File(destPath));
+            FileUtils.deleteDirectory(new File(destPath2));
+            FileUtils.deleteDirectory(new File(destPath3));
+        }
+        catch (IOException ex){
+            System.out.println("trololol");
+        }
+
+        /*recreate them*/
+        new File(destPath).mkdirs();
+        new File(destPath2).mkdirs();
+        new File(destPath3).mkdirs();
 
     }
 
