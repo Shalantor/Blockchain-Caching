@@ -50,15 +50,13 @@ public class TestUtilities {
 
     }
 
-    public void initLocal(int numNormal,int numLight){
+    public void initLocal(int numNormal,int numLight, int[] normalPerc,int[] lightPerc){
         manager = new TransactionManager(managerFilePath);
         manager.generateInterestFiles(interestFilePath,100,destPath);
         manager.generateMultipleInterestsFiles(destPath2,destPath,5,1);
         manager.generateMultipleInterestsFiles(destPath3,destPath,5,2);
 
         /*Percentages*/
-        int[] normalPerc = new int[]{70,20,10};
-        int[] lightPerc = new int[]{50,30,20};
         String[] filePaths = new String[]{destPath,destPath2,destPath3};
 
         TestInfo info = new TestInfo(numNormal,numLight,normalPerc,lightPerc);
