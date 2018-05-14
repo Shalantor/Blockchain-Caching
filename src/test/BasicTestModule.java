@@ -141,7 +141,7 @@ public class BasicTestModule {
                 interestsToSend.add(interests.get(key));
             }
 
-            System.out.println("SO MANY BLOCKS " + fullNode.getBlocksFromInterests(interestsToSend,10));
+            System.out.println("SO MANY BLOCKS " + fullNode.getBlocksFromInterests(interestsToSend,100).size());
         }
         else if(testType == CHECK_NORMAL_NODE){
             /*Test normal node*/

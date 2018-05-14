@@ -40,7 +40,9 @@ public class DiskStorageManager extends StorageManager{
             MongoClient client = new MongoClient(DATABASE_ADDRESS,27017);
             DB db = client.getDB(DATABASE_NAME);
             dbCollection = db.getCollection(COLLECTION_NAME);
-            dbCollection.drop();
+            //dbCollection.drop();
+            dbCollection.createIndex("index");
+            dbCollection.createIndex("timestamp");
         }
         catch (UnknownHostException ex){
             ex.printStackTrace();
@@ -104,6 +106,7 @@ public class DiskStorageManager extends StorageManager{
         ArrayList<Block> blocks = new ArrayList<>();
         HashMap<Integer,Block> returnSet = new HashMap<>();
 
+        long start = System.nanoTime();
         for(Interest i : interests){
             if(i.type == Interest.STRING_TYPE){
 
@@ -169,6 +172,10 @@ public class DiskStorageManager extends StorageManager{
 
         /*Now sort*/
         blocks.sort(Block::compareTo);
+
+        long stop = System.nanoTime() - start;
+
+        System.out.println("TIME ELAPSED : " + stop);
 
         return blocks;
     }
