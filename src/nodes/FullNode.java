@@ -6,6 +6,7 @@ import storage.DiskStorageManager;
 import storage.MemoryStorageManager;
 import storage.StorageManager;
 import structures.Block;
+import structures.Interest;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -139,6 +140,10 @@ public class FullNode extends Node{
 
     public int getSize(){
         return storageManager.getSize();
+    }
+
+    public ArrayList<Block> getBlocksFromInterests(ArrayList<Interest> interest,int limit){
+        return storageManager.getBlockFromInterests(interest,limit);
     }
 
 }

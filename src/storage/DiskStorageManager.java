@@ -99,12 +99,14 @@ public class DiskStorageManager extends StorageManager{
     }
 
     @Override
-    public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests){
+    public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests,int limit){
 
         ArrayList<Block> blocks = new ArrayList<>();
         HashMap<Integer,Block> returnSet = new HashMap<>();
+        int count;
 
         for(Interest i : interests){
+            count = 0;
             if(i.type == Interest.STRING_TYPE){
 
                 /*values that the node is interested in*/
@@ -114,11 +116,12 @@ public class DiskStorageManager extends StorageManager{
                 }
                 BasicDBObject query = new BasicDBObject("$or",criteria);
                 DBCursor cursor = dbCollection.find(query);
-                while (cursor.hasNext()){
+                while (cursor.hasNext() && count <= limit){
                     JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
                     jsonObject.remove("_id");
                     Block blockToAdd = new Block(jsonObject,node);
                     returnSet.put(blockToAdd.index,blockToAdd);
+                    count++;
                 }
             }
             else if(i.type == Interest.NUMERIC_TYPE){
@@ -151,11 +154,12 @@ public class DiskStorageManager extends StorageManager{
                 DBCursor cursor = dbCollection.find(new BasicDBObject("transactions." + i.interestName,query));
 
                 /*Add to blocks to return*/
-                while (cursor.hasNext()){
+                while (cursor.hasNext() && count <= limit){
                     JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
                     jsonObject.remove("_id");
                     Block blockToAdd = new Block(jsonObject,node);
                     returnSet.put(blockToAdd.index,blockToAdd);
+                    count++;
                 }
 
             }

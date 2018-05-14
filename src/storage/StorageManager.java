@@ -67,7 +67,7 @@ public class StorageManager {
 
     }
 
-    public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests){
+    public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests,int limit){
         return null;
     }
 }

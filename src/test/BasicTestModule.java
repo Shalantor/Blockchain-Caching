@@ -92,6 +92,7 @@ public class BasicTestModule {
             //minerNode.groupManager.printInfo();
         }
         else if(testType == CHECK_FULL_NODE){
+            System.out.println("database");
             /*Test full node*/
             TransactionManager manager = new TransactionManager(managerFilePath);
             Block genesis = new Block(0,"genesis",manager.createNormalTransactions(1));
@@ -100,7 +101,8 @@ public class BasicTestModule {
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
             /*how many blocks*/
-            for(int i =0; i < 5; i++){
+            for(int i =0; i < 10000; i++){
+                System.out.println(i);
                 transactions = new ArrayList<>();
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node78");
@@ -115,7 +117,7 @@ public class BasicTestModule {
                 fullNode.addBlock(new Block(i+1,"pilabi",transactions));
             }
 
-            for(int i =5; i < 10; i++){
+            for(int i =5; i < 0; i++){
                 transactions = new ArrayList<>();
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node78");
@@ -131,17 +133,15 @@ public class BasicTestModule {
             }
 
             /*Indices we want back*/
-            NormalNode normalNode = new NormalNode(configFilePath,destPath2 + "2_S_1_S_1_14.txt",9898,1000,"localhost");
+            NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_S_1_9.txt",9898,1000,"localhost");
 
-            System.out.println(fullNode.storageManager.blockChainIndex);
-            System.out.println("-------------------------------------");
             HashMap<String,Interest> interests = normalNode.interests;
             ArrayList<Interest> interestsToSend = new ArrayList<>();
             for( String key : interests.keySet()){
                 interestsToSend.add(interests.get(key));
             }
 
-            System.out.println(fullNode.storageManager.getBlockFromInterests(interestsToSend));
+            System.out.println("SO MANY BLOCKS " + fullNode.getBlocksFromInterests(interestsToSend,10));
         }
         else if(testType == CHECK_NORMAL_NODE){
             /*Test normal node*/

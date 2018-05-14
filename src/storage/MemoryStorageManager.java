@@ -116,12 +116,14 @@ public class MemoryStorageManager extends StorageManager{
     }
 
     @Override
-    public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests){
+    public ArrayList<Block> getBlockFromInterests(ArrayList<Interest> interests,int limit){
 
         ArrayList<Block> blocks = new ArrayList<>();
         HashMap<Integer,Block> returnSet = new HashMap<>();
+        int count;
 
         for(Interest i : interests){
+            count = 0;
             if(i.type == Interest.STRING_TYPE){
 
                 /*values that the node is interested in*/
@@ -133,6 +135,10 @@ public class MemoryStorageManager extends StorageManager{
                     for(BlockExplorer b : indices){
                         Block retrievedBlock = blockChain.get(b.blockIndex);
                         returnSet.put(retrievedBlock.index,retrievedBlock);
+                        count++;
+                        if(count > limit){
+                            break;
+                        }
                     }
                 }
 
@@ -178,6 +184,10 @@ public class MemoryStorageManager extends StorageManager{
                 for(int j = start; j < end; j++){
                     Block retrievedBlock = blockChain.get(list.get(j).blockIndex);
                     returnSet.put(retrievedBlock.index,retrievedBlock);
+                    count++;
+                    if(count > limit){
+                        break;
+                    }
                 }
 
             }
