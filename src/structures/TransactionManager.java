@@ -141,7 +141,7 @@ public class TransactionManager {
 
     /*Generate interest files for nodes from a given file with possible
     * values for each transaction variable. Then save them into separate files*/
-    public void generateInterestFiles(String filePath,int breakPoints, int maxInterests,
+    public void generateInterestFiles(String filePath, int maxInterests,
                                       String destPath){
 
         /*Open and read from example file*/
@@ -217,6 +217,7 @@ public class TransactionManager {
         /*First create simple files, so loop over each list*/
         int fileCounter = 0;
         int count = 0;
+        int breakPoints = 0;
 
         /*Strings*/
         for(StringInterest s : stringInterests){
@@ -258,6 +259,7 @@ public class TransactionManager {
         /*Doubles*/
         count = 0;
         for(DoubleInterest d : doubleInterests){
+            breakPoints = d.getBreakpoints();
             double value = 0;
             for(int i = 0; i < breakPoints-1; i++){
                 try{
@@ -294,6 +296,7 @@ public class TransactionManager {
         count = 0;
         for(LongInterest d : longInterests){
             long value = 0;
+            breakPoints = d.getBreakpoints();
             for(int i = 0; i < breakPoints-1; i++){
                 try{
                     value += (d.getMaxValue() - d.getMinValue())/breakPoints;
@@ -329,6 +332,7 @@ public class TransactionManager {
         count = 0;
         for(IntegerInterest d : integerInterests){
             int value = 0;
+            breakPoints = d.getBreakpoints();
             for(int i = 0; i < breakPoints-1; i++){
                 try{
                     value += (d.getMaxValue() - d.getMinValue())/breakPoints;

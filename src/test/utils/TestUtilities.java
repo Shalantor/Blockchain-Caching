@@ -52,9 +52,9 @@ public class TestUtilities {
 
     public void initLocal(int numNormal,int numLight){
         manager = new TransactionManager(managerFilePath);
-        manager.generateInterestFiles(interestFilePath,4,10,destPath);
-        manager.generateMultipleInterestsFiles(destPath2,destPath,4,1);
-        manager.generateMultipleInterestsFiles(destPath3,destPath,4,2);
+        manager.generateInterestFiles(interestFilePath,100,destPath);
+        manager.generateMultipleInterestsFiles(destPath2,destPath,5,1);
+        manager.generateMultipleInterestsFiles(destPath3,destPath,5,2);
 
         /*Percentages*/
         int[] normalPerc = new int[]{70,20,10};
@@ -68,7 +68,7 @@ public class TestUtilities {
 
     public void initManager(){
         manager = new TransactionManager(managerFilePath);
-        manager.generateInterestFiles(interestFilePath,4,10,destPath);
+        manager.generateInterestFiles(interestFilePath,100,destPath);
         manager.generateMultipleInterestsFiles(destPath2,destPath,4,1);
         manager.generateMultipleInterestsFiles(destPath3,destPath,4,2);
     }
