@@ -2,6 +2,7 @@ package storage;
 
 import com.mongodb.*;
 import com.mongodb.util.JSON;
+import com.sun.xml.internal.ws.util.StringUtils;
 import nodes.Node;
 import org.json.JSONObject;
 import storage.storageUtils.BlockExplorer;
@@ -40,7 +41,7 @@ public class DiskStorageManager extends StorageManager{
             MongoClient client = new MongoClient(DATABASE_ADDRESS,27017);
             DB db = client.getDB(DATABASE_NAME);
             dbCollection = db.getCollection(COLLECTION_NAME);
-            //dbCollection.drop();
+            dbCollection.drop();
             dbCollection.createIndex("index");
             dbCollection.createIndex("timestamp");
         }

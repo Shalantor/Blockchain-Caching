@@ -101,21 +101,23 @@ public class BasicTestModule {
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
             /*how many blocks*/
-            /*for(int i =0; i < 1000000; i++){
+            for(int i =0; i < 100000; i++){
                 System.out.println(i);
                 transactions = new ArrayList<>();
-                HashMap<String,Object> tr = new HashMap<>();
-                tr.put("sender","node78");
-                tr.put("receiver","node22");
-                tr.put("category","books");
-                tr.put("price",1000.0);
-                tr.put("count",60);
-                tr.put("origin","arctic");
-                tr.put("fee",12.0);
-                transactions.add(tr);
+                for(int j = 0; j < 10; j++){
+                    HashMap<String,Object> tr = new HashMap<>();
+                    tr.put("sender","node78");
+                    tr.put("receiver","node22");
+                    tr.put("category","books");
+                    tr.put("price",1000.0);
+                    tr.put("count",60);
+                    tr.put("origin","arctic");
+                    tr.put("fee",12.0);
+                    transactions.add(tr);
+                }
 
                 fullNode.addBlock(new Block(i+1,"pilabi",transactions));
-            }*/
+            }
 
             for(int i =5; i < 0; i++){
                 transactions = new ArrayList<>();
@@ -133,7 +135,7 @@ public class BasicTestModule {
             }
 
             /*Indices we want back*/
-            NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_S_1_9.txt",9898,1000,"localhost");
+            NormalNode normalNode = new NormalNode(configFilePath,destPath + "1_D_21.txt",9898,1000,"localhost");
 
             HashMap<String,Interest> interests = normalNode.interests;
             ArrayList<Interest> interestsToSend = new ArrayList<>();
