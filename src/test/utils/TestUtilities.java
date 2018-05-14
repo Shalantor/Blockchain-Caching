@@ -60,7 +60,7 @@ public class TestUtilities {
         String[] filePaths = new String[]{destPath,destPath2,destPath3};
 
         TestInfo info = new TestInfo(numNormal,numLight,normalPerc,lightPerc);
-        nodes = info.generateInterests(filePaths,configFilePath,7001,5000,"localhost");
+        nodes = info.generateInterestsNormal(filePaths,configFilePath,7001,5000,"localhost");
 
     }
 
