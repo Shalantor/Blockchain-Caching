@@ -5,11 +5,13 @@ public class DoubleInterest {
     private String name;
     private Double minValue;
     private Double maxValue;
+    private int breakpoints;
 
-    public DoubleInterest(String name,Double minValue, Double maxValue){
+    public DoubleInterest(String name,Double minValue, Double maxValue, int breakpoints){
         this.name = name;
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.breakpoints = breakpoints;
     }
 
     public String getName() {
@@ -22,5 +24,9 @@ public class DoubleInterest {
 
     public Double getMaxValue() {
         return maxValue;
+    }
+
+    public int getBreakpoints(){
+        return breakpoints;
     }
 }

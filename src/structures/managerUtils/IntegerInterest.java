@@ -5,11 +5,13 @@ public class IntegerInterest {
     private String name;
     private Integer minValue;
     private Integer maxValue;
+    private int breakpoints;
 
-    public IntegerInterest(String name,Integer minValue, Integer maxValue){
+    public IntegerInterest(String name,Integer minValue, Integer maxValue, int breakpoints){
         this.name = name;
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.breakpoints = breakpoints;
     }
 
     public String getName() {
@@ -22,5 +24,9 @@ public class IntegerInterest {
 
     public Integer getMaxValue() {
         return maxValue;
+    }
+
+    public int getBreakpoints(){
+        return breakpoints;
     }
 }

@@ -17,7 +17,7 @@ public class LocalTestModule {
     private static final String PAYMENT = "payment";
 
     public static void main(String[] args) {
-        TestUtilities testUtilities = new TestUtilities(PAYMENT);
+        TestUtilities testUtilities = new TestUtilities(VOTING);
 
         /*create normal and light nodes. The nodes are now setup*/
         testUtilities.initLocal(100,50);
@@ -32,7 +32,8 @@ public class LocalTestModule {
         for(int i =0; i < 500; i++){
             while(true) {
                 /*Add transactions until enough for block*/
-                transaction = testUtilities.getTransactionExponential();
+                transaction = testUtilities.getTransactionUniform();
+                System.out.println(transaction);
                 block = minerNode.addTransactionLocal(transaction);
                 if (block != null) {
                     break;
@@ -53,13 +54,13 @@ public class LocalTestModule {
 
         for(Node n : nodes){
             if(n instanceof NormalNode){
-                System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
+                //System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
                 if(((NormalNode) n).cacheManager.getBlocksInCache().size() >= 450){
                     //((NormalNode) n).printInterests();
                 }
             }
             else if(n instanceof LightNode){
-                System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
+                //System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
                 if(((LightNode) n).cacheManager.getBlocksInCache().size() >= 450){
                     //((LightNode) n).printInterests();
                 }
