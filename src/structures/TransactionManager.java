@@ -604,12 +604,12 @@ public class TransactionManager {
                     case LONG:
                         Long lmin = (Long) info.get("min");
                         Long lmax = (Long) info.get("max");
-                        tr.put(entry.getKey().toString(),((long)(Math.abs(gauss)*lmax)) + lmin);
+                        tr.put(entry.getKey().toString(),(long)((Math.abs(gauss)*lmax)) + lmin);
                         break;
                     case INTEGER:
                         Integer imin = (Integer) info.get("min");
                         Integer imax = (Integer) info.get("max");
-                        tr.put(entry.getKey().toString(),((int)Math.abs(gauss) * imax) + imin);
+                        tr.put(entry.getKey().toString(),(int)(Math.abs(gauss) * imax) + imin);
                         break;
                 }
             }

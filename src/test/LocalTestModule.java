@@ -17,7 +17,7 @@ public class LocalTestModule {
     private static final String PAYMENT = "payment";
 
     public static void main(String[] args) {
-        TestUtilities testUtilities = new TestUtilities(VOTING);
+        TestUtilities testUtilities = new TestUtilities(MARKETPLACE);
 
         /*create normal and light nodes. The nodes are now setup*/
         testUtilities.initLocal(100,50);
@@ -32,7 +32,7 @@ public class LocalTestModule {
         for(int i =0; i < 500; i++){
             while(true) {
                 /*Add transactions until enough for block*/
-                transaction = testUtilities.getTransactionUniform();
+                transaction = testUtilities.getTransactionNormal();
                 System.out.println(transaction);
                 block = minerNode.addTransactionLocal(transaction);
                 if (block != null) {
