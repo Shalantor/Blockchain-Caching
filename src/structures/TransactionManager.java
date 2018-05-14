@@ -173,15 +173,15 @@ public class TransactionManager {
                         break;
                     case DOUBLE:
                         doubleInterests.add(new DoubleInterest(info[0],
-                                Double.parseDouble(info[2]),Double.parseDouble(info[3])));
+                                Double.parseDouble(info[2]),Double.parseDouble(info[3]),Integer.parseInt(info[4])));
                         break;
                     case LONG:
                         longInterests.add(new LongInterest(info[0],
-                                Long.parseLong(info[2]),Long.parseLong(info[3])));
+                                Long.parseLong(info[2]),Long.parseLong(info[3]),Integer.parseInt(info[4])));
                         break;
                     case INTEGER:
                         integerInterests.add(new IntegerInterest(info[0],
-                                Integer.parseInt(info[2]),Integer.parseInt(info[3])));
+                                Integer.parseInt(info[2]),Integer.parseInt(info[3]),Integer.parseInt(info[4])));
                         break;
                 }
 
