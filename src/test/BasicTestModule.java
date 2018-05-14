@@ -101,7 +101,7 @@ public class BasicTestModule {
             ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
 
             /*how many blocks*/
-            for(int i =0; i < 10000; i++){
+            /*for(int i =0; i < 1000000; i++){
                 System.out.println(i);
                 transactions = new ArrayList<>();
                 HashMap<String,Object> tr = new HashMap<>();
@@ -115,7 +115,7 @@ public class BasicTestModule {
                 transactions.add(tr);
 
                 fullNode.addBlock(new Block(i+1,"pilabi",transactions));
-            }
+            }*/
 
             for(int i =5; i < 0; i++){
                 transactions = new ArrayList<>();
