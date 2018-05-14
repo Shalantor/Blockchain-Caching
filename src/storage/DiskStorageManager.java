@@ -103,10 +103,8 @@ public class DiskStorageManager extends StorageManager{
 
         ArrayList<Block> blocks = new ArrayList<>();
         HashMap<Integer,Block> returnSet = new HashMap<>();
-        int count;
 
         for(Interest i : interests){
-            count = 0;
             if(i.type == Interest.STRING_TYPE){
 
                 /*values that the node is interested in*/
@@ -115,13 +113,12 @@ public class DiskStorageManager extends StorageManager{
                     criteria.add(new BasicDBObject("transactions." + i.interestName,value));
                 }
                 BasicDBObject query = new BasicDBObject("$or",criteria);
-                DBCursor cursor = dbCollection.find(query);
-                while (cursor.hasNext() && count <= limit){
+                DBCursor cursor = dbCollection.find(query).sort(new BasicDBObject("index",-1)).limit(limit);
+                while (cursor.hasNext()){
                     JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
                     jsonObject.remove("_id");
                     Block blockToAdd = new Block(jsonObject,node);
                     returnSet.put(blockToAdd.index,blockToAdd);
-                    count++;
                 }
             }
             else if(i.type == Interest.NUMERIC_TYPE){
@@ -151,15 +148,15 @@ public class DiskStorageManager extends StorageManager{
                 /*numeric query*/
                 BasicDBObject query = new BasicDBObject(numericOperator,value);
 
-                DBCursor cursor = dbCollection.find(new BasicDBObject("transactions." + i.interestName,query));
+                DBCursor cursor = dbCollection.find(new BasicDBObject("transactions." + i.interestName,query))
+                        .sort(new BasicDBObject("index",-1)).limit(limit);
 
                 /*Add to blocks to return*/
-                while (cursor.hasNext() && count <= limit){
+                while (cursor.hasNext()){
                     JSONObject jsonObject = new JSONObject(cursor.next().toString().trim());
                     jsonObject.remove("_id");
                     Block blockToAdd = new Block(jsonObject,node);
                     returnSet.put(blockToAdd.index,blockToAdd);
-                    count++;
                 }
 
             }

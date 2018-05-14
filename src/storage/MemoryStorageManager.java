@@ -120,10 +120,9 @@ public class MemoryStorageManager extends StorageManager{
 
         ArrayList<Block> blocks = new ArrayList<>();
         HashMap<Integer,Block> returnSet = new HashMap<>();
-        int count;
+        int count = 0;
 
         for(Interest i : interests){
-            count = 0;
             if(i.type == Interest.STRING_TYPE){
 
                 /*values that the node is interested in*/
