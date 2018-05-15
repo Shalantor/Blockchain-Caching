@@ -25,6 +25,8 @@ public class TestUtilities {
     private String destPath3;
     private TransactionManager manager;
     public Node[] nodes;
+    public NormalNode[] normalNodes;
+    public LightNode[] lightNodes;
 
     public TestUtilities(String path){
         interestFilePath = EXAMPLE_START + path + EXAMPLE_END;
@@ -60,7 +62,21 @@ public class TestUtilities {
         String[] filePaths = new String[]{destPath,destPath2,destPath3};
 
         TestInfo info = new TestInfo(numNormal,numLight,normalPerc,lightPerc);
-        nodes = info.generateInterestsNormal(filePaths,configFilePath,7001,5000,"localhost");
+        nodes = info.generateInterestsNormal(filePaths,configFilePath,7000,5000,"localhost");
+        normalNodes = new NormalNode[numNormal];
+        lightNodes = new LightNode[numLight];
+
+        int countNormal=0,countLight=0;
+        for(Node n : nodes){
+            if(n instanceof NormalNode){
+                normalNodes[countNormal] =(NormalNode) n;
+                countNormal++;
+            }
+            else if(n instanceof LightNode){
+                lightNodes[countLight] =(LightNode) n;
+                countLight++;
+            }
+        }
 
     }
 

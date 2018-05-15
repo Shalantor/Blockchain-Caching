@@ -402,7 +402,8 @@ public class Node implements Runnable{
                     }
                 }
                 catch (IOException ex){
-                    System.out.println("El no socketo de la creato");
+                    ex.printStackTrace();
+                    System.out.println("El no socketo de la creato 1");
                     System.exit(1);
                 }
             }
@@ -449,7 +450,7 @@ public class Node implements Runnable{
                             }
                         }
                         catch (IOException ex){
-                            System.out.println("El no socketo de la creato");
+                            System.out.println("El no socketo de la creato2 ");
                             System.exit(1);
                         }
                     }
@@ -514,7 +515,7 @@ public class Node implements Runnable{
                             }
                         }
                         catch (IOException ex){
-                            System.out.println("El no socketo de la creato");
+                            System.out.println("El no socketo de la creato3");
                             System.exit(1);
                         }
                     }

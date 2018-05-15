@@ -3,6 +3,7 @@ package test;
 import nodes.*;
 import structures.Block;
 import structures.TransactionManager;
+import test.utils.TestUtilities;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.Scanner;
 public class FunctionalityTestModule {
 
     private static int START = 7000;
-    private static int STOP = 7050;
+    private static int STOP = 7021;
     private static String PREFIX = "src/test/examples/";
     private static String SUFFIX = "_example.txt";
     private static final String VOTING = "voting";
@@ -24,6 +25,10 @@ public class FunctionalityTestModule {
         /*create transactions*/
         TransactionManager manager = new TransactionManager(PREFIX + MARKETPLACE + SUFFIX);
 
+        TestUtilities testUtilities = new TestUtilities(MARKETPLACE);
+
+        /*create normal and light nodes. The nodes are now setup*/
+        testUtilities.initLocal(10,10,new int[]{80,10,10},new int[]{80,10,10});
 
         ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
         for(int i =0; i < 3; i ++){
@@ -43,8 +48,8 @@ public class FunctionalityTestModule {
                 PREFIX + MARKETPLACE + SUFFIX,STOP - 1,1000,"localhost");
 
         /*Now create normal nodes with ports ranging from 7000 to 7010*/
-        NormalNode[] normalNodes = new NormalNode[STOP - START - 1];
-        LightNode[] lightNodes = new LightNode[0];
+        NormalNode[] normalNodes = testUtilities.normalNodes;
+        LightNode[] lightNodes = testUtilities.lightNodes;
 
         /*Create threads*/
         Thread[] threads = new Thread[normalNodes.length + lightNodes.length + 2];
@@ -53,18 +58,20 @@ public class FunctionalityTestModule {
         int counter = 2;
 
         for(int i=0; i < normalNodes.length; i++){
-            normalNodes[i] = new NormalNode("src/test/resources/node_config.txt",
+            //Below is if we only want same interest in all nodes
+            /*normalNodes[i] = new NormalNode("src/test/resources/node_config.txt",
                     "src/test/resources/normal_node_interests.txt",
-                    START+i,1000,"localhost");
+                    START+i,1000,"localhost");*/
             threads[counter] = new Thread(normalNodes[i]);
             counter ++;
         }
 
         /*also create light nodes*/
         for(int i = 0; i < lightNodes.length; i++){
-            lightNodes[i] = new LightNode("src/test/resources/node_config.txt",
+            //Below is if we only want the same interest in all nodes
+            /*lightNodes[i] = new LightNode("src/test/resources/node_config.txt",
                     "src/test/resources/normal_node_interests.txt",
-                    START+i + normalNodes.length,1000,"localhost");
+                    START+i + normalNodes.length,1000,"localhost");*/
             threads[counter] = new Thread(lightNodes[i]);
             counter ++;
         }
