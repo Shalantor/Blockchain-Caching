@@ -246,7 +246,7 @@ public class NormalNode extends Node{
         else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
 
             cacheManager.evaluateInterests(jsonObject,interests,this);
-            //System.out.println("RECEIVED INTEREST REPLY");
+            System.out.println("RECEIVED INTEREST REPLY");
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REPLY_FROM_NORMAL) {
             JSONArray jsonArray = jsonObject.getJSONArray("blocks");
@@ -257,6 +257,7 @@ public class NormalNode extends Node{
             }
 
             cacheManager.addReceivedBlocks(blocks,interests);
+            System.out.println("NORMAL NODE GOT BLOCKS FROM OTHER NORMAL " + blocks.size());
         }
     }
 
@@ -290,6 +291,7 @@ public class NormalNode extends Node{
         }
 
         SavedNode savedNode = cacheManager.bestNodes.get(0);
+        System.out.println("SEND BLOCK REQUEST TO NODE WITH PORT " + savedNode.port);
 
         try {
             Socket socket = new Socket(savedNode.host,savedNode.port);

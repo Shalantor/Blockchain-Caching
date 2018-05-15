@@ -79,7 +79,14 @@ public class FunctionalityTestModule {
         normalNodes[0].sendInterestRequest();
         Scanner scanner = new Scanner(System.in);
         String enter = scanner.nextLine();
+
         System.out.println("BEST NODE PORT: " + normalNodes[0].cacheManager.bestNodes.get(0).port);
+        System.out.println("SENDING request for blocks to saved node");
+        normalNodes[0].sendBlockRequestToNormal();
+
+        System.out.println("write something to continue");
+        scanner = new Scanner(System.in);
+        enter = scanner.nextLine();
 
         /*stop light and normal nodes*/
         for(int i=0; i < normalNodes.length; i++){
