@@ -35,7 +35,7 @@ public class FunctionalityTestModule {
 
         /*create miner node with port STOP - 1*/
         MinerNode minerNode = new MinerNode(genesisBlock,"src/test/resources/node_config.txt",
-                null,STOP - 1,1000,"localhost");
+                "src/test/examples/marketplace_example.txt",STOP - 1,1000,"localhost");
 
         /*Now create normal nodes with ports ranging from 7000 to 7010*/
         NormalNode[] normalNodes = new NormalNode[STOP - START - 1];
