@@ -133,7 +133,7 @@ public class FullNode extends Node{
             //System.out.println("GOT MESSAGE FROM MINER, my length is " + blockChain.size());
         }
         else if((Integer)jsonObject.get("type") == PROPAGATE_BLOCK){
-            System.out.println("FULL NODE PROPAGATE BLOCK");
+            //System.out.println("FULL NODE PROPAGATE BLOCK");
             propagateBlock(jsonObject);
         }
     }

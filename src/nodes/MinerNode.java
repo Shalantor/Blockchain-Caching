@@ -143,6 +143,7 @@ public class MinerNode extends Node{
         JSONObject jsonObject = createNewBlockMessage(block);
 
         /*Send to full node*/
+        //System.out.println("SEND TO FULL NODE");
         try {
             Socket socket = new Socket(fullNodeAddress,fullNodePort);
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());

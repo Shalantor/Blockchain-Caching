@@ -83,9 +83,6 @@ public class Node implements Runnable{
                             jsonObject = new JSONObject(br.readLine());
                             break;
                         }
-                        if(this instanceof FullNode){
-                            System.out.println("FULL NODE SLEEP " + waitTime);
-                        }
                         Thread.sleep(waitTime);
                         tries++;
                         waitTime += WAIT;

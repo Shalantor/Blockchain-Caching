@@ -17,7 +17,7 @@ public class FunctionalityTestModule {
     public static void main(String[] args) {
 
         /*create transactions*/
-        TransactionManager manager = new TransactionManager("src/test/resources/example.txt");
+        TransactionManager manager = new TransactionManager("src/test/examples/marketplace_example.txt");
 
 
         ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
@@ -67,13 +67,14 @@ public class FunctionalityTestModule {
         /*Now start threads*/
         for(int i = 0; i < threads.length; i++){
             threads[i].start();
-            System.out.println("Thread " + i + " stopped");
+            System.out.println("Thread " + i + " started");
         }
 
         /*test block propagation*/
         PropagationTestModule.testPropagation(minerNode,transactions,fullNode,lightNodes,normalNodes);
 
         /*Wait for enter from user*/
+        System.out.println("write something to continue");
         Scanner scanner = new Scanner(System.in);
         String enter = scanner.nextLine();
 
