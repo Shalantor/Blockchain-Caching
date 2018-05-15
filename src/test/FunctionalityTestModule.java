@@ -76,9 +76,11 @@ public class FunctionalityTestModule {
 
         /*Wait for enter from user*/
         System.out.println("write something to continue");
-        //normalNodes[0].sendInterestRequest();
+        normalNodes[0].sendInterestRequest();
         Scanner scanner = new Scanner(System.in);
         String enter = scanner.nextLine();
+        System.out.print("BEST NODES SIZE: " );
+        System.out.println(normalNodes[0].cacheManager.bestNodes.size());
 
         /*stop light and normal nodes*/
         for(int i=0; i < normalNodes.length; i++){

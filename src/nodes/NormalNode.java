@@ -245,6 +245,7 @@ public class NormalNode extends Node{
         else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
 
             cacheManager.evaluateInterests(jsonObject,interests,this);
+            System.out.println("RECEIVED INTEREST REPLY");
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REPLY_FROM_NORMAL) {
             JSONArray jsonArray = jsonObject.getJSONArray("blocks");

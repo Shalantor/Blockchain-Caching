@@ -21,16 +21,13 @@ public class SimpleCacheManager extends CacheManager{
     private long timeLimit;
     private long sizeOfCachedBlocks;
 
-    /*Which nodes we got the best interests from. This is
-    sorted. Lowest index = highest score*/
-    public ArrayList<SavedNode> bestNodes = new ArrayList<>();
-
     private ArrayList<Block> blocksInCache;
 
 
     public SimpleCacheManager(long timeLimit,long cacheSize){
         this.timeLimit = timeLimit;
         blocksInCache = new ArrayList<>();
+        bestNodes = new ArrayList<>();
     }
 
     @Override
@@ -208,8 +205,9 @@ public class SimpleCacheManager extends CacheManager{
         else{
             /*Best node at start of list*/
             for(int i =0; i < bestNodes.size(); i++){
-                if(bestNodes.get(i).score < savedNode.score){
+                if(bestNodes.get(i).score <= savedNode.score){
                     bestNodes.add(i,savedNode);
+                    break;
                 }
             }
         }

@@ -489,12 +489,13 @@ public class Node implements Runnable{
                 int recipientPort = port;
                 if(networkTopology == NETWORK_LOCAL){
                     for(int i =1; i <= recipients; i++){
+                        System.out.print("PORT " + port + " propagate interest request ");
+                        System.out.println("TO PORT " + (port + i) );
                         try {
                             recipientPort = port + i;
-                            if(recipientPort > portEnd){
+                            if(recipientPort > portEnd || recipientPort == minerPort || recipientPort == fullNodePort){
                                 recipientPort = portStart;
                             }
-
                             if( i == recipients){
                                 jsonObject.put("next_port",recipientPort);
                             }

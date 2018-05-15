@@ -4,6 +4,7 @@ import nodes.Node;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
+import structures.SavedNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,10 @@ public class CacheManager {
     private static final int NO_CACHE_LIMIT = 0;
     private static final int CACHE_LIMIT_SIMPLE = 1;
     private static final int SCORE_CACHE = 2;
+
+    /*Which nodes we got the best interests from. This is
+        sorted. Lowest index = highest score*/
+    public ArrayList<SavedNode> bestNodes;
 
     private ArrayList<Block> blocksInCache;
 

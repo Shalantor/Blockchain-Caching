@@ -20,10 +20,6 @@ public class ScoreCacheManager extends CacheManager{
     /*Block must have at least this score*/
     private int scoreBound;
 
-    /*Which nodes we got the best interests from. This is
-    sorted. Lowest index = highest score*/
-    public ArrayList<SavedNode> bestNodes;
-
     /*Keep the score of the blocks in an array list*/
     private ArrayList<ScoreBlock> blocksInCache;
 
@@ -35,6 +31,7 @@ public class ScoreCacheManager extends CacheManager{
         this.cacheSize = cacheSize;
         this.scoreBound = scoreBound;
         blocksInCache = new ArrayList<>();
+        bestNodes = new ArrayList<>();
     }
 
     @Override
@@ -190,8 +187,9 @@ public class ScoreCacheManager extends CacheManager{
         }
         else{
             for(int i =0; i < bestNodes.size(); i++){
-                if(bestNodes.get(i).score < savedNode.score){
+                if(bestNodes.get(i).score <= savedNode.score){
                     bestNodes.add(i,savedNode);
+                    break;
                 }
             }
         }
