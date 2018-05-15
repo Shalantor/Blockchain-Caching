@@ -259,6 +259,17 @@ public class NormalNode extends Node{
             cacheManager.addReceivedBlocks(blocks,interests);
             System.out.println("NORMAL NODE GOT BLOCKS FROM OTHER NORMAL " + blocks.size());
         }
+        else if((Integer)jsonObject.get("type") == INDICES_REPLY_FROM_LIGHT){
+
+            JSONArray jsonArray = jsonObject.getJSONArray("indexes");
+
+            ArrayList<Integer> indexes = new ArrayList<>();
+            for(int i =0; i < jsonArray.length(); i++){
+                indexes.add((int)jsonArray.get(i));
+            }
+
+            createRequestToFullNode(0,indexes);
+        }
     }
 
     /*Send new transaction*/
