@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
+import structures.SavedNode;
 import structures.StrippedBlock;
 
 import java.io.BufferedReader;
@@ -245,7 +246,7 @@ public class NormalNode extends Node{
         else if((Integer)jsonObject.get("type") == INTEREST_REPLY_FROM_NORMAL) {
 
             cacheManager.evaluateInterests(jsonObject,interests,this);
-            System.out.println("RECEIVED INTEREST REPLY");
+            //System.out.println("RECEIVED INTEREST REPLY");
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REPLY_FROM_NORMAL) {
             JSONArray jsonArray = jsonObject.getJSONArray("blocks");
@@ -280,10 +281,18 @@ public class NormalNode extends Node{
     }
 
     /*Send block request*/
-    public void sendBlockRequestToNormal(Socket socket){
+    public void sendBlockRequestToNormal(){
         JSONObject jsonObject = createBlockRequest("normal");
 
+        /*Get best savednode*/
+        if(cacheManager.bestNodes.size() == 0){
+            return;
+        }
+
+        SavedNode savedNode = cacheManager.bestNodes.get(0);
+
         try {
+            Socket socket = new Socket(savedNode.host,savedNode.port);
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
             out.write(jsonObject.toString()+ "\n");
             out.close();
@@ -291,6 +300,8 @@ public class NormalNode extends Node{
         catch (IOException ex){
             ex.printStackTrace();
         }
+
+        cacheManager.removeSavedNodes();
     }
 
     /*Send request to full node*/

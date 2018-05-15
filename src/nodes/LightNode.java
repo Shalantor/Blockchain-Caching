@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
+import structures.SavedNode;
 import structures.StrippedBlock;
 
 import java.io.BufferedReader;
@@ -255,10 +256,18 @@ public class LightNode extends Node{
     }
 
     /*Send block request*/
-    public void sendBlockRequestToNormal(Socket socket){
-        JSONObject jsonObject = createBlockRequest("normal");
+    public void sendBlockRequestToNormal(){
+        JSONObject jsonObject = createBlockRequest("light");
+
+        /*Get best saved node*/
+        if(cacheManager.bestNodes.size() == 0){
+            return;
+        }
+
+        SavedNode savedNode = cacheManager.bestNodes.get(0);
 
         try {
+            Socket socket = new Socket(savedNode.host,savedNode.port);
             OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
             out.write(jsonObject.toString()+ "\n");
             out.close();
@@ -266,6 +275,8 @@ public class LightNode extends Node{
         catch (IOException ex){
             ex.printStackTrace();
         }
+        
+        cacheManager.removeSavedNodes();
     }
 
     /*Send request to full node*/

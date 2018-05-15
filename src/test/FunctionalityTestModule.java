@@ -79,8 +79,7 @@ public class FunctionalityTestModule {
         normalNodes[0].sendInterestRequest();
         Scanner scanner = new Scanner(System.in);
         String enter = scanner.nextLine();
-        System.out.print("BEST NODES SIZE: " );
-        System.out.println(normalNodes[0].cacheManager.bestNodes.size());
+        System.out.println("BEST NODE PORT: " + normalNodes[0].cacheManager.bestNodes.get(0).port);
 
         /*stop light and normal nodes*/
         for(int i=0; i < normalNodes.length; i++){
@@ -99,7 +98,7 @@ public class FunctionalityTestModule {
         try {
             for (int i = 0; i < threads.length; i++) {
                 threads[i].join();
-                System.out.println("Stop");
+                System.out.println("Stop thread " + i);
             }
         }
         catch (InterruptedException ex){
