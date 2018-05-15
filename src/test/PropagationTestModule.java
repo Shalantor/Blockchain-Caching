@@ -29,6 +29,13 @@ public class PropagationTestModule {
         for(int i =0; i < 20; i++){
             minerNode.addTransaction(transactions.get(0));
         }
+
+        try{
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException ex){
+            System.out.println("test propagation interrupt");
+        }
     }
 
 

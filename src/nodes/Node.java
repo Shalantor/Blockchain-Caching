@@ -47,8 +47,8 @@ public class Node implements Runnable{
 
     /*Socket we got a reply from*/
     Socket readSocket;
-    private static final int WAIT = 50;
-    private static final int TRIES = 4;
+    private static final int WAIT = 20;
+    private static final int TRIES = 5;
     private int waitTime = WAIT;
 
     /*Read configuration from text file*/
