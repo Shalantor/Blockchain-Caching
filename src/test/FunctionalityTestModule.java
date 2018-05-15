@@ -82,9 +82,14 @@ public class FunctionalityTestModule {
             //System.out.println("Thread " + i + " started");
         }
         System.out.println("Threads started");
+        HashMap<String,Object> transaction;
+        Block block;
 
-        /*test block propagation*/
-        PropagationTestModule.testPropagation(minerNode,transactions,fullNode,lightNodes,normalNodes);
+        for(int i =0; i < 10; i++) {
+            /*Add transactions until enough for block*/
+            transaction = testUtilities.getTransactionExponential();
+            minerNode.addTransaction(transaction);
+        }
 
         /*Wait for enter from user*/
         System.out.println("write something to continue");
