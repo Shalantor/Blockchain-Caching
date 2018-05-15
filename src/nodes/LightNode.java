@@ -275,8 +275,6 @@ public class LightNode extends Node{
         catch (IOException ex){
             ex.printStackTrace();
         }
-        
-        cacheManager.removeSavedNodes();
     }
 
     /*Send request to full node*/
