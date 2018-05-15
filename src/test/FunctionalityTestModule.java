@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class FunctionalityTestModule {
 
     private static int START = 7000;
-    private static int STOP = 7010;
+    private static int STOP = 7050;
 
 
     public static void main(String[] args) {
@@ -29,11 +29,11 @@ public class FunctionalityTestModule {
         Block genesisBlock = new Block(0,"genesis",transactions);
 
 
-        /*Create full node, with port 7012*/
+        /*Create full node, with port STOP*/
         FullNode fullNode = new FullNode("src/test/resources/node_config.txt","src/test/examples/marketplace_example.txt",
                 genesisBlock, STOP,1000,"localhost");
 
-        /*create miner node with port 7011*/
+        /*create miner node with port STOP - 1*/
         MinerNode minerNode = new MinerNode(genesisBlock,"src/test/resources/node_config.txt",
                 null,STOP - 1,1000,"localhost");
 
@@ -67,14 +67,16 @@ public class FunctionalityTestModule {
         /*Now start threads*/
         for(int i = 0; i < threads.length; i++){
             threads[i].start();
-            System.out.println("Thread " + i + " started");
+            //System.out.println("Thread " + i + " started");
         }
+        System.out.println("Threads started");
 
         /*test block propagation*/
         PropagationTestModule.testPropagation(minerNode,transactions,fullNode,lightNodes,normalNodes);
 
         /*Wait for enter from user*/
         System.out.println("write something to continue");
+        //normalNodes[0].sendInterestRequest();
         Scanner scanner = new Scanner(System.in);
         String enter = scanner.nextLine();
 

@@ -223,7 +223,7 @@ public class NormalNode extends Node{
                 ex.printStackTrace();
             }
 
-            propagateInterestRequest(jsonObject);
+            propagateInterestRequest(jsonObject,false);
         }
         else if((Integer)jsonObject.get("type") == BLOCK_REQUEST_TO_NORMAL){
             JSONObject jsonReply = createBlockReply(cacheManager.getBlocksInCache());
@@ -273,17 +273,9 @@ public class NormalNode extends Node{
     }
 
     /*Send request for interests*/
-    public void sendInterestRequest(Socket socket){
+    public void sendInterestRequest(){
         JSONObject jsonObject = createInterestRequest("node");
-
-        try {
-            OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream());
-            out.write(jsonObject.toString()+ "\n");
-            out.close();
-        }
-        catch (IOException ex){
-            ex.printStackTrace();
-        }
+        propagateInterestRequest(jsonObject,true);
     }
 
     /*Send block request*/

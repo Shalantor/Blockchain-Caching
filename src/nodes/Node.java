@@ -252,7 +252,8 @@ public class Node implements Runnable{
         jsonObject.put("orig_port",port);
         jsonObject.put("host",host);
         jsonObject.put("port",port);
-        jsonObject.put("timeout",10);   /*TODO:Change hard coded number of hops*/
+        jsonObject.put("timeout",2);   /*TODO:Change hard coded number of hops*/
+        jsonObject.put("next_port",0);
         return jsonObject;
     }
 
@@ -459,11 +460,12 @@ public class Node implements Runnable{
 
     /*TODO: Is same as propagateBlock but better test it. Only difference is timeout*/
     /*Propagate interests in network*/
-    public void propagateInterestRequest(JSONObject jsonObject){
+    public void propagateInterestRequest(JSONObject jsonObject,boolean first){
         if(networkTopology == NETWORK_LOCAL){
 
             /*check if message get propagated based on timeout*/
             int timeOut = jsonObject.getInt("timeout");
+            System.out.println("TIME OUT IS " + timeOut);
 
             if(timeOut == 0){
                 return;
@@ -472,7 +474,13 @@ public class Node implements Runnable{
             jsonObject.put("timeout",timeOut-1);
 
             /*check if message gets propagated by this node*/
-            int estimatePort = jsonObject.getInt("next_port");
+            int estimatePort;
+            if(first){
+                estimatePort = port;
+            }
+            else{
+                estimatePort = jsonObject.getInt("next_port");
+            }
 
             /*Only every last node in the interval propagates the block,
             so we have no duplicates. Only in the local configuration!!*/
