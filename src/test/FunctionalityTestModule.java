@@ -12,12 +12,17 @@ public class FunctionalityTestModule {
 
     private static int START = 7000;
     private static int STOP = 7050;
-
+    private static String PREFIX = "src/test/examples/";
+    private static String SUFFIX = "_example.txt";
+    private static final String VOTING = "voting";
+    private static final String MARKETPLACE = "marketplace";
+    private static final String PAYMENT = "payment";
+    private static final String CONFIG_FILE = "src/test/resources/node_config.txt";
 
     public static void main(String[] args) {
 
         /*create transactions*/
-        TransactionManager manager = new TransactionManager("src/test/examples/marketplace_example.txt");
+        TransactionManager manager = new TransactionManager(PREFIX + MARKETPLACE + SUFFIX);
 
 
         ArrayList<HashMap<String,Object>> transactions = new ArrayList<>();
@@ -30,12 +35,12 @@ public class FunctionalityTestModule {
 
 
         /*Create full node, with port STOP*/
-        FullNode fullNode = new FullNode("src/test/resources/node_config.txt","src/test/examples/marketplace_example.txt",
+        FullNode fullNode = new FullNode(CONFIG_FILE,PREFIX + MARKETPLACE + SUFFIX,
                 genesisBlock, STOP,1000,"localhost");
 
         /*create miner node with port STOP - 1*/
-        MinerNode minerNode = new MinerNode(genesisBlock,"src/test/resources/node_config.txt",
-                "src/test/examples/marketplace_example.txt",STOP - 1,1000,"localhost");
+        MinerNode minerNode = new MinerNode(genesisBlock,CONFIG_FILE,
+                PREFIX + MARKETPLACE + SUFFIX,STOP - 1,1000,"localhost");
 
         /*Now create normal nodes with ports ranging from 7000 to 7010*/
         NormalNode[] normalNodes = new NormalNode[STOP - START - 1];
