@@ -1,1 +1,1 @@
-price       double        1    greater    10.0
+price       double        1    greater    0.0
