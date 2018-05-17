@@ -1,35 +1,43 @@
 package cacheManager;
 
+import cacheManager.CacheUtils.ScoreBlock;
 import nodes.Node;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 import structures.SavedNode;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/*If cache is full, throw away smallest block*/
-
-public class LabelBlockSizeCacheManager extends CacheManager{
+public class ThreshHoldBlockSizeCacheManager extends CacheManager{
 
     private long timeLimit;
     private long cacheSize;
     private long sizeOfCachedBlocks;
 
+    /*Block must have at least this score*/
+    private int scoreBound;
+
+    /*Keep the score of the blocks in an array list*/
     private ArrayList<Block> blocksInCache;
 
-    public LabelBlockSizeCacheManager(long timeLimit, long cacheSize){
+    /*Latest score*/
+    private int latestScore;
+
+    public ThreshHoldBlockSizeCacheManager(long timeLimit, long cacheSize, int scoreBound){
         this.timeLimit = timeLimit;
         this.cacheSize = cacheSize;
+        this.scoreBound = scoreBound;
         blocksInCache = new ArrayList<>();
         bestNodes = new ArrayList<>();
     }
 
     @Override
     public boolean addBlock(Block block){
+
+
         /*check if cache empty*/
         if(blocksInCache.size() == 0){
             blocksInCache.add(block);
@@ -37,24 +45,18 @@ public class LabelBlockSizeCacheManager extends CacheManager{
             return true;
         }
 
-        /*Check if contains block*/
         if(blocksInCache.contains(block)){
             return false;
         }
 
-        /*Check last block*/
-        if(blocksInCache.get(blocksInCache.size() - 1).blockSize < block.blockSize){
-            blocksInCache.add(block);
-            return true;
-        }
-
-        /*Insert into sorted array list in cache based on block size*/
+        /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
             if(blocksInCache.get(i).blockSize >= block.blockSize ){
                 blocksInCache.add(i,block);
                 break;
             }
         }
+
         sizeOfCachedBlocks += block.blockSize;
 
         /*Check if there are too many blocks*/
@@ -69,10 +71,9 @@ public class LabelBlockSizeCacheManager extends CacheManager{
     @Override
     public void addReceivedBlocks(ArrayList<Block> receivedBlocks, HashMap<String,Interest> interests) {
         /*Insert them based on the order of their indexes*/
-        int start = 0;
-        for(Block receivedBlock : receivedBlocks){
+        for(Block receivedBlock : receivedBlocks) {
 
-            if(!checkBlock(receivedBlock,interests)){
+            if (!checkBlock(receivedBlock, interests)) {
                 continue;
             }
 
@@ -88,12 +89,21 @@ public class LabelBlockSizeCacheManager extends CacheManager{
 
     @Override
     public boolean checkBlock(Block block, Map<String,Interest> interests){
+
+        latestScore = calculateScore(block,interests);
+
+        return latestScore >= scoreBound;
+    }
+
+    private int calculateScore(Block block, Map<String,Interest> interests){
+        int score = 0;
         for (Map.Entry entry : interests.entrySet()){
-            if(((Interest)entry.getValue()).checkBlock(block)){
-                return true;
+            Interest interest = (Interest)entry.getValue();
+            if(interest.checkBlock(block)){
+                score += interest.weight;
             }
         }
-        return  false;
+        return score;
     }
 
     /*TODO: make nodes use this*/
@@ -179,7 +189,7 @@ public class LabelBlockSizeCacheManager extends CacheManager{
     }
 
     public ArrayList<Block> getBlocksInCache() {
+
         return blocksInCache;
     }
-
 }
