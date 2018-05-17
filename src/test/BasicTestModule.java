@@ -191,7 +191,7 @@ public class BasicTestModule {
             }
 
             for(Block b: normalNode.cacheManager.getBlocksInCache()){
-                System.out.println(b.blockSize);
+                System.out.println(b.timestamp);
             }
 
             System.out.println("Blocks in cache are " + normalNode.cacheManager.getBlocksInCache().size());

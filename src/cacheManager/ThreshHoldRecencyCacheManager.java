@@ -49,6 +49,12 @@ public class ThreshHoldRecencyCacheManager extends CacheManager{
             return false;
         }
 
+        /*last block*/
+        if(blocksInCache.get(blocksInCache.size()-1).timestamp <= block.timestamp){
+            blocksInCache.add(block);
+            return true;
+        }
+
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
             if(blocksInCache.get(i).timestamp >= block.timestamp ){

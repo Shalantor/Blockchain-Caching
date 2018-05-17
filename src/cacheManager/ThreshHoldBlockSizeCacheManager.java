@@ -49,6 +49,12 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
             return false;
         }
 
+        /*last block*/
+        if(blocksInCache.get(blocksInCache.size()-1).blockSize <= block.blockSize){
+            blocksInCache.add(block);
+            return true;
+        }
+
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
             if(blocksInCache.get(i).blockSize >= block.blockSize ){
@@ -91,9 +97,6 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
     public boolean checkBlock(Block block, Map<String,Interest> interests){
 
         latestScore = calculateScore(block,interests);
-
-        System.out.print("Score is " + latestScore);
-        System.out.println(" and thresh hold is " + scoreBound);
 
         return latestScore >= scoreBound;
     }
