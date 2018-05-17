@@ -11,6 +11,7 @@ import structures.managerUtils.StringInterest;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /*Class that represents the transaction structures*/
 public class TransactionManager {
@@ -20,6 +21,10 @@ public class TransactionManager {
     private static final String DOUBLE = "double";
     private static final String INTEGER = "integer";
     private static final String LONG = "long";
+
+    /*Weight ranges*/
+    public static final int MIN_WEIGHT = 1;
+    public static final int MAX_WEIGHT = 3;
 
     /*Interests*/
     private ArrayList<StringInterest> stringInterests = new ArrayList<>();
@@ -218,6 +223,7 @@ public class TransactionManager {
         int fileCounter = 0;
         int count = 0;
         int breakPoints = 0;
+        int weight = 0;
 
         /*Strings*/
         for(StringInterest s : stringInterests){
@@ -227,7 +233,8 @@ public class TransactionManager {
                     fileCounter ++;
                     count++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(s.getName() + "\tstring\t1\t" + value);
+                    weight = ThreadLocalRandom.current().nextInt(MIN_WEIGHT,MAX_WEIGHT+1);
+                    out.println(s.getName() + "\tstring\t"+ weight +"\t" + value);
                     out.flush();
                     out.close();
                 }
@@ -244,7 +251,8 @@ public class TransactionManager {
                     String fileName = "1_R_" + fileCounter + ".txt";
                     fileCounter ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(s.getName() + "\tstring\t1\t" +
+                    weight = ThreadLocalRandom.current().nextInt(MIN_WEIGHT,MAX_WEIGHT+1);
+                    out.println(s.getName() + "\tstring\t" + weight + "\t" +
                             s.getRangeName() + "\t" + s.getRangeStart() + "\t" +s.getRangeEnd());
                     out.flush();
                     out.close();
@@ -277,7 +285,8 @@ public class TransactionManager {
                     String fileName = "1_D_" + fileCounter + ".txt";
                     fileCounter ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tdouble\t1\t" + qualifier + "\t" + value);
+                    weight = ThreadLocalRandom.current().nextInt(MIN_WEIGHT,MAX_WEIGHT+1);
+                    out.println(d.getName() + "\tdouble\t"+weight+"\t" + qualifier + "\t" + value);
                     out.flush();
                     out.close();
 
@@ -313,7 +322,8 @@ public class TransactionManager {
                     String fileName = "1_L_" + fileCounter + ".txt";
                     fileCounter ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tlong\t1\t" + qualifier + "\t" + value);
+                    weight = ThreadLocalRandom.current().nextInt(MIN_WEIGHT,MAX_WEIGHT+1);
+                    out.println(d.getName() + "\tlong\t"+weight+"\t" + qualifier + "\t" + value);
                     out.flush();
                     out.close();
 
@@ -349,7 +359,8 @@ public class TransactionManager {
                     String fileName = "1_I_" + fileCounter + ".txt";
                     fileCounter ++;
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.println(d.getName() + "\tinteger\t1\t" + qualifier + "\t" + (int)value);
+                    weight = ThreadLocalRandom.current().nextInt(MIN_WEIGHT,MAX_WEIGHT+1);
+                    out.println(d.getName() + "\tinteger\t"+weight+"\t" + qualifier + "\t" + (int)value);
                     out.flush();
                     out.close();
 
@@ -375,6 +386,7 @@ public class TransactionManager {
         int fileCounter = 0;
         int count = 0;
         int numName = num + 1;
+        int weight = 0;
 
         /*Strings*/
         for (StringInterest s : stringInterests) {
@@ -389,8 +401,9 @@ public class TransactionManager {
                     String fileName = numName + "_S_" + numName + "_" + fileCounter + ".txt";
                     fileCounter++;
                     count++;
+                    weight = ThreadLocalRandom.current().nextInt(MIN_WEIGHT,MAX_WEIGHT+1);
                     PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.print(s.getName() + "\tstring\t1\t" + value);
+                    out.print(s.getName() + "\tstring\t"+weight+"\t" + value);
                     for (String cValue : combineValues) {
                         out.print("\t" + cValue);
                     }
@@ -409,8 +422,9 @@ public class TransactionManager {
                 try {
                     String fileName = numName + "_R_" + fileCounter + ".txt";
                     fileCounter++;
-                    PrintWriter out = new PrintWriter(destPath + fileName);
-                    out.print(s.getName() + "\tstring\t1\t" + s.getRangeName());
+                    PrintWriter out = new PrintWriter(destPath + fileName);                    weight = ThreadLocalRandom.current().nextInt(MIN_WEIGHT,MAX_WEIGHT+1);
+                    weight = ThreadLocalRandom.current().nextInt(MIN_WEIGHT,MAX_WEIGHT+1);
+                    out.print(s.getName() + "\tstring\t"+weight+"\t" + s.getRangeName());
                     for (int i = 0; i <= num; i++) {
                         out.print("\t" + (s.getRangeStart() + i));
                     }
