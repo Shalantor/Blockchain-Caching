@@ -102,9 +102,7 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
         int score = 0;
         for (Map.Entry entry : interests.entrySet()){
             Interest interest = (Interest)entry.getValue();
-            if(interest.checkBlock(block)){
-                score += interest.weight;
-            }
+            score += interest.weight * interest.checkBlockScore(block);
         }
         return score;
     }
