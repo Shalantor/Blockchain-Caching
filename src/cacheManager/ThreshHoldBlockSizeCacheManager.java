@@ -92,6 +92,9 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
 
         latestScore = calculateScore(block,interests);
 
+        System.out.print("Score is " + latestScore);
+        System.out.println(" and thresh hold is " + scoreBound);
+
         return latestScore >= scoreBound;
     }
 

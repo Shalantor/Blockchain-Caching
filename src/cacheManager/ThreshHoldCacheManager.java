@@ -50,6 +50,12 @@ public class ThreshHoldCacheManager extends CacheManager{
             return false;
         }
 
+        /*last block*/
+        if(blocksInCache.get(blocksInCache.size()-1).getScore() <= scoreBlock.getScore()){
+            blocksInCache.add(scoreBlock);
+            return true;
+        }
+
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
             if(blocksInCache.get(i).getScore() >= scoreBlock.getScore() ){
@@ -112,9 +118,7 @@ public class ThreshHoldCacheManager extends CacheManager{
         int score = 0;
         for (Map.Entry entry : interests.entrySet()){
             Interest interest = (Interest)entry.getValue();
-            if(interest.checkBlock(block)){
-                score += interest.weight;
-            }
+            score += interest.weight * interest.checkBlockScore(block);
         }
         return score;
     }
