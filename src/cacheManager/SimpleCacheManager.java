@@ -24,7 +24,7 @@ public class SimpleCacheManager extends CacheManager{
     private ArrayList<Block> blocksInCache;
 
 
-    public SimpleCacheManager(long timeLimit,long cacheSize){
+    public SimpleCacheManager(long timeLimit, long cacheSize){
         this.timeLimit = timeLimit;
         blocksInCache = new ArrayList<>();
         bestNodes = new ArrayList<>();

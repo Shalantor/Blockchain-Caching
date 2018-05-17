@@ -38,9 +38,9 @@ public class CacheManager {
             case  NO_CACHE_LIMIT:
                 return new SimpleCacheManager(timeRestraint,cacheSize);
             case CACHE_LIMIT_SIMPLE:
-                return new SimpleLimitedCacheManager(timeRestraint,cacheSize);
+                return new LabelCacheManager(timeRestraint,cacheSize);
             case SCORE_CACHE:
-                return new ScoreCacheManager(timeRestraint,cacheSize,scoreBound);
+                return new ThreshHoldCacheManager(timeRestraint,cacheSize,scoreBound);
 
         }
         return null;

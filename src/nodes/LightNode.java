@@ -1,7 +1,6 @@
 package nodes;
 
 import cacheManager.CacheManager;
-import cacheManager.SimpleCacheManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;

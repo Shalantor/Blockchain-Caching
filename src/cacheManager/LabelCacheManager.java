@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 /*TODO: Check add block, add received blocks and generally the score manager*/
-public class SimpleLimitedCacheManager extends CacheManager{
+public class LabelCacheManager extends CacheManager{
 
     private long timeLimit;
     private long cacheSize;
@@ -19,7 +19,7 @@ public class SimpleLimitedCacheManager extends CacheManager{
 
     private ArrayList<Block> blocksInCache;
 
-    public SimpleLimitedCacheManager(long timeLimit,long cacheSize){
+    public LabelCacheManager(long timeLimit, long cacheSize){
         this.timeLimit = timeLimit;
         this.cacheSize = cacheSize;
         blocksInCache = new ArrayList<>();

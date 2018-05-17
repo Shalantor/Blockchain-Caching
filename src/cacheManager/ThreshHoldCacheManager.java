@@ -11,7 +11,7 @@ import structures.SavedNode;
 import java.util.*;
 import java.util.function.Predicate;
 
-public class ScoreCacheManager extends CacheManager{
+public class ThreshHoldCacheManager extends CacheManager{
 
     private long timeLimit;
     private long cacheSize;
@@ -26,7 +26,7 @@ public class ScoreCacheManager extends CacheManager{
     /*Latest score*/
     private int latestScore;
 
-    public ScoreCacheManager(long timeLimit,long cacheSize,int scoreBound){
+    public ThreshHoldCacheManager(long timeLimit, long cacheSize, int scoreBound){
         this.timeLimit = timeLimit;
         this.cacheSize = cacheSize;
         this.scoreBound = scoreBound;

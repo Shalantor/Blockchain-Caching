@@ -1,13 +1,11 @@
 package nodes;
 
 import cacheManager.CacheManager;
-import cacheManager.SimpleCacheManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import structures.Block;
 import structures.Interest;
 import structures.SavedNode;
-import structures.StrippedBlock;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
