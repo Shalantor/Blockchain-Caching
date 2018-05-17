@@ -176,8 +176,9 @@ public class BasicTestModule {
             blocks = new ArrayList<>();
             /*how many blocks*/
             for(int i =0; i <= 2; i++){
-                HashMap<String,Object> tr = new HashMap<>();
+                transactions = new ArrayList<>();
                 for(int j = 0; j <= 2; j++){
+                    HashMap<String,Object> tr = new HashMap<>();
                     tr.put("sender","node78");
                     tr.put("receiver","node22");
                     tr.put("category","electronics");
@@ -191,7 +192,7 @@ public class BasicTestModule {
             }
 
             for(Block b: normalNode.cacheManager.getBlocksInCache()){
-                System.out.println(b.timestamp);
+                //System.out.println(b.timestamp);
             }
 
             System.out.println("Blocks in cache are " + normalNode.cacheManager.getBlocksInCache().size());

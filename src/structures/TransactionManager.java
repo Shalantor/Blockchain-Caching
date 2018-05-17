@@ -24,7 +24,7 @@ public class TransactionManager {
 
     /*Weight ranges*/
     public static final int MIN_WEIGHT = 1;
-    public static final int MAX_WEIGHT = 3;
+    public static final int MAX_WEIGHT = 2;
 
     /*Interests*/
     private ArrayList<StringInterest> stringInterests = new ArrayList<>();
