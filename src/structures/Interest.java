@@ -105,6 +105,80 @@ public class Interest {
         return false;
     }
 
+    public int checkBlockScore(Block block){
+
+        int score = 0;
+        if(type == STRING_TYPE){
+            String value;
+            for(HashMap<String,Object> transaction : block.transactions){
+                value = transaction.get(interestName).toString();
+                if(interestValues.contains(value)){
+                    //System.out.println("HERE AT STRING with value " + value);
+                    score++;
+                }
+            }
+        }
+        else if(type == NUMERIC_TYPE){
+            if(numericType == NUMERIC_GREATER){
+                Object value;
+                for(HashMap<String,Object> transaction : block.transactions){
+                    value = transaction.get(interestName);
+                    if(value instanceof Double){
+                        if( Double.parseDouble(numericValue.toString()) <=
+                                Double.parseDouble(value.toString()) ){
+                            //System.out.println("HERE AT DOUBLE with value " + value);
+                            score++;
+                        }
+                    }
+                    else if(value instanceof Long){
+                        if( Long.parseLong(numericValue.toString()) <=
+                                Long.parseLong(value.toString()) ){
+                            //System.out.println("HERE AT LONG with value " + value);
+                            score++;
+                        }
+
+                    }
+                    else if(value instanceof Integer){
+                        if( Integer.parseInt(numericValue.toString()) <=
+                                Integer.parseInt(value.toString()) ){
+                            //System.out.println("HERE AT INT with value " + value);
+                            score++;
+                        }
+
+                    }
+                }
+            }
+            else if(numericType == NUMERIC_LOWER){
+                Object value;
+                for(HashMap<String,Object> transaction : block.transactions) {
+                    value = transaction.get(interestName);
+                    if (value instanceof Double) {
+                        if (Double.parseDouble(numericValue.toString()) >=
+                                Double.parseDouble(value.toString())) {
+                            //System.out.println("HERE AT DOUBLE LOWER with value " + value);
+                            score++;
+                        }
+                    } else if (value instanceof Long) {
+                        if (Long.parseLong(numericValue.toString()) >=
+                                Long.parseLong(value.toString())) {
+                            //System.out.println("HERE AT LONG LOWER with value " + value);
+                            score++;
+                        }
+
+                    } else if (value instanceof Integer) {
+                        if (Integer.parseInt(numericValue.toString()) >=
+                                Integer.parseInt(value.toString())) {
+                            //System.out.println("HERE AT INT LOWER with value " + value);
+                            score++;
+                        }
+
+                    }
+                }
+            }
+        }
+        return score;
+    }
+
     /*Light node uses this method*/
     public boolean checkTransaction(HashMap<String,Object> transaction){
         if(type == STRING_TYPE){
