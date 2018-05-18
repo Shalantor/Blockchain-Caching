@@ -1,19 +1,36 @@
 package test;
 
+import nodes.LightNode;
+import nodes.MinerNode;
+import nodes.Node;
+import nodes.NormalNode;
 import org.apache.commons.io.FileUtils;
+import structures.Block;
+import test.utils.TestUtilities;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResultTestModule{
 
     public static void main(String[] args) {
 
         int[] blockSizes = new int[]{500,1000,1500,2000,2500};
-        int[] thresholds = new int[]{1,2,3,4,5};
-        int[] thresholdsWeight = new int[]{1,2,3,4,5,6,7,8,9,10};
+        int[] thresholds = new int[]{1,2,3};
+        int[] thresholdsWeight = new int[]{1,2,3,4,5};
 
         String resultsFolder = "results/";
+
+        //content of config file
+        String configContent = "max_cache_size     900000\n" +
+                                "time_restraint     90000\n" +
+                                "network_topology    0   7000 7019   2\n" +
+                                "miner_node          localhost   7020\n" +
+                                "full_node           localhost   7021\n" +
+                                "storage             0";
 
         //delete directory
         try{
@@ -30,17 +47,16 @@ public class ResultTestModule{
                 "threshold_based_TB",
                 "threshold_weight_based_WTB",
                 "interest_based_block_size_IBBS",
-                "interest_based_recency_IBR",
                 "threshold_based_block_size_TBBS",
                 "threshold_based_recency_TBR"
         };
 
-        String[] resFileNames = new String[]{
-                "exponential_distribution.txt",
-                "poisson_distribution.txt",
-                "normal_distribution.txt",
-                "uniform_distribution.txt",
-                "zipfian_distribution.txt"
+        String[] distributions = new String[]{
+                "exponential_distribution",
+                "poisson_distribution",
+                "normal_distribution",
+                "uniform_distribution",
+                "zipfian_distribution"
         };
 
         //Folders that indicate whether miner groups transactions or not
@@ -75,6 +91,7 @@ public class ResultTestModule{
         for(String s0 : categories){
             new File(resultsFolder + s0);
             for(String s1 : topLevelFolders){
+                System.out.println("IN CONFIGURATION " + s1);
                 new File(resultsFolder + s0 + "/" + s1).mkdirs();
                 for(String s2 : blockSizeFolders){
                     new File(resultsFolder + s0 + "/" + s1 + "/" + s2).mkdirs();
@@ -82,13 +99,24 @@ public class ResultTestModule{
                         new File(resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3).mkdirs();
                         if(s1.contains("threshold_weight")){
                             for(String s4 : thresholdWeightFolders){
-                                new File(resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/" + s4).mkdirs();
+                                String dest = resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/" + s4;
+                                new File(dest).mkdirs();
+                                createConfigFile(configContent,s2,s3,s1,s4);
+                                testLocal( dest + "/", categories,distributions);
                             }
                         }
                         else if(s1.contains("threshold")){
                             for(String s4 : thresholdFolders){
-                                new File(resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/" + s4).mkdirs();
+                                String dest = resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/" + s4;
+                                new File(dest).mkdirs();
+                                createConfigFile(configContent,s2,s3,s1,s4);
+                                testLocal(dest + "/", categories,distributions);
                             }
+                        }
+                        else{
+                            String dest = resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/";
+                            createConfigFile(configContent,s2,s3,s1,"dummy_1");
+                            testLocal(dest,categories,distributions);
                         }
                     }
                 }
@@ -96,4 +124,152 @@ public class ResultTestModule{
         }
     }
 
+    public static void testLocal(String destPath,String[] categories, String[] distributions){
+
+        for(String category : categories){
+            for(String distribution : distributions) {
+
+                TestUtilities testUtilities = new TestUtilities(category,false);
+
+                /*create normal and light nodes. The nodes are now setup*/
+                testUtilities.initLocalOldFiles(10, 10, new int[]{60, 30, 10}, new int[]{60, 30, 10});
+
+                /*create miner node*/
+                MinerNode minerNode = testUtilities.createMiner();
+
+                /*How many blocks to create?*/
+                Block block;
+                HashMap<String, Object> transaction;
+                Node[] nodes = testUtilities.nodes;
+                for (int i = 0; i < 10; i++) {
+                    while (true) {
+                        /*Add transactions until enough for block*/
+                        transaction = getTransaction(testUtilities,distribution);
+                        block = minerNode.addTransactionLocal(transaction);
+                        if (block != null) {
+                            break;
+                        }
+                    }
+
+                    /*Now add block to each node*/
+                    for (Node n : nodes) {
+                        if (n instanceof NormalNode) {
+                            ((NormalNode) n).checkBlock(block);
+                        } else if (n instanceof LightNode) {
+                            ((LightNode) n).checkBlock(block);
+                        }
+                    }
+
+                }
+
+                File blockResults = new File(destPath + distribution + "_blocks.txt");
+                File sizeResults = new File(destPath + distribution + "_size.txt");
+
+                try{
+                    PrintWriter writerBlocks = new PrintWriter(blockResults);
+                    PrintWriter writerSize = new PrintWriter(sizeResults);
+                    for (Node n : nodes) {
+                        if (n instanceof NormalNode) {
+                            writerBlocks.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
+                            writerSize.println(((NormalNode) n).cacheManager.getSizeOfCachedBlocks());
+
+                        } else if (n instanceof LightNode) {
+                            writerBlocks.println(((LightNode) n).cacheManager.getBlocksInCache().size());
+                            writerSize.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());                        }
+                    }
+                    writerBlocks.flush();
+                    writerSize.flush();
+                    writerBlocks.close();
+                    writerSize.close();
+                }
+                catch (IOException ex){
+                    ex.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+    public static HashMap<String,Object> getTransaction(TestUtilities t, String distribution){
+
+        HashMap<String,Object> transaction;
+        switch (distribution){
+            case "exponential_distribution":
+                transaction = t.getTransactionExponential();
+                break;
+            case "poisson_distribution":
+                transaction = t.getTransactionPoisson();
+                break;
+            case "normal_distribution":
+                transaction = t.getTransactionNormal();
+                break;
+            case "uniform_distribution":
+                transaction = t.getTransactionUniform();
+                break;
+            case "zipfian_distribution":
+                transaction = t.getTransactionZipfian();
+                break;
+                default:
+                    transaction = null;
+        }
+        return transaction;
+    }
+
+    public static void createConfigFile(String configContent,String sizes,
+                                        String group,String cacheConfig, String thresholdString){
+
+        String config = "cache_configuration\t";
+
+        int threshold = Integer.parseInt(thresholdString.substring(thresholdString.length()-1));
+
+        switch (cacheConfig){
+            case "interest_based_IB":
+                config += "1\t1";
+                break;
+            case "threshold_based_TB":
+                config += "6\t" + threshold;
+                break;
+            case "threshold_weight_based_WTB":
+                config += "2\t" + threshold;
+                break;
+            case "interest_based_block_size_IBBS":
+                config += "3\t1";
+                break;
+            case "threshold_based_block_size_TBBS":
+                config += "4\t" + threshold;
+                break;
+            case "threshold_based_recency_TBR":
+                config += "5\t" + threshold;
+                break;
+        }
+
+        boolean groupTransactions = false;
+        if(group.equals("transaction_group")){
+            groupTransactions = true;
+        }
+        else if(group.equals("no_transaction_group")){
+            groupTransactions = false;
+        }
+
+        int min = Integer.parseInt(sizes.substring(sizes.indexOf("min")+3,sizes.indexOf("max")-1));
+        int max = Integer.parseInt(sizes.substring(sizes.indexOf("max")+3));
+
+        /*have to create config file*/
+        File configFile = new File("src/test/resources/node_config.txt");
+        try{
+            PrintWriter writer = new PrintWriter(configFile);
+            writer.println(configContent);
+
+            writer.println("min_block_size\t" + min);
+            writer.println("max_block_size\t" + max);
+            writer.println("group_content\t" + groupTransactions + "\t0");
+            writer.println(config);
+
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
+        }
+    }
 }
