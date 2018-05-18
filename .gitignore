@@ -29,3 +29,6 @@ src/test/examples/*
 
 # workspace folder
 .idea/*
+
+# results
+results/
