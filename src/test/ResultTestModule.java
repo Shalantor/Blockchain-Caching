@@ -1,6 +1,9 @@
 package test;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
+import java.io.IOException;
 
 public class ResultTestModule{
 
@@ -11,6 +14,16 @@ public class ResultTestModule{
         int[] thresholdsWeight = new int[]{1,2,3,4,5,6,7,8,9,10};
 
         String resultsFolder = "results/";
+
+        //delete directory
+        try{
+            FileUtils.deleteDirectory(new File(resultsFolder));
+        }
+        catch (IOException ex){
+            ex.printStackTrace();
+        }
+
+        String[] categories = new String[]{"marketplace","voting","payment"};
 
         String[] topLevelFolders = new String[]{
                 "interest_based_IB",
@@ -59,20 +72,23 @@ public class ResultTestModule{
         }
 
         /*Now that everything is setup create folder structure*/
-        for(String s1 : topLevelFolders){
-            new File(resultsFolder + s1).mkdirs();
-            for(String s2 : blockSizeFolders){
-                new File(resultsFolder + s1 + "/" + s2).mkdirs();
-                for(String s3 : groupFolders){
-                    new File(resultsFolder + s1 + "/" + s2 + "/" + s3).mkdirs();
-                    if(s1.contains("threshold_weight")){
-                        for(String s4 : thresholdWeightFolders){
-                            new File(resultsFolder + s1 + "/" + s2 + "/" + s3 + "/" + s4).mkdirs();
+        for(String s0 : categories){
+            new File(resultsFolder + s0);
+            for(String s1 : topLevelFolders){
+                new File(resultsFolder + s0 + "/" + s1).mkdirs();
+                for(String s2 : blockSizeFolders){
+                    new File(resultsFolder + s0 + "/" + s1 + "/" + s2).mkdirs();
+                    for(String s3 : groupFolders){
+                        new File(resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3).mkdirs();
+                        if(s1.contains("threshold_weight")){
+                            for(String s4 : thresholdWeightFolders){
+                                new File(resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/" + s4).mkdirs();
+                            }
                         }
-                    }
-                    else if(s1.contains("threshold")){
-                        for(String s4 : thresholdFolders){
-                            new File(resultsFolder + s1 + "/" + s2 + "/" + s3 + "/" + s4).mkdirs();
+                        else if(s1.contains("threshold")){
+                            for(String s4 : thresholdFolders){
+                                new File(resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/" + s4).mkdirs();
+                            }
                         }
                     }
                 }
