@@ -52,6 +52,37 @@ public class TestUtilities {
 
     }
 
+    public TestUtilities(String path,boolean notCreate){
+        interestFilePath = EXAMPLE_START + path + EXAMPLE_END;
+        managerFilePath = interestFilePath;
+        destPath = EXAMPLE_START + path + "/one_interest/";
+        destPath2 = EXAMPLE_START + path + "/two_interests/";
+        destPath3 = EXAMPLE_START + path + "/three_interests/";
+    }
+
+    public void initLocalOldFiles(int numNormal,int numLight, int[] normalPerc,int[] lightPerc){
+        /*Percentages*/
+        manager = new TransactionManager(managerFilePath);
+        String[] filePaths = new String[]{destPath,destPath2,destPath3};
+
+        TestInfo info = new TestInfo(numNormal,numLight,normalPerc,lightPerc);
+        nodes = info.generateInterestsNormal(filePaths,configFilePath,7000,5000,"localhost");
+        normalNodes = new NormalNode[numNormal];
+        lightNodes = new LightNode[numLight];
+
+        int countNormal=0,countLight=0;
+        for(Node n : nodes){
+            if(n instanceof NormalNode){
+                normalNodes[countNormal] =(NormalNode) n;
+                countNormal++;
+            }
+            else if(n instanceof LightNode){
+                lightNodes[countLight] =(LightNode) n;
+                countLight++;
+            }
+        }
+    }
+
     public void initLocal(int numNormal,int numLight, int[] normalPerc,int[] lightPerc){
         manager = new TransactionManager(managerFilePath);
         manager.generateInterestFiles(interestFilePath,100,destPath);
