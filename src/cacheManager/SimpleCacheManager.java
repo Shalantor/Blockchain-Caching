@@ -222,4 +222,8 @@ public class SimpleCacheManager extends CacheManager{
     public ArrayList<Block> getBlocksInCache() {
         return blocksInCache;
     }
+
+    public long getSizeOfCachedBlocks() {
+        return sizeOfCachedBlocks;
+    }
 }

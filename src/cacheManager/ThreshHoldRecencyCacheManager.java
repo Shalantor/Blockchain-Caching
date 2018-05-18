@@ -197,4 +197,8 @@ public class ThreshHoldRecencyCacheManager extends CacheManager{
         return blocksInCache;
     }
 
+    public long getSizeOfCachedBlocks() {
+        return sizeOfCachedBlocks;
+    }
+
 }

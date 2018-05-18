@@ -196,4 +196,8 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
 
         return blocksInCache;
     }
+
+    public long getSizeOfCachedBlocks() {
+        return sizeOfCachedBlocks;
+    }
 }

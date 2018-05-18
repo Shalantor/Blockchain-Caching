@@ -78,4 +78,8 @@ public class CacheManager {
     public ArrayList<Block> getBlocksInCache() {
         return blocksInCache;
     }
+
+    public long getSizeOfCachedBlocks() {
+        return 0;
+    }
 }

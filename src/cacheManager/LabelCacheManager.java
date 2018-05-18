@@ -226,4 +226,8 @@ public class LabelCacheManager extends CacheManager{
     public ArrayList<Block> getBlocksInCache() {
         return blocksInCache;
     }
+
+    public long getSizeOfCachedBlocks() {
+        return sizeOfCachedBlocks;
+    }
 }
