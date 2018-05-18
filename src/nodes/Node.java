@@ -59,7 +59,7 @@ public class Node implements Runnable{
             listener = new ServerSocket(port,100);
         }
         catch (IOException ex){
-            System.out.println("Could not create server socket");
+            //System.out.println("Could not create server socket");
         }
         this.timeOut = timeOut;
         this.host = host;

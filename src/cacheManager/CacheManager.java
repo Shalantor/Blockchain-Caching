@@ -43,7 +43,7 @@ public class CacheManager {
             case CACHE_LIMIT_SIMPLE:
                 return new LabelCacheManager(timeRestraint,cacheSize);
             case SCORE_CACHE:
-                return new ThreshHoldCacheManager(timeRestraint,cacheSize,scoreBound);
+                return new ThreshHoldWeightCacheManager(timeRestraint,cacheSize,scoreBound);
             case LABEL_BLOCK_SIZE:
                 return new LabelBlockSizeCacheManager(timeRestraint,cacheSize);
             case SCORE_BLOCK_SIZE:
