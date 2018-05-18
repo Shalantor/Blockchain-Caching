@@ -29,7 +29,7 @@ public class LocalTestModule {
         Block block;
         HashMap<String,Object> transaction;
         Node[] nodes = testUtilities.nodes;
-        for(int i =0; i < 500; i++){
+        for(int i =0; i < 1000; i++){
             while(true) {
                 /*Add transactions until enough for block*/
                 transaction = testUtilities.getTransactionExponential();
