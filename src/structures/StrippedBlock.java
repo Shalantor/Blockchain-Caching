@@ -8,14 +8,11 @@ import java.util.Map;
 public class StrippedBlock extends Block{
 
     /*Do not keep hashes and timestamp*/
-    public long index;
-    public long blockSize;
     public ArrayList<HashMap<String,Object>> keptTransactions;
 
     public StrippedBlock(Block block, HashMap<String,Interest> interests){
         index = block.index;
         /*TODO: Make below thing less hacky*/
-        super.index = block.index;
         removeTransactions(block.transactions,interests);
         blockSize = Block.calculateTransactionSize(keptTransactions,16);/*16 is for two header fields*/
     }

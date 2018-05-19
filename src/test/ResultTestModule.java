@@ -102,7 +102,7 @@ public class ResultTestModule{
                                 String dest = resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/" + s4;
                                 new File(dest).mkdirs();
                                 createConfigFile(configContent,s2,s3,s1,s4);
-                                testLocal( dest + "/", categories,distributions);
+                                testLocal( dest + "/", s0,distributions);
                             }
                         }
                         else if(s1.contains("threshold")){
@@ -110,13 +110,13 @@ public class ResultTestModule{
                                 String dest = resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/" + s4;
                                 new File(dest).mkdirs();
                                 createConfigFile(configContent,s2,s3,s1,s4);
-                                testLocal(dest + "/", categories,distributions);
+                                testLocal(dest + "/", s0,distributions);
                             }
                         }
                         else{
                             String dest = resultsFolder + s0 + "/" + s1 + "/" + s2 + "/" + s3 + "/";
                             createConfigFile(configContent,s2,s3,s1,"dummy_1");
-                            testLocal(dest,categories,distributions);
+                            testLocal(dest,s0,distributions);
                         }
                     }
                 }
@@ -124,70 +124,71 @@ public class ResultTestModule{
         }
     }
 
-    public static void testLocal(String destPath,String[] categories, String[] distributions){
+    public static void testLocal(String destPath,String category, String[] distributions){
 
-        for(String category : categories){
-            for(String distribution : distributions) {
+        TestUtilities testUtilities = new TestUtilities(category,false);
+        /*create normal and light nodes. The nodes are now setup*/
+        testUtilities.initLocalOldFiles(10, 10, new int[]{60, 30, 10}, new int[]{60, 30, 10});
+        /*create miner node*/
+        MinerNode minerNode = testUtilities.createMiner();
+        for(String distribution : distributions) {
 
-                TestUtilities testUtilities = new TestUtilities(category,false);
-
-                /*create normal and light nodes. The nodes are now setup*/
-                testUtilities.initLocalOldFiles(10, 10, new int[]{60, 30, 10}, new int[]{60, 30, 10});
-
-                /*create miner node*/
-                MinerNode minerNode = testUtilities.createMiner();
-
-                /*How many blocks to create?*/
-                Block block;
-                HashMap<String, Object> transaction;
-                Node[] nodes = testUtilities.nodes;
-                for (int i = 0; i < 10; i++) {
-                    while (true) {
-                        /*Add transactions until enough for block*/
-                        transaction = getTransaction(testUtilities,distribution);
-                        block = minerNode.addTransactionLocal(transaction);
-                        if (block != null) {
-                            break;
-                        }
+            /*How many blocks to create?*/
+            Block block;
+            HashMap<String, Object> transaction;
+            Node[] nodes = testUtilities.nodes;
+            for (int i = 0; i < 1; i++) {
+                while (true) {
+                    /*Add transactions until enough for block*/
+                    transaction = getTransaction(testUtilities,distribution);
+                    block = minerNode.addTransactionLocal(transaction);
+                    if (block != null) {
+                        break;
                     }
-
-                    /*Now add block to each node*/
-                    for (Node n : nodes) {
-                        if (n instanceof NormalNode) {
-                            ((NormalNode) n).checkBlock(block);
-                        } else if (n instanceof LightNode) {
-                            ((LightNode) n).checkBlock(block);
-                        }
-                    }
-
                 }
 
-                File blockResults = new File(destPath + distribution + "_blocks.txt");
-                File sizeResults = new File(destPath + distribution + "_size.txt");
-
-                try{
-                    PrintWriter writerBlocks = new PrintWriter(blockResults);
-                    PrintWriter writerSize = new PrintWriter(sizeResults);
-                    for (Node n : nodes) {
-                        if (n instanceof NormalNode) {
-                            writerBlocks.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
-                            writerSize.println(((NormalNode) n).cacheManager.getSizeOfCachedBlocks());
-
-                        } else if (n instanceof LightNode) {
-                            writerBlocks.println(((LightNode) n).cacheManager.getBlocksInCache().size());
-                            writerSize.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());                        }
+                /*Now add block to each node*/
+                for (Node n : nodes) {
+                    if (n instanceof NormalNode) {
+                        ((NormalNode) n).checkBlock(block);
+                    } else if (n instanceof LightNode) {
+                        ((LightNode) n).checkBlock(block);
                     }
-                    writerBlocks.flush();
-                    writerSize.flush();
-                    writerBlocks.close();
-                    writerSize.close();
                 }
-                catch (IOException ex){
-                    ex.printStackTrace();
-                }
+
             }
 
+            File blockResults = new File(destPath + distribution + "_blocks.txt");
+            File sizeResultsNormal = new File(destPath + distribution + "_size_normal.txt");
+            File sizeResultsLight = new File(destPath + distribution + "_size_light.txt");
+
+            try{
+                PrintWriter writerBlocks = new PrintWriter(blockResults);
+                PrintWriter writerSizeNormal = new PrintWriter(sizeResultsNormal);
+                PrintWriter writerSizeLight = new PrintWriter(sizeResultsLight);
+                for (Node n : nodes) {
+                    if (n instanceof NormalNode) {
+                        writerBlocks.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
+                        writerSizeNormal.println(((NormalNode) n).cacheManager.getSizeOfCachedBlocks());
+
+                    } else if (n instanceof LightNode) {
+                        writerBlocks.println(((LightNode) n).cacheManager.getBlocksInCache().size());
+                        writerSizeLight.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());                        }
+                }
+                writerBlocks.flush();
+                writerSizeNormal.flush();
+                writerSizeLight.flush();
+
+                writerBlocks.close();
+                writerSizeNormal.close();
+                writerSizeLight.close();
+            }
+            catch (IOException ex){
+                ex.printStackTrace();
+            }
         }
+
+
     }
 
     public static HashMap<String,Object> getTransaction(TestUtilities t, String distribution){
