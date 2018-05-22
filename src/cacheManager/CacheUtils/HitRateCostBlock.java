@@ -2,6 +2,8 @@ package cacheManager.CacheUtils;
 
 import structures.Block;
 
+import java.util.Random;
+
 public class HitRateCostBlock implements Comparable<HitRateCostBlock>{
 
     private Block block;
@@ -36,6 +38,11 @@ public class HitRateCostBlock implements Comparable<HitRateCostBlock>{
 
     public void setScore(long score) {
         this.score = score;
+    }
+
+    public float getCalculatedScore(float noise, float size, float averageSize){
+        Random generator = new Random();
+        return score * (size * this.block.blockSize + 2 * noise * averageSize * generator.nextInt(2));
     }
 
     @Override

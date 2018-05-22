@@ -18,6 +18,10 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
     private long timeLimit;
     private long cacheSize;
     private long sizeOfCachedBlocks;
+    private int numOfCachedBlocks;
+
+    private float noise = 0.5f;
+    private float size = 0.5f;
 
     //random number for accesses
     private int numAccesses;
@@ -59,28 +63,34 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
         if(blocksInCache.get(exponentialSize).size() == 0){
             blocksInCache.get(exponentialSize).add(hitRateCostBlock);
             sizeOfCachedBlocks += block.blockSize;
+            numOfCachedBlocks++;
             return true;
         }
 
         ArrayList<HitRateCostBlock> insertList = blocksInCache.get(exponentialSize);
 
         /*Check last block in cache*/
+        float average = sizeOfCachedBlocks/numOfCachedBlocks;
         HitRateCostBlock lastBlock = insertList.get(insertList.size()-1);
-        if(lastBlock.getScore() < hitRateCostBlock.getScore()){
+        if(lastBlock.getCalculatedScore(noise,size,average) <
+                hitRateCostBlock.getCalculatedScore(noise,size,average)){
             insertList.add(hitRateCostBlock);
             sizeOfCachedBlocks += block.blockSize;
+            numOfCachedBlocks++;
             checkIfSpace();
             return true;
         }
 
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < insertList.size(); i++){
-            if(insertList.get(i).getScore() > hitRateCostBlock.getScore() ){
+            if(insertList.get(i).getCalculatedScore(noise,size,average) >
+                    hitRateCostBlock.getCalculatedScore(noise,size,average) ){
                 insertList.add(i,hitRateCostBlock);
                 break;
             }
         }
         sizeOfCachedBlocks += block.blockSize;
+        numOfCachedBlocks++;
 
         /*Check if there are too many blocks*/
         checkIfSpace();
@@ -99,14 +109,25 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
                 blocksForRemove.add(currentList.get(0));
             }
 
-            blocksForRemove.sort(HitRateCostBlock::compareTo);
+            float average = sizeOfCachedBlocks/numOfCachedBlocks;
+
+            float max = -100000;
+            HitRateCostBlock victim = null;
+            for(HitRateCostBlock block : blocksForRemove){
+                if(block.getCalculatedScore(noise,size,average) > max){
+                    max = block.getCalculatedScore(noise,size,average);
+                    victim = block;
+                }
+            }
+
             int sizeCategory = 2;
-            while(sizeCategory < blocksForRemove.get(0).getBlock().blockSize){
+            while(sizeCategory < victim.getBlock().blockSize){
                 sizeCategory *= 2;
             }
 
-            sizeOfCachedBlocks -= blocksInCache.get(sizeCategory).get(0).getBlock().blockSize;
-            blocksInCache.get(sizeCategory).remove(0);
+            sizeOfCachedBlocks -= victim.getBlock().blockSize;
+            blocksInCache.get(sizeCategory).remove(victim);
+            numOfCachedBlocks--;
         }
     }
 
