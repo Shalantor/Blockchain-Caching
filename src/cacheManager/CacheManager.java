@@ -21,6 +21,7 @@ public class CacheManager {
     private static final int SCORE_BLOCK_SIZE = 4;
     private static final int SCORE_RECENCY = 5;
     private static final int SCORE_NO_WEIGHT_CACHE = 6;
+    private static final int LABEL_EXPONENTIAL_SIZE = 7;
 
     /*Which nodes we got the best interests from. This is
         sorted. Lowest index = highest score*/
@@ -53,6 +54,8 @@ public class CacheManager {
                 return new ThreshHoldRecencyCacheManager(timeRestraint,cacheSize,scoreBound);
             case SCORE_NO_WEIGHT_CACHE:
                 return new ThreshHoldCacheManager(timeRestraint,cacheSize,scoreBound);
+            case LABEL_EXPONENTIAL_SIZE:
+                return new LabelPyramidSchemeCacheManager(timeRestraint,cacheSize);
 
         }
         return null;
