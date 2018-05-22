@@ -11,19 +11,104 @@ import structures.SavedNode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class LabelPyramidSchemeCacheManager extends CacheManager{
 
     private long timeLimit;
     private long cacheSize;
     private long sizeOfCachedBlocks;
-    private ArrayList<HitRateCostBlock> blocksInCache;
+
+    //random number for accesses
+    private int numAccesses;
+
+    private Random random = new Random();
+
+    //key is size, value is arraylist with blocks
+    private HashMap<Integer,ArrayList<HitRateCostBlock>> blocksInCache;
 
     public LabelPyramidSchemeCacheManager(long timeLimit, long cacheSize) {
         this.timeLimit = timeLimit;
         this.cacheSize = cacheSize;
-        blocksInCache = new ArrayList<>();
+        blocksInCache = new HashMap<>();
         bestNodes = new ArrayList<>();
+
+        //number of accesses initialization
+        numAccesses = random.nextInt(100) + 100;
+    }
+
+    @Override
+    public boolean addBlock(Block block){
+
+        /*custom block. Simulate accesses with random number*/
+        HitRateCostBlock hitRateCostBlock = new HitRateCostBlock(block,random.nextInt(100),numAccesses);
+
+        /*Now check exponential size*/
+        int exponentialSize = 2;
+
+        while(exponentialSize < block.blockSize){
+            exponentialSize *= 2;
+        }
+
+        /*Check if there is key with this value for size*/
+        if(!blocksInCache.containsKey(exponentialSize)){
+            blocksInCache.put(exponentialSize,new ArrayList<>());
+        }
+
+        /*check if cache empty*/
+        if(blocksInCache.get(exponentialSize).size() == 0){
+            blocksInCache.get(exponentialSize).add(hitRateCostBlock);
+            sizeOfCachedBlocks += block.blockSize;
+            return true;
+        }
+
+        ArrayList<HitRateCostBlock> insertList = blocksInCache.get(exponentialSize);
+
+        /*Check last block in cache*/
+        HitRateCostBlock lastBlock = insertList.get(insertList.size()-1);
+        if(lastBlock.getScore() < hitRateCostBlock.getScore()){
+            insertList.add(hitRateCostBlock);
+            sizeOfCachedBlocks += block.blockSize;
+            return true;
+        }
+
+        /*Insert into sorted array list in cache*/
+        for(int i = 0; i < insertList.size(); i++){
+            if(insertList.get(i).getScore() > hitRateCostBlock.getScore() ){
+                insertList.add(i,hitRateCostBlock);
+                break;
+            }
+        }
+        sizeOfCachedBlocks += block.blockSize;
+
+        /*Check if there are too many blocks*/
+
+        while (sizeOfCachedBlocks > cacheSize){
+            ArrayList<HitRateCostBlock> blocksForRemove = new ArrayList<>();
+            for(Map.Entry entry : blocksInCache.entrySet()){
+                blocksForRemove = (ArrayList<HitRateCostBlock>) entry.getValue();
+            }
+
+            blocksForRemove.sort(HitRateCostBlock::compareTo);
+
+            sizeOfCachedBlocks -= blocksForRemove.get(0).getBlock().blockSize;
+            blocksInCache.remove(0);
+        }
+
+        return true;
+    }
+
+    @Override
+    public void addReceivedBlocks(ArrayList<Block> receivedBlocks, HashMap<String,Interest> interests) {
+        /*Insert them based on the order of their indexes*/
+        for(Block receivedBlock : receivedBlocks){
+
+            if(!checkBlock(receivedBlock,interests)){
+                continue;
+            }
+
+            addBlock(receivedBlock);
+        }
     }
 
     @Override
@@ -120,8 +205,10 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
 
     public ArrayList<Block> getBlocksInCache() {
         ArrayList<Block> blocks = new ArrayList<>();
-        for(HitRateCostBlock b : blocksInCache){
-            blocks.add(b.getBlock());
+        for(Map.Entry entry : blocksInCache.entrySet()){
+            for(HitRateCostBlock b : (ArrayList<HitRateCostBlock>)entry.getKey()){
+                blocks.add(b.getBlock());
+            }
         }
         return blocks;
     }
