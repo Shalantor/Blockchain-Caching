@@ -219,7 +219,7 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
     public ArrayList<Block> getBlocksInCache() {
         ArrayList<Block> blocks = new ArrayList<>();
         for(Map.Entry entry : blocksInCache.entrySet()){
-            for(HitRateCostBlock b : (ArrayList<HitRateCostBlock>)entry.getKey()){
+            for(HitRateCostBlock b : (ArrayList<HitRateCostBlock>)entry.getValue()){
                 blocks.add(b.getBlock());
             }
         }

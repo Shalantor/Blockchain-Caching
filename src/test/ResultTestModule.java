@@ -40,7 +40,7 @@ public class ResultTestModule{
             ex.printStackTrace();
         }
 
-        String[] categories = new String[]{"marketplace","voting","payment"};
+        String[] categories = new String[]{"marketplace"};
 
         String[] topLevelFolders = new String[]{
                 "interest_based_IB",
@@ -48,7 +48,8 @@ public class ResultTestModule{
                 "threshold_weight_based_WTB",
                 "interest_based_block_size_IBBS",
                 "threshold_based_block_size_TBBS",
-                "threshold_based_recency_TBR"
+                "threshold_based_recency_TBR",
+                "pyramid_scheme_interest_based_IBPS"
         };
 
         String[] distributions = new String[]{
@@ -128,7 +129,7 @@ public class ResultTestModule{
 
         TestUtilities testUtilities = new TestUtilities(category,false);
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocalOldFiles(500, 500, new int[]{70, 20, 10}, new int[]{70, 20, 10});
+        testUtilities.initLocalOldFiles(10, 10, new int[]{70, 20, 10}, new int[]{70, 20, 10});
         /*create miner node*/
         MinerNode minerNode = testUtilities.createMiner();
         for(String distribution : distributions) {
@@ -145,7 +146,7 @@ public class ResultTestModule{
                 }
             }
             long blockChainSize = 0;
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 10; i++) {
                 while (true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);
@@ -260,6 +261,8 @@ public class ResultTestModule{
             case "threshold_based_recency_TBR":
                 config += "5\t" + threshold;
                 break;
+            case "pyramid_scheme_interest_based_IBPS":
+                config+= "7\t1";
         }
 
         boolean groupTransactions = false;
