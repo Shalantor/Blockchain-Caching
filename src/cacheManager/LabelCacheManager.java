@@ -230,4 +230,10 @@ public class LabelCacheManager extends CacheManager{
     public long getSizeOfCachedBlocks() {
         return sizeOfCachedBlocks;
     }
+
+    @Override
+    public void clearAll(){
+        sizeOfCachedBlocks = 0;
+        blocksInCache.clear();
+    }
 }

@@ -201,4 +201,10 @@ public class ThreshHoldRecencyCacheManager extends CacheManager{
         return sizeOfCachedBlocks;
     }
 
+    @Override
+    public void clearAll(){
+        sizeOfCachedBlocks = 0;
+        blocksInCache.clear();
+        latestScore = 0;
+    }
 }

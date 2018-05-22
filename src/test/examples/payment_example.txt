@@ -1,6 +1,5 @@
-sender       string   node   -   100
-receiver     string   node   -   100
-amount       double   0    2000.0   10
-fees         double   0    30.0 10
-num_inputs   integer  1    10   5
-num_outputs  integer  1    10   5
+sender          string   node   -   100
+receiver        string   node   -   100
+amount          double   0    5000.0   10
+fee             double   0    300.0 10
+payment_method  string   0    cash visa mastercard paypal bank crypto cheque

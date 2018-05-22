@@ -200,4 +200,11 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
     public long getSizeOfCachedBlocks() {
         return sizeOfCachedBlocks;
     }
+
+    @Override
+    public void clearAll(){
+        sizeOfCachedBlocks = 0;
+        blocksInCache.clear();
+        latestScore = 0;
+    }
 }

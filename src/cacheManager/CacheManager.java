@@ -82,4 +82,8 @@ public class CacheManager {
     public long getSizeOfCachedBlocks() {
         return 0;
     }
+
+    public void clearAll(){
+
+    }
 }

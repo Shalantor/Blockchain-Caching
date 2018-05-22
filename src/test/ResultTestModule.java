@@ -128,7 +128,7 @@ public class ResultTestModule{
 
         TestUtilities testUtilities = new TestUtilities(category,false);
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocalOldFiles(10, 10, new int[]{60, 30, 10}, new int[]{60, 30, 10});
+        testUtilities.initLocalOldFiles(500, 500, new int[]{70, 20, 10}, new int[]{70, 20, 10});
         /*create miner node*/
         MinerNode minerNode = testUtilities.createMiner();
         for(String distribution : distributions) {
@@ -137,12 +137,21 @@ public class ResultTestModule{
             Block block;
             HashMap<String, Object> transaction;
             Node[] nodes = testUtilities.nodes;
-            for (int i = 0; i < 1; i++) {
+            for(Node n : nodes){
+                if (n instanceof NormalNode) {
+                    ((NormalNode) n).cacheManager.clearAll();
+                } else if (n instanceof LightNode) {
+                    ((LightNode) n).cacheManager.clearAll();
+                }
+            }
+            long blockChainSize = 0;
+            for (int i = 0; i < 1000; i++) {
                 while (true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);
                     block = minerNode.addTransactionLocal(transaction);
                     if (block != null) {
+                        blockChainSize += block.blockSize;
                         break;
                     }
                 }
@@ -161,11 +170,16 @@ public class ResultTestModule{
             File blockResults = new File(destPath + distribution + "_blocks.txt");
             File sizeResultsNormal = new File(destPath + distribution + "_size_normal.txt");
             File sizeResultsLight = new File(destPath + distribution + "_size_light.txt");
+            File overallSize = new File(destPath + distribution + "full_block_chain_size.txt");
 
             try{
                 PrintWriter writerBlocks = new PrintWriter(blockResults);
                 PrintWriter writerSizeNormal = new PrintWriter(sizeResultsNormal);
                 PrintWriter writerSizeLight = new PrintWriter(sizeResultsLight);
+                PrintWriter allSizeWriter = new PrintWriter(overallSize);
+
+                allSizeWriter.println(blockChainSize);
+
                 for (Node n : nodes) {
                     if (n instanceof NormalNode) {
                         writerBlocks.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
@@ -173,7 +187,8 @@ public class ResultTestModule{
 
                     } else if (n instanceof LightNode) {
                         writerBlocks.println(((LightNode) n).cacheManager.getBlocksInCache().size());
-                        writerSizeLight.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());                        }
+                        writerSizeLight.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());
+                    }
                 }
                 writerBlocks.flush();
                 writerSizeNormal.flush();
@@ -182,6 +197,9 @@ public class ResultTestModule{
                 writerBlocks.close();
                 writerSizeNormal.close();
                 writerSizeLight.close();
+
+                allSizeWriter.flush();
+                allSizeWriter.close();
             }
             catch (IOException ex){
                 ex.printStackTrace();
