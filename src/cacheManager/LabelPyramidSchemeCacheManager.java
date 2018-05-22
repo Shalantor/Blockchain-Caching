@@ -94,8 +94,12 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
             }
 
             blocksForRemove.sort(HitRateCostBlock::compareTo);
+            int sizeCategory = 2;
+            while(sizeCategory < blocksForRemove.get(0).getBlock().blockSize){
+                sizeCategory *= 2;
+            }
 
-            sizeOfCachedBlocks -= blocksForRemove.get(0).getBlock().blockSize;
+            sizeOfCachedBlocks -= blocksInCache.get(sizeCategory).get(0).getBlock().blockSize;
             blocksInCache.remove(0);
         }
 
