@@ -52,6 +52,7 @@ public class ThreshHoldRecencyCacheManager extends CacheManager{
         /*last block*/
         if(blocksInCache.get(blocksInCache.size()-1).timestamp <= block.timestamp){
             blocksInCache.add(block);
+            sizeOfCachedBlocks += block.blockSize;
             checkIfSpace();
             return true;
         }

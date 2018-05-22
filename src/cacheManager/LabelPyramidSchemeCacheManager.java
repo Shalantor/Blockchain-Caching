@@ -83,7 +83,6 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
         sizeOfCachedBlocks += block.blockSize;
 
         /*Check if there are too many blocks*/
-
         checkIfSpace();
 
         return true;
@@ -107,7 +106,7 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
             }
 
             sizeOfCachedBlocks -= blocksInCache.get(sizeCategory).get(0).getBlock().blockSize;
-            blocksInCache.remove(0);
+            blocksInCache.get(sizeCategory).remove(0);
         }
     }
 

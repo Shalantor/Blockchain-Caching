@@ -45,6 +45,7 @@ public class LabelBlockSizeCacheManager extends CacheManager{
         /*Check last block*/
         if(blocksInCache.get(blocksInCache.size() - 1).blockSize < block.blockSize){
             blocksInCache.add(block);
+            sizeOfCachedBlocks += block.blockSize;
             checkIfSpace();
             return true;
         }

@@ -195,7 +195,7 @@ public class BasicTestModule {
                 //System.out.println(b.timestamp);
             }
 
-            System.out.println("Blocks in cache are " + normalNode.cacheManager.getBlocksInCache().size());
+            System.out.println("Size of blocks in cache are " + normalNode.cacheManager.getSizeOfCachedBlocks());
 
         }
         else if(testType == CHECK_LIGHT_NODE){

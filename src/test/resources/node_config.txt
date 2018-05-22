@@ -7,4 +7,4 @@ storage             0
 min_block_size	2000
 max_block_size	2500
 group_content	false	0
-cache_configuration	2	0
+cache_configuration	7	0

@@ -52,6 +52,7 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
         /*last block*/
         if(blocksInCache.get(blocksInCache.size()-1).blockSize <= block.blockSize){
             blocksInCache.add(block);
+            sizeOfCachedBlocks += block.blockSize;
             checkIfSpace();
             return true;
         }
