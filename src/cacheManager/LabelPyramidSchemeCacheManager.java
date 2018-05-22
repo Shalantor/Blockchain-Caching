@@ -86,7 +86,11 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
         while (sizeOfCachedBlocks > cacheSize){
             ArrayList<HitRateCostBlock> blocksForRemove = new ArrayList<>();
             for(Map.Entry entry : blocksInCache.entrySet()){
-                blocksForRemove = (ArrayList<HitRateCostBlock>) entry.getValue();
+                ArrayList<HitRateCostBlock> currentList = (ArrayList<HitRateCostBlock>) entry.getValue();
+                if(currentList.size() == 0){
+                    continue;
+                }
+                blocksForRemove.add(currentList.get(0));
             }
 
             blocksForRemove.sort(HitRateCostBlock::compareTo);
