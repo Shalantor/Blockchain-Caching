@@ -54,6 +54,7 @@ public class ThreshHoldCacheManager extends CacheManager{
         /*last block*/
         if(blocksInCache.get(blocksInCache.size()-1).getScore() <= scoreBlock.getScore()){
             blocksInCache.add(scoreBlock);
+            checkIfSpace();
             return true;
         }
 
@@ -66,12 +67,7 @@ public class ThreshHoldCacheManager extends CacheManager{
         }
 
         sizeOfCachedBlocks += block.blockSize;
-
-        /*Check if there are too many blocks*/
-        if(sizeOfCachedBlocks > cacheSize){
-            sizeOfCachedBlocks -= blocksInCache.get(0).getBlock().blockSize;
-            blocksInCache.remove(0);
-        }
+        checkIfSpace();
 
         return true;
     }
@@ -87,9 +83,11 @@ public class ThreshHoldCacheManager extends CacheManager{
 
             addBlock(receivedBlock);
         }
+    }
 
+    public void checkIfSpace(){
         /*Check if there are too many blocks*/
-        while(sizeOfCachedBlocks > cacheSize){
+        while (sizeOfCachedBlocks > cacheSize){
             sizeOfCachedBlocks -= blocksInCache.get(0).getBlock().blockSize;
             blocksInCache.remove(0);
         }

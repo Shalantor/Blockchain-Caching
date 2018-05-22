@@ -69,6 +69,7 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
         if(lastBlock.getScore() < hitRateCostBlock.getScore()){
             insertList.add(hitRateCostBlock);
             sizeOfCachedBlocks += block.blockSize;
+            checkIfSpace();
             return true;
         }
 
@@ -83,6 +84,12 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
 
         /*Check if there are too many blocks*/
 
+        checkIfSpace();
+
+        return true;
+    }
+
+    public void checkIfSpace(){
         while (sizeOfCachedBlocks > cacheSize){
             ArrayList<HitRateCostBlock> blocksForRemove = new ArrayList<>();
             for(Map.Entry entry : blocksInCache.entrySet()){
@@ -102,8 +109,6 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
             sizeOfCachedBlocks -= blocksInCache.get(sizeCategory).get(0).getBlock().blockSize;
             blocksInCache.remove(0);
         }
-
-        return true;
     }
 
     @Override

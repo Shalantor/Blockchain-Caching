@@ -45,6 +45,7 @@ public class LabelBlockSizeCacheManager extends CacheManager{
         /*Check last block*/
         if(blocksInCache.get(blocksInCache.size() - 1).blockSize < block.blockSize){
             blocksInCache.add(block);
+            checkIfSpace();
             return true;
         }
 
@@ -55,15 +56,20 @@ public class LabelBlockSizeCacheManager extends CacheManager{
                 break;
             }
         }
+
         sizeOfCachedBlocks += block.blockSize;
+        checkIfSpace();
+
+        return true;
+    }
+
+    public void checkIfSpace(){
 
         /*Check if there are too many blocks*/
-        if(sizeOfCachedBlocks > cacheSize){
+        while (sizeOfCachedBlocks > cacheSize){
             sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
             blocksInCache.remove(0);
         }
-
-        return true;
     }
 
     @Override
@@ -79,11 +85,6 @@ public class LabelBlockSizeCacheManager extends CacheManager{
             addBlock(receivedBlock);
         }
 
-        /*Check if there are too many blocks*/
-        while(sizeOfCachedBlocks > cacheSize){
-            sizeOfCachedBlocks -= blocksInCache.get(0).blockSize;
-            blocksInCache.remove(0);
-        }
     }
 
     @Override
