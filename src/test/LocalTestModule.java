@@ -20,7 +20,7 @@ public class LocalTestModule {
         TestUtilities testUtilities = new TestUtilities(MARKETPLACE);
 
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocal(100,50,new int[]{80,10,10},new int[]{80,10,10});
+        testUtilities.initLocal(10,10,new int[]{80,10,10},new int[]{80,10,10});
 
         /*create miner node*/
         MinerNode minerNode = testUtilities.createMiner();
@@ -29,7 +29,7 @@ public class LocalTestModule {
         Block block;
         HashMap<String,Object> transaction;
         Node[] nodes = testUtilities.nodes;
-        for(int i =0; i < 1000; i++){
+        for(int i =0; i < 100; i++){
             while(true) {
                 /*Add transactions until enough for block*/
                 transaction = testUtilities.getTransactionExponential();
@@ -53,16 +53,12 @@ public class LocalTestModule {
 
         for(Node n : nodes){
             if(n instanceof NormalNode){
-                System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
-                if(((NormalNode) n).cacheManager.getBlocksInCache().size() >= 450){
-                    //((NormalNode) n).printInterests();
-                }
+                //System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
+                System.out.println(((NormalNode) n).cacheManager.getSizeOfCachedBlocks());
             }
             else if(n instanceof LightNode){
-                System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
-                if(((LightNode) n).cacheManager.getBlocksInCache().size() >= 450){
-                    //((LightNode) n).printInterests();
-                }
+                //System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
+                System.out.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());
             }
         }
 

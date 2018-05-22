@@ -1,4 +1,4 @@
-max_cache_size     900000
+max_cache_size     1000
 time_restraint     90000
 network_topology    0   7000 7019   2
 miner_node          localhost   7020
@@ -7,4 +7,4 @@ storage             0
 min_block_size	2000
 max_block_size	2500
 group_content	false	0
-cache_configuration	7	1
+cache_configuration	2	0

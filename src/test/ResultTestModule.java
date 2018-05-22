@@ -25,7 +25,7 @@ public class ResultTestModule{
         String resultsFolder = "results/";
 
         //content of config file
-        String configContent = "max_cache_size     900000\n" +
+        String configContent = "max_cache_size     100\n" +
                                 "time_restraint     90000\n" +
                                 "network_topology    0   7000 7019   2\n" +
                                 "miner_node          localhost   7020\n" +
