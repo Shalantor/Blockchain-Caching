@@ -64,6 +64,7 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
             blocksInCache.get(exponentialSize).add(hitRateCostBlock);
             sizeOfCachedBlocks += block.blockSize;
             numOfCachedBlocks++;
+            checkIfSpace();
             return true;
         }
 

@@ -232,6 +232,6 @@ public class LabelCacheManager extends CacheManager{
     @Override
     public void clearAll(){
         sizeOfCachedBlocks = 0;
-        blocksInCache.clear();
+        blocksInCache= new ArrayList<>();
     }
 }
