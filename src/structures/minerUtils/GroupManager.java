@@ -9,10 +9,10 @@ import java.util.Random;
 public class GroupManager {
 
     private Block lastBlock = null;
-    private boolean randomMode = false;
+    protected boolean randomMode = false;
     private long minSize;
     private long maxSize;
-    private Random random = new Random();
+    protected Random random = new Random();
     private long lowerBound;
 
     public GroupManager(){

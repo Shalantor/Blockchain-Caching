@@ -6,10 +6,7 @@ import structures.minerUtils.groupInfo.InterestInfo;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PopularityGroupManager extends GroupManager{
 
@@ -169,6 +166,13 @@ public class PopularityGroupManager extends GroupManager{
     }
 
     @Override
+    public void enableRandomMode(long minBlockSize,long maxBlockSize){
+        this.minBlockSize = minBlockSize;
+        this.maxBlockSize = maxBlockSize;
+        randomMode = true;
+    }
+
+    @Override
     public long addTransaction(HashMap<String,Object> transaction,
                                ArrayList<HashMap<String,Object>> transactions,
                                long size){
@@ -200,7 +204,14 @@ public class PopularityGroupManager extends GroupManager{
         /*Store transactions we want*/
         ArrayList<HashMap<String,Object>> chosenTransactions = new ArrayList<>();
         long currentSize = 0;
-        long limit = ((maxBlockSize - minBlockSize) / 2 ) + minBlockSize;
+
+        long limit;
+        if(!randomMode){
+            limit = ((maxBlockSize - minBlockSize) / 2 ) + minBlockSize;
+        }
+        else{
+            limit = random.nextInt((int) (maxBlockSize-minBlockSize)) + minBlockSize;
+        }
 
         /*First check for transactions that are too old*/
         int pos = -1;
@@ -241,7 +252,12 @@ public class PopularityGroupManager extends GroupManager{
         InterestInfo mostPopular = null;
         /*TODO:Numeric values are dominating, need to fix that with other algorithm*/
         boolean needSplit = false;
+
+        /*When random mode do loop counter*/
+        int loopCounter = 0;
+
         while(currentSize < limit){
+            loopCounter ++;
             /*Get interest info with highest score*/
             /*First sort interests of same transaction attribute*/
             int thisLoopSize = 0;
@@ -408,7 +424,18 @@ public class PopularityGroupManager extends GroupManager{
             /*After trying for all values greater than limit, we can se limit to minblocksize*/
             if(numInterests == interestInfo.keySet().size()){
                 alreadyChecked.clear();
-                limit = minBlockSize;
+                if(!randomMode){
+                    limit = minBlockSize;
+                }
+                else{
+                    if(loopCounter <= 3){
+                        long upperBound = (maxBlockSize - minBlockSize)/2 + minBlockSize;
+                        limit = random.nextInt((int) (upperBound-minBlockSize)) + minBlockSize;
+                    }
+                    else{
+                        limit = minBlockSize;
+                    }
+                }
                 //System.out.println("CHANGE LIMIT");
             }
         }
