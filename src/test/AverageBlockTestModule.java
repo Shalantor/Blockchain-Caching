@@ -32,7 +32,7 @@ public class AverageBlockTestModule {
                 "zipfian_distribution"
         };
 
-        String[] groupOptions = new String[]{"no_group","group"};
+        String[] groupOptions = new String[]{"group","no_group"};
 
         /*What to measure*/
         String[] measures = new String[]{"IB","TB_2","TB_4","TB_6","TWB_6","TWB_8","TWB_10"};
@@ -185,11 +185,11 @@ public class AverageBlockTestModule {
         Node[] nodes = testUtilities.nodes;
         float overall = 0;
 
-        MinerNode minerNode = testUtilities.createMiner();
-
         int count = 0;
         for(int j = 0; j < 10; j++){
-            for(int i =0; i < 10; i++){
+
+            MinerNode minerNode = testUtilities.createMiner();
+            for(int i =0; i < 200; i++){
                 while(true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);

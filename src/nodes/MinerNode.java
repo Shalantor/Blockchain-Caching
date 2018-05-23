@@ -169,4 +169,9 @@ public class MinerNode extends Node{
         }
         return null;
     }
+
+    /*Enable random generation of blocks*/
+    public void enableRandomMode(){
+        groupManager.enableRandomMode(minBlockSize,maxBlockSize);
+    }
 }
