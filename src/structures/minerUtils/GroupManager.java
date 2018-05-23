@@ -23,7 +23,6 @@ public class GroupManager {
         this.maxSize = maxSize;
         randomMode = true;
         lowerBound = random.nextInt((int) (maxSize-minSize)) + minSize;
-        System.out.println("lower bound is " + lowerBound);
     }
 
     public long addTransaction(HashMap<String,Object> transaction,

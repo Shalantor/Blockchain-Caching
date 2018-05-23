@@ -45,6 +45,9 @@ public class AverageBlockTestModule {
             value += 500;
         }
 
+        //Random Sizes
+        int[] randomSizes = new int[]{1,2000,2000,4000,1,4000};
+
         String destFolder = "averageSizes/";
         try{
             FileUtils.deleteDirectory(new File(destFolder));
@@ -96,7 +99,7 @@ public class AverageBlockTestModule {
                             printWriter.write(configContent);
 
                             printWriter.write(getGroupConfig(option));
-                            printWriter.write(getSizeConfig(size,option));
+                            printWriter.write(getSizeConfig(size,-1,option));
                             printWriter.write(getCacheConfig(measure));
 
                             printWriter.close();
@@ -106,13 +109,45 @@ public class AverageBlockTestModule {
                         }
 
                         /*test*/
-                        doTest(distribution,writer);
+                        doTest(distribution,writer,false);
                     }
 
                     /*close the file again*/
                     writer.write("\n");
 
                 }
+
+                /*Now for ranges for random mode in miner*/
+                for(int k=0; k < randomSizes.length; k+=2){
+                    System.out.println("------------------in random size " +
+                            randomSizes[k] + " and " + randomSizes[k+1]);
+
+                    writer.write(randomSizes[k] + "__" + randomSizes[k+1]);
+
+                    for(String measure : measures){
+                        System.out.println("--------------------------------in measure " + measure);
+                        /*First create config file*/
+                        new File(configPath).delete();
+                        File configFile = new File(configPath);
+                        try {
+                            PrintWriter printWriter = new PrintWriter(configFile);
+                            printWriter.write(configContent);
+
+                            printWriter.write(getGroupConfig(option));
+                            printWriter.write(getSizeConfig(randomSizes[k],randomSizes[k+1],option));
+                            printWriter.write(getCacheConfig(measure));
+
+                            printWriter.close();
+                        }
+                        catch (IOException ex){
+                            ex.printStackTrace();
+                        }
+
+                        /*test*/
+                        doTest(distribution,writer,true);
+                    }
+                }
+
                 writer.close();
             }
         }
@@ -130,12 +165,17 @@ public class AverageBlockTestModule {
         return "\n";
     }
 
-    public static String getSizeConfig(int size,String group){
+    public static String getSizeConfig(int size,int nextSize,String group){
+
+        if(nextSize >= 0){
+            return "min_block_size\t" + size + "\nmax_block_size\t" + nextSize + "\n";
+        }
+
         switch (group){
             case "no_group":
                 return "min_block_size\t" + size + "\nmax_block_size\t" + (2*size) + "\n";
             case "group":
-                return "min_block_size\t" + (size - 250) + "\nmax_block_size\t" + (size+250) + "\n";
+                return "min_block_size\t" + (size - 499) + "\nmax_block_size\t" + (size+500) + "\n";
         }
         return "\n";
     }
@@ -175,13 +215,13 @@ public class AverageBlockTestModule {
         return transaction;
     }
 
-    public static void doTest(String distribution,PrintWriter writer){
+    public static void doTest(String distribution,PrintWriter writer,boolean mode){
         /*How many blocks to create?*/
         TestUtilities testUtilities = new TestUtilities(MARKETPLACE);
         Block block;
         HashMap<String,Object> transaction;
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocal(100,100,new int[]{100,0,0},new int[]{100,0,0});
+        testUtilities.initLocal(10,10,new int[]{100,0,0},new int[]{100,0,0});
         Node[] nodes = testUtilities.nodes;
         float overall = 0;
 
@@ -189,7 +229,10 @@ public class AverageBlockTestModule {
         for(int j = 0; j < 10; j++){
 
             MinerNode minerNode = testUtilities.createMiner();
-            for(int i =0; i < 200; i++){
+            if(mode){
+                minerNode.enableRandomMode();
+            }
+            for(int i =0; i < 10; i++){
                 while(true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);

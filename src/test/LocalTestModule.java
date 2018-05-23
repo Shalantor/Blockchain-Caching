@@ -24,7 +24,7 @@ public class LocalTestModule {
 
         /*create miner node*/
         MinerNode minerNode = testUtilities.createMiner();
-        minerNode.enableRandomMode();
+        //minerNode.enableRandomMode();
 
         /*How many blocks to create?*/
         Block block;
