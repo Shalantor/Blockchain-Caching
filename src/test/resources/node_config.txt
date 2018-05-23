@@ -4,7 +4,7 @@ network_topology    0   7000 7019   2
 miner_node          localhost   7020
 full_node           localhost   7021
 storage             0
-group_content	false	0
-min_block_size	1500
-max_block_size	3000
-cache_configuration	2	6
+group_content	true	0
+min_block_size	3250
+max_block_size	3750
+cache_configuration	2	8

@@ -11,6 +11,8 @@ import test.utils.TestUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AverageBlockTestModule {
@@ -36,10 +38,10 @@ public class AverageBlockTestModule {
         String[] measures = new String[]{"IB","TB_2","TB_4","TB_6","TWB_6","TWB_8","TWB_10"};
 
         //Start,end and step in parentheses
-        int[] sizes = new int[(4000 - 500) / 500];
+        ArrayList<Integer> sizes = new ArrayList<>();
         int value = 500;
-        for (int i = 0; i < sizes.length; i++) {
-            sizes[i] = value;
+        while (value <= 4000){
+            sizes.add(value);
             value += 500;
         }
 
@@ -82,7 +84,7 @@ public class AverageBlockTestModule {
 
                     System.out.println("------------------in size " +size);
 
-                    writer.write(size);
+                    writer.write(size + "");
 
                     for(String measure : measures){
                         System.out.println("--------------------------------in measure " + measure);
@@ -109,9 +111,9 @@ public class AverageBlockTestModule {
 
                     /*close the file again*/
                     writer.write("\n");
-                    writer.close();
 
                 }
+                writer.close();
             }
         }
     }
@@ -187,7 +189,7 @@ public class AverageBlockTestModule {
 
         int count = 0;
         for(int j = 0; j < 10; j++){
-            for(int i =0; i < 500; i++){
+            for(int i =0; i < 10; i++){
                 while(true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);
@@ -229,7 +231,7 @@ public class AverageBlockTestModule {
         }
 
         //System.out.println("overall is " + overall);
-        writer.write(" " + (overall/10));
+        writer.write(" " + (new DecimalFormat("##.##").format(overall/10)));
 
     }
 }
