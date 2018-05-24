@@ -133,6 +133,7 @@ public class LabelCacheManager extends CacheManager{
     public boolean checkBlock(Block block, Map<String,Interest> interests){
         for (Map.Entry entry : interests.entrySet()){
             if(((Interest)entry.getValue()).checkBlock(block)){
+                interestedBlocks += 1;
                 return true;
             }
         }

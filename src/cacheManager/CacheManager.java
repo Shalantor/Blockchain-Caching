@@ -23,6 +23,9 @@ public class CacheManager {
     private static final int SCORE_NO_WEIGHT_CACHE = 6;
     private static final int LABEL_EXPONENTIAL_SIZE = 7;
 
+    /*overall blocks with that interest we want to keep*/
+    public int interestedBlocks = 0;
+
     /*Which nodes we got the best interests from. This is
         sorted. Lowest index = highest score*/
     public ArrayList<SavedNode> bestNodes;

@@ -111,6 +111,10 @@ public class ThreshHoldCacheManager extends CacheManager{
 
         latestScore = calculateScore(block,interests);
 
+        if(latestScore >= scoreBound){
+            interestedBlocks += 1;
+        }
+
         return latestScore >= scoreBound;
     }
 

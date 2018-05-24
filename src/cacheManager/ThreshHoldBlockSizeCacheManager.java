@@ -98,6 +98,9 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
     public boolean checkBlock(Block block, Map<String,Interest> interests){
 
         latestScore = calculateScore(block,interests);
+        if(latestScore >= scoreBound){
+            interestedBlocks += 1;
+        }
 
         return latestScore >= scoreBound;
     }
