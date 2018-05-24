@@ -43,7 +43,7 @@ public class LabelBlockSizeCacheManager extends CacheManager{
         }
 
         /*Check last block*/
-        if(blocksInCache.get(blocksInCache.size() - 1).blockSize < block.blockSize){
+        if(blocksInCache.get(blocksInCache.size() - 1).blockSize >= block.blockSize){
             blocksInCache.add(block);
             sizeOfCachedBlocks += block.blockSize;
             checkIfSpace();
@@ -52,7 +52,7 @@ public class LabelBlockSizeCacheManager extends CacheManager{
 
         /*Insert into sorted array list in cache based on block size*/
         for(int i = 0; i < blocksInCache.size(); i++){
-            if(blocksInCache.get(i).blockSize >= block.blockSize ){
+            if(blocksInCache.get(i).blockSize <= block.blockSize ){
                 blocksInCache.add(i,block);
                 break;
             }

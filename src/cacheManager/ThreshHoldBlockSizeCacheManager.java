@@ -50,7 +50,7 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
         }
 
         /*last block*/
-        if(blocksInCache.get(blocksInCache.size()-1).blockSize <= block.blockSize){
+        if(blocksInCache.get(blocksInCache.size()-1).blockSize >= block.blockSize){
             blocksInCache.add(block);
             sizeOfCachedBlocks += block.blockSize;
             checkIfSpace();
@@ -59,7 +59,7 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
 
         /*Insert into sorted array list in cache*/
         for(int i = 0; i < blocksInCache.size(); i++){
-            if(blocksInCache.get(i).blockSize >= block.blockSize ){
+            if(blocksInCache.get(i).blockSize <= block.blockSize ){
                 blocksInCache.add(i,block);
                 break;
             }
