@@ -229,5 +229,6 @@ public class ThreshHoldCacheManager extends CacheManager{
         sizeOfCachedBlocks = 0;
         blocksInCache = new ArrayList<>();
         latestScore = 0;
+        interestedBlocks = 0;
     }
 }

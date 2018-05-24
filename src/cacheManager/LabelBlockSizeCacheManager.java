@@ -194,5 +194,6 @@ public class LabelBlockSizeCacheManager extends CacheManager{
     public void clearAll(){
         sizeOfCachedBlocks = 0;
         blocksInCache.clear();
+        interestedBlocks = 0;
     }
 }

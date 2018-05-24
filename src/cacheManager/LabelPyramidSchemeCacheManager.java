@@ -256,5 +256,6 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
     public void clearAll(){
         sizeOfCachedBlocks = 0;
         blocksInCache.clear();
+        interestedBlocks = 0;
     }
 }

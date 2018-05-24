@@ -234,5 +234,6 @@ public class LabelCacheManager extends CacheManager{
     public void clearAll(){
         sizeOfCachedBlocks = 0;
         blocksInCache= new ArrayList<>();
+        interestedBlocks = 0;
     }
 }
