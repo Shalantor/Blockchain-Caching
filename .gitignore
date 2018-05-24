@@ -33,3 +33,4 @@ src/test/examples/*
 # results
 results/
 averageSizes/
+averageBlocks/

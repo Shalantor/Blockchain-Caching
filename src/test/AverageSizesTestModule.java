@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class AverageBlockTestModule {
+public class AverageSizesTestModule {
 
     private static final String VOTING = "voting";
     private static final String MARKETPLACE = "marketplace";
@@ -48,7 +48,7 @@ public class AverageBlockTestModule {
         //Random Sizes
         int[] randomSizes = new int[]{1,2000,2000,4000,1,4000};
 
-        String destFolder = "averageBlocks/";
+        String destFolder = "averageSizes/";
         try{
             FileUtils.deleteDirectory(new File(destFolder));
         }
@@ -260,18 +260,18 @@ public class AverageBlockTestModule {
                 if(n instanceof NormalNode){
                     //System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
                     //System.out.println(((NormalNode) n).cacheManager.getSizeOfCachedBlocks());
-                    count += ((NormalNode) n).cacheManager.getBlocksInCache().size();
+                    count += ((NormalNode) n).cacheManager.getSizeOfCachedBlocks();
                     ((NormalNode) n).cacheManager.clearAll();
                 }
                 else if(n instanceof LightNode){
                     //System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
                     //System.out.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());
-                    count += ((LightNode) n).cacheManager.getBlocksInCache().size();
+                    count += ((LightNode) n).cacheManager.getSizeOfCachedBlocks();
                     ((LightNode) n).cacheManager.clearAll();
                 }
             }
             //System.out.println("Count is " + count);
-            overall += (count / 200.0f);
+            overall += (count / 100.0f);
         }
 
         //System.out.println("overall is " + overall);
