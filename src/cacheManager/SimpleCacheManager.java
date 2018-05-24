@@ -128,6 +128,19 @@ public class SimpleCacheManager extends CacheManager{
 
     @Override
     public boolean checkBlock(Block block, Map<String,Interest> interests){
+
+        if(countTransactions){
+            for(HashMap<String,Object> tr : block.transactions){
+                overallTransactions += 1;
+                for (Map.Entry entry : interests.entrySet()){
+                    if(((Interest)entry.getValue()).checkTransaction(tr)){
+                        interestingTransactions += 1;
+                        break;
+                    }
+                }
+            }
+        }
+
         for (Map.Entry entry : interests.entrySet()){
             if(((Interest)entry.getValue()).checkBlock(block)){
                 interestedBlocks += 1;

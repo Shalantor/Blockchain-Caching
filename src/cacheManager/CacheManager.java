@@ -26,6 +26,14 @@ public class CacheManager {
     /*overall blocks with that interest we want to keep*/
     public int interestedBlocks = 0;
 
+    /*overall transactions in cache*/
+    public int overallTransactions = 0;
+
+    /*Transactions we are interested in */
+    public int interestingTransactions = 0;
+
+    public boolean countTransactions = true;
+
     /*Which nodes we got the best interests from. This is
         sorted. Lowest index = highest score*/
     public ArrayList<SavedNode> bestNodes;

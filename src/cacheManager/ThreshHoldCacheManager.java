@@ -109,6 +109,18 @@ public class ThreshHoldCacheManager extends CacheManager{
     @Override
     public boolean checkBlock(Block block, Map<String,Interest> interests){
 
+        if(countTransactions){
+            for(HashMap<String,Object> tr : block.transactions){
+                overallTransactions += 1;
+                for (Map.Entry entry : interests.entrySet()){
+                    if(((Interest)entry.getValue()).checkTransaction(tr)){
+                        interestingTransactions += 1;
+                        break;
+                    }
+                }
+            }
+        }
+
         latestScore = calculateScore(block,interests);
 
         if(latestScore >= scoreBound){
