@@ -246,5 +246,7 @@ public class SimpleCacheManager extends CacheManager{
         sizeOfCachedBlocks = 0;
         blocksInCache.clear();
         interestedBlocks = 0;
+        interestingTransactions = 0;
+        overallTransactions = 0;
     }
 }

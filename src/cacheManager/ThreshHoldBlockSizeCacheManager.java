@@ -223,5 +223,7 @@ public class ThreshHoldBlockSizeCacheManager extends CacheManager{
         blocksInCache.clear();
         latestScore = 0;
         interestedBlocks = 0;
+        interestingTransactions = 0;
+        overallTransactions = 0;
     }
 }

@@ -248,5 +248,7 @@ public class LabelCacheManager extends CacheManager{
         sizeOfCachedBlocks = 0;
         blocksInCache= new ArrayList<>();
         interestedBlocks = 0;
+        interestingTransactions = 0;
+        overallTransactions = 0;
     }
 }
