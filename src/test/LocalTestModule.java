@@ -20,7 +20,7 @@ public class LocalTestModule {
         TestUtilities testUtilities = new TestUtilities(MARKETPLACE);
 
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocal(10,10,new int[]{80,10,10},new int[]{80,10,10});
+        testUtilities.initLocal(100,100,new int[]{80,10,10},new int[]{80,10,10});
 
         /*create miner node*/
         MinerNode minerNode = testUtilities.createMiner();
@@ -30,13 +30,15 @@ public class LocalTestModule {
         Block block;
         HashMap<String,Object> transaction;
         Node[] nodes = testUtilities.nodes;
-        for(int i =0; i < 1000; i++){
+        int blockSize = 0;
+        for(int i =0; i < 100; i++){
             while(true) {
                 /*Add transactions until enough for block*/
-                transaction = testUtilities.getTransactionExponential();
+                transaction = testUtilities.getTransactionUniform();
                 block = minerNode.addTransactionLocal(transaction);
                 if (block != null) {
-                    System.out.println("block size " + block.blockSize);
+                    //System.out.println("block size " + block.blockSize);
+                    blockSize += block.blockSize;
                     break;
                 }
             }
@@ -55,14 +57,28 @@ public class LocalTestModule {
 
         for(Node n : nodes){
             if(n instanceof NormalNode){
-                System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
+                int size = ((NormalNode) n).cacheManager.getBlocksInCache().size();
+                int allSize = ((NormalNode) n).cacheManager.interestedBlocks;
+                allSize = allSize == 0 ? 1 : allSize;
+                //System.out.println("size is " + size);
+                //System.out.println("all size is " + allSize);
+                System.out.println("Hit rate is " + (size/(allSize*1.0f)) );
+                //System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
                 //System.out.println(((NormalNode) n).cacheManager.getSizeOfCachedBlocks());
             }
             else if(n instanceof LightNode){
-                System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
+                int size = ((LightNode) n).cacheManager.getBlocksInCache().size();
+                int allSize = ((LightNode) n).cacheManager.interestedBlocks;
+                allSize = allSize == 0 ? 1 : allSize;
+                //System.out.println("size is " + size);
+                //System.out.println("all size is " + allSize);
+                System.out.println("Hit rate is " + (size/(allSize*1.0f)) );
+                //System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
                 //System.out.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());
             }
         }
+
+        System.out.println("All blocks have size " + blockSize);
 
     }
 
