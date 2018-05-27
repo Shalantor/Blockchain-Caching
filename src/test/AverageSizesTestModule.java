@@ -25,28 +25,29 @@ public class AverageSizesTestModule {
 
         /*Distributions*/
         String[] distributions = new String[]{
-                "exponential_distribution",
-                "poisson_distribution",
-                "normal_distribution",
-                "uniform_distribution",
+                //"exponential_distribution",
+                //"poisson_distribution",
+                //"normal_distribution",
+                //"uniform_distribution",
                 "zipfian_distribution"
         };
 
         String[] groupOptions = new String[]{"group","no_group"};
 
         /*What to measure*/
-        String[] measures = new String[]{"IB","TB_2","TB_4","TB_6","TWB_6","TWB_8","TWB_10"};
+        String[] measures = new String[]{"IB","TB_3","TB_5","TWB_7","TWB_10"};
 
         //Start,end and step in parentheses
         ArrayList<Integer> sizes = new ArrayList<>();
-        int value = 500;
+        /*int value = 500;
         while (value <= 4000){
             sizes.add(value);
             value += 500;
-        }
+        }*/
 
         //Random Sizes
-        int[] randomSizes = new int[]{1,2000,2000,4000,1,4000};
+        int[] randomSizes = new int[]{1,1000,1000,2000,2000,4000,
+                1000,4000,1,2000,1,3000,1,4000,1,5000,};
 
         String destFolder = "averageSizes/";
         try{
@@ -222,7 +223,7 @@ public class AverageSizesTestModule {
         Block block;
         HashMap<String,Object> transaction;
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocal(0,100,new int[]{100,0,0},new int[]{100,0,0});
+        testUtilities.initLocal(100,0,new int[]{100,0,0},new int[]{100,0,0});
         Node[] nodes = testUtilities.nodes;
         float overall = 0;
 

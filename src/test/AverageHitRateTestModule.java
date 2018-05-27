@@ -35,23 +35,24 @@ public class AverageHitRateTestModule {
 
         /*Distributions*/
         String[] distributions = new String[]{
-                "exponential_distribution",
-                "poisson_distribution",
-                "normal_distribution",
-                "uniform_distribution",
+                //"exponential_distribution"
+                //"poisson_distribution",
+                //"normal_distribution",
+                //"uniform_distribution",
                 "zipfian_distribution"
         };
 
         //Start,end and step in parentheses
         ArrayList<Integer> sizes = new ArrayList<>();
-        int value = 500;
+        /*int value = 500;
         while (value <= 4000){
             sizes.add(value);
             value += 500;
-        }
+        }*/
 
         //Random Sizes
-        int[] randomSizes = new int[]{1,2000,2000,4000,1,4000};
+        int[] randomSizes = new int[]{1,1000,1000,2000,2000,4000,
+                1000,4000,1,2000,1,3000,1,4000,1,5000,};
 
         String[] groupOptions = new String[]{"group","no_group"};
 
@@ -169,7 +170,7 @@ public class AverageHitRateTestModule {
     }
 
     public static String getRandomCacheSizeConfig(Integer size,Integer nextSize){
-        int configSize = ((nextSize - size) / 2 ) * 40;
+        int configSize = ((nextSize - size) / 2 ) * 50;
         return "max_cache_size\t" + configSize +"\n";
     }
 
@@ -250,7 +251,7 @@ public class AverageHitRateTestModule {
         Block block;
         HashMap<String,Object> transaction;
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocal(100,100,new int[]{100,0,0},new int[]{100,0,0});
+        testUtilities.initLocal(200,0,new int[]{100,0,0},new int[]{100,0,0});
         Node[] nodes = testUtilities.nodes;
         float overall = 0;
 

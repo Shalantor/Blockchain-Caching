@@ -4,7 +4,7 @@ miner_node          localhost   7020
 full_node           localhost   7021
 storage             0
 group_content	false	0
-min_block_size	1
+min_block_size	1000
 max_block_size	4000
-max_cache_size	10000000
-cache_configuration	6	1
+max_cache_size	75000
+cache_configuration	1	0

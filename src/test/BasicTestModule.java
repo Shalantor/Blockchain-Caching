@@ -168,22 +168,13 @@ public class BasicTestModule {
                 tr.put("fee",12.0);
                 transactions.add(tr);
 
-                tr = new HashMap<>();
-                tr.put("sender","node78");
-                tr.put("receiver","node22");
-                tr.put("category","clothing");
-                tr.put("price",1000.0);
-                tr.put("count",60);
-                tr.put("origin","arctic");
-                tr.put("fee",12.0);
-                transactions.add(tr);
-
                 blocks.add(new Block(i+1,"pilabi",transactions));
             }
             normalNode.cacheManager.addReceivedBlocks(blocks,normalNode.interests);
 
-            for(Block b: normalNode.cacheManager.getBlocksInCache()){
-                //System.out.println(b.timestamp);
+            for(Block b : blocks){
+                System.out.println(b.getHeaderSize());
+                System.out.println(b.blockSize);
             }
 
             System.out.println("overall transactions are " + normalNode.cacheManager.overallTransactions);

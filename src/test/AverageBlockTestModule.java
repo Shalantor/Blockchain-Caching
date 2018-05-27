@@ -39,14 +39,15 @@ public class AverageBlockTestModule {
 
         //Start,end and step in parentheses
         ArrayList<Integer> sizes = new ArrayList<>();
-        int value = 500;
+        /*int value = 500;
         while (value <= 4000){
             sizes.add(value);
             value += 500;
-        }
+        }*/
 
         //Random Sizes
-        int[] randomSizes = new int[]{1,2000,2000,4000,1,4000};
+        int[] randomSizes = new int[]{1,1000,1000,2000,2000,4000,
+                1000,4000,1,2000,1,3000,1,4000,1,5000,};
 
         String destFolder = "averageBlocks/";
         try{
