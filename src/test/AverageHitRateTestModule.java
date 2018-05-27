@@ -108,7 +108,7 @@ public class AverageHitRateTestModule {
                             printWriter.write(getGroupConfig(option));
                             printWriter.write(getSizeConfig(size,-1,option));
                             printWriter.write(getCacheSizeConfig(size));
-                            printWriter.write(getCacheConfig(strategy));
+                            printWriter.write(getCacheConfig(strategy,size));
 
                             printWriter.close();
                         }
@@ -144,7 +144,7 @@ public class AverageHitRateTestModule {
                             printWriter.write(getGroupConfig(option));
                             printWriter.write(getSizeConfig(randomSizes[k],randomSizes[k+1],option));
                             printWriter.write(getRandomCacheSizeConfig(randomSizes[k],randomSizes[k+1]));
-                            printWriter.write(getCacheConfig(strategy));
+                            printWriter.write(getRandomCacheConfig(strategy,randomSizes[k],randomSizes[k+1]));
 
                             printWriter.close();
                         }
@@ -174,22 +174,48 @@ public class AverageHitRateTestModule {
         return "max_cache_size\t" + configSize +"\n";
     }
 
-    public static String getCacheConfig(String measure){
+    public static String getCacheConfig(String measure,Integer size){
+        int threshold = size / 500;
+        int weight = threshold * 2;
         switch (measure){
             case "interest_based_IB":
                 return "cache_configuration\t1\t0\n";
             case "threshold_based_TB":
-                return "cache_configuration\t6\t4\n";
+                return "cache_configuration\t" + threshold + "\t5\n";
             case "threshold_weight_based_WTB":
-                return "cache_configuration\t2\t10\n";
+                return "cache_configuration\t2\t" + weight + "\n";
             case "interest_based_block_size_IBBS":
                 return "cache_configuration\t3\t0\n";
             case "threshold_based_block_size_TBBS":
-                return "cache_configuration\t4\t10\n";
+                return "cache_configuration\t4\t" + weight + "\n";
             case "threshold_based_recency_TBR":
-                return "cache_configuration\t5\t10\n";
+                return "cache_configuration\t5\t" + weight + "\n";
             case "pyramid_scheme_interest_based_IBPS":
-                return "cache_configuration\t7\t10\n";
+                return "cache_configuration\t7\t" + weight + "\n";
+
+        }
+        return "\n";
+    }
+
+    public static String getRandomCacheConfig(String measure,Integer size,Integer nextSize){
+        int threshold = ((nextSize - size) / 2 ) / 500;
+        threshold = threshold == 0 ? 1 : threshold;
+        int weight = threshold * 2;
+        switch (measure){
+            case "interest_based_IB":
+                return "cache_configuration\t1\t0\n";
+            case "threshold_based_TB":
+                return "cache_configuration\t" + threshold + "\t5\n";
+            case "threshold_weight_based_WTB":
+                return "cache_configuration\t2\t" + weight + "\n";
+            case "interest_based_block_size_IBBS":
+                return "cache_configuration\t3\t0\n";
+            case "threshold_based_block_size_TBBS":
+                return "cache_configuration\t4\t" + weight + "\n";
+            case "threshold_based_recency_TBR":
+                return "cache_configuration\t5\t" + weight + "\n";
+            case "pyramid_scheme_interest_based_IBPS":
+                return "cache_configuration\t7\t" + weight + "\n";
 
         }
         return "\n";
