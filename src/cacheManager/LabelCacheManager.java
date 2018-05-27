@@ -28,6 +28,7 @@ public class LabelCacheManager extends CacheManager{
 
     @Override
     public boolean addBlock(Block block){
+
         /*check if cache empty*/
         if(blocksInCache.size() == 0){
             blocksInCache.add(block);

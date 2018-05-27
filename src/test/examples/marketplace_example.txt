@@ -1,7 +1,7 @@
 sender    string   node   -   100
 receiver  string   node   -   100
-category  string   electronics clothing sports health music style food drink
-price     double   0    5000.0  4
-count     integer  0    100     2
-origin    string   europe north_america south_america pacific mars venus jupiter
+category  string   electronics clothing sports health music style food drink games video audio randoms
+price     double   0    10000.0  10
+count     integer  0    100     5
+origin    string   europe north_america south_america pacific mars venus jupiter pluto neptun greece germania
 fee       double  0    20.0     4

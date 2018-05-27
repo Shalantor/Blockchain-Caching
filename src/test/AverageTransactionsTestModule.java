@@ -56,7 +56,7 @@ public class AverageTransactionsTestModule {
         String[] groupOptions = new String[]{"group","no_group"};
 
         /*remove folder*/
-        String destFolder = "averageHitRate/";
+        String destFolder = "averageTransactions/";
         try{
             FileUtils.deleteDirectory(new File(destFolder));
         }
@@ -66,7 +66,7 @@ public class AverageTransactionsTestModule {
 
         new File(destFolder).mkdirs();
 
-        String configContent = "max_cache_size     200000\n" +
+        String configContent =
                 "time_restraint     90000\n" +
                 "network_topology    0   7000 7019   2\n" +
                 "miner_node          localhost   7020\n" +
@@ -106,8 +106,8 @@ public class AverageTransactionsTestModule {
 
                             printWriter.write(getGroupConfig(option));
                             printWriter.write(getSizeConfig(size,-1,option));
+                            printWriter.write(getCacheSizeConfig(size));
                             printWriter.write(getCacheConfig(strategy));
-
                             printWriter.close();
                         }
                         catch (IOException ex){
@@ -141,6 +141,7 @@ public class AverageTransactionsTestModule {
 
                             printWriter.write(getGroupConfig(option));
                             printWriter.write(getSizeConfig(randomSizes[k],randomSizes[k+1],option));
+                            printWriter.write(getRandomCacheSizeConfig(randomSizes[k],randomSizes[k+1]));
                             printWriter.write(getCacheConfig(strategy));
 
                             printWriter.close();
@@ -159,6 +160,16 @@ public class AverageTransactionsTestModule {
 
             }
         }
+    }
+
+    public static String getCacheSizeConfig(Integer size){
+        int configSize = size * 40;
+        return "max_cache_size\t" + configSize +"\n";
+    }
+
+    public static String getRandomCacheSizeConfig(Integer size,Integer nextSize){
+        int configSize = ((nextSize - size) / 2 ) * 40;
+        return "max_cache_size\t" + configSize +"\n";
     }
 
     public static String getCacheConfig(String measure){
@@ -238,7 +249,7 @@ public class AverageTransactionsTestModule {
         Block block;
         HashMap<String,Object> transaction;
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocal(10,10,new int[]{100,0,0},new int[]{100,0,0});
+        testUtilities.initLocal(100,0,new int[]{100,0,0},new int[]{100,0,0});
         Node[] nodes = testUtilities.nodes;
         float overall = 0;
 
@@ -251,7 +262,7 @@ public class AverageTransactionsTestModule {
             if(mode){
                 minerNode.enableRandomMode();
             }
-            for(int i =0; i < 10; i++){
+            for(int i =0; i < 200; i++){
                 while(true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);
@@ -295,7 +306,7 @@ public class AverageTransactionsTestModule {
                 }
             }
             //System.out.println("Count is " + count);
-            overall += (hitRate / 20.0f);
+            overall += (hitRate / 100.0f);
         }
 
         //System.out.println("overall is " + overall);

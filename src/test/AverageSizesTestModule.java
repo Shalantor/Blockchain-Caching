@@ -222,7 +222,7 @@ public class AverageSizesTestModule {
         Block block;
         HashMap<String,Object> transaction;
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocal(10,10,new int[]{100,0,0},new int[]{100,0,0});
+        testUtilities.initLocal(0,100,new int[]{100,0,0},new int[]{100,0,0});
         Node[] nodes = testUtilities.nodes;
         float overall = 0;
 
@@ -233,7 +233,7 @@ public class AverageSizesTestModule {
             if(mode){
                 minerNode.enableRandomMode();
             }
-            for(int i =0; i < 10; i++){
+            for(int i =0; i < 200; i++){
                 while(true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);

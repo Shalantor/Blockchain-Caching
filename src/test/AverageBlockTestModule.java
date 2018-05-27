@@ -25,17 +25,17 @@ public class AverageBlockTestModule {
 
         /*Distributions*/
         String[] distributions = new String[]{
-                "exponential_distribution",
-                "poisson_distribution",
-                "normal_distribution",
-                "uniform_distribution",
+                //"exponential_distribution",
+                //"poisson_distribution",
+                //"normal_distribution",
+                //"uniform_distribution",
                 "zipfian_distribution"
         };
 
         String[] groupOptions = new String[]{"group","no_group"};
 
         /*What to measure*/
-        String[] measures = new String[]{"IB","TB_2","TB_4","TB_6","TWB_6","TWB_8","TWB_10"};
+        String[] measures = new String[]{"IB","TB_3","TB_5","TWB_7","TWB_10"};
 
         //Start,end and step in parentheses
         ArrayList<Integer> sizes = new ArrayList<>();
@@ -222,7 +222,7 @@ public class AverageBlockTestModule {
         Block block;
         HashMap<String,Object> transaction;
         /*create normal and light nodes. The nodes are now setup*/
-        testUtilities.initLocal(10,10,new int[]{100,0,0},new int[]{100,0,0});
+        testUtilities.initLocal(100,100,new int[]{0,0,100},new int[]{0,0,100});
         Node[] nodes = testUtilities.nodes;
         float overall = 0;
 
@@ -233,7 +233,7 @@ public class AverageBlockTestModule {
             if(mode){
                 minerNode.enableRandomMode();
             }
-            for(int i =0; i < 10; i++){
+            for(int i =0; i < 200; i++){
                 while(true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);

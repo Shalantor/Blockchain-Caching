@@ -156,7 +156,7 @@ public class BasicTestModule {
             ArrayList<Block> blocks = new ArrayList<>();
 
             /*how many blocks*/
-            for(int i =0; i <= 5; i++){
+            for(int i =0; i <= 20; i++){
                 transactions = new ArrayList<>();
                 HashMap<String,Object> tr = new HashMap<>();
                 tr.put("sender","node78");
@@ -168,34 +168,27 @@ public class BasicTestModule {
                 tr.put("fee",12.0);
                 transactions.add(tr);
 
+                tr = new HashMap<>();
+                tr.put("sender","node78");
+                tr.put("receiver","node22");
+                tr.put("category","clothing");
+                tr.put("price",1000.0);
+                tr.put("count",60);
+                tr.put("origin","arctic");
+                tr.put("fee",12.0);
+                transactions.add(tr);
+
                 blocks.add(new Block(i+1,"pilabi",transactions));
             }
             normalNode.cacheManager.addReceivedBlocks(blocks,normalNode.interests);
-
-            transactions = new ArrayList<>();
-            blocks = new ArrayList<>();
-            /*how many blocks*/
-            for(int i =0; i <= 2; i++){
-                transactions = new ArrayList<>();
-                for(int j = 0; j <= 2; j++){
-                    HashMap<String,Object> tr = new HashMap<>();
-                    tr.put("sender","node78");
-                    tr.put("receiver","node22");
-                    tr.put("category","electronics");
-                    tr.put("price",1000.0);
-                    tr.put("count",60);
-                    tr.put("origin","arctic");
-                    tr.put("fee",12.0);
-                    transactions.add(tr);
-                }
-                normalNode.checkBlock(new Block(20 + i,"pilabi",transactions));
-            }
 
             for(Block b: normalNode.cacheManager.getBlocksInCache()){
                 //System.out.println(b.timestamp);
             }
 
-            System.out.println("Size of blocks in cache are " + normalNode.cacheManager.getSizeOfCachedBlocks());
+            System.out.println("overall transactions are " + normalNode.cacheManager.overallTransactions);
+            System.out.println("Interesting transactions are " + normalNode.cacheManager.interestingTransactions);
+
 
         }
         else if(testType == CHECK_LIGHT_NODE){

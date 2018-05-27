@@ -62,8 +62,8 @@ public class LocalTestModule {
                 allSize = allSize == 0 ? 1 : allSize;
                 //System.out.println("size is " + size);
                 //System.out.println("all size is " + allSize);
-                System.out.println("Hit rate is " + (size/(allSize*1.0f)) );
-                //System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
+                //System.out.println("Hit rate is " + (size/(allSize*1.0f)) );
+                System.out.println(((NormalNode) n).cacheManager.getBlocksInCache().size());
                 //System.out.println(((NormalNode) n).cacheManager.getSizeOfCachedBlocks());
             }
             else if(n instanceof LightNode){
@@ -72,13 +72,13 @@ public class LocalTestModule {
                 allSize = allSize == 0 ? 1 : allSize;
                 //System.out.println("size is " + size);
                 //System.out.println("all size is " + allSize);
-                System.out.println("Hit rate is " + (size/(allSize*1.0f)) );
-                //System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
+                //System.out.println("Hit rate is " + (size/(allSize*1.0f)) );
+                System.out.println(((LightNode) n).cacheManager.getBlocksInCache().size());
                 //System.out.println(((LightNode) n).cacheManager.getSizeOfCachedBlocks());
             }
         }
 
-        System.out.println("All blocks have size " + blockSize);
+        //System.out.println("All blocks have size " + blockSize);
 
     }
 
