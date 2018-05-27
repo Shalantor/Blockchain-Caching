@@ -181,7 +181,7 @@ public class AverageHitRateTestModule {
             case "interest_based_IB":
                 return "cache_configuration\t1\t0\n";
             case "threshold_based_TB":
-                return "cache_configuration\t" + threshold + "\t5\n";
+                return "cache_configuration\t6\t" + threshold + "\t5\n";
             case "threshold_weight_based_WTB":
                 return "cache_configuration\t2\t" + weight + "\n";
             case "interest_based_block_size_IBBS":
@@ -205,7 +205,7 @@ public class AverageHitRateTestModule {
             case "interest_based_IB":
                 return "cache_configuration\t1\t0\n";
             case "threshold_based_TB":
-                return "cache_configuration\t" + threshold + "\t5\n";
+                return "cache_configuration\t6\t" + threshold + "\t5\n";
             case "threshold_weight_based_WTB":
                 return "cache_configuration\t2\t" + weight + "\n";
             case "interest_based_block_size_IBBS":

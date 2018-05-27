@@ -44,16 +44,16 @@ public class AverageTransactionsTestModule {
 
         //Start,end and step in parentheses
         ArrayList<Integer> sizes = new ArrayList<>();
-        /*int value = 500;
+        int value = 500;
         while (value <= 4000){
             sizes.add(value);
             value += 500;
-        }*/
+        }
 
         //Random Sizes
-        int[] randomSizes = new int[]{1,1000,1000,2000,2000,4000,
-                1000,4000,1,2000,1,3000,1,4000,1,5000,};
-        //int[] randomSizes = new int[]{};
+        //int[] randomSizes = new int[]{1,1000,1000,2000,2000,4000,
+                //1000,4000,1,2000,1,3000,1,4000,1,5000,};
+        int[] randomSizes = new int[]{};
 
         String[] groupOptions = new String[]{"group","no_group"};
 
@@ -181,7 +181,7 @@ public class AverageTransactionsTestModule {
             case "interest_based_IB":
                 return "cache_configuration\t1\t0\n";
             case "threshold_based_TB":
-                return "cache_configuration\t" + threshold + "\t5\n";
+                return "cache_configuration\t6\t" + threshold + "\t5\n";
             case "threshold_weight_based_WTB":
                 return "cache_configuration\t2\t" + weight + "\n";
             case "interest_based_block_size_IBBS":
@@ -205,7 +205,7 @@ public class AverageTransactionsTestModule {
             case "interest_based_IB":
                 return "cache_configuration\t1\t0\n";
             case "threshold_based_TB":
-                return "cache_configuration\t" + threshold + "\t5\n";
+                return "cache_configuration\t6\t" + threshold + "\t5\n";
             case "threshold_weight_based_WTB":
                 return "cache_configuration\t2\t" + weight + "\n";
             case "interest_based_block_size_IBBS":
@@ -290,7 +290,7 @@ public class AverageTransactionsTestModule {
             if(mode){
                 minerNode.enableRandomMode();
             }
-            for(int i =0; i < 200; i++){
+            for(int i =0; i < 100; i++){
                 while(true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);
@@ -334,7 +334,7 @@ public class AverageTransactionsTestModule {
                 }
             }
             //System.out.println("Count is " + count);
-            overall += (hitRate / 200.0f);
+            overall += (hitRate / 100.0f);
         }
 
         //System.out.println("overall is " + overall);
