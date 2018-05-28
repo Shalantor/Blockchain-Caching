@@ -90,6 +90,12 @@ public class ThreshHoldCacheManager extends CacheManager{
         /*Check if there are too many blocks*/
         while (sizeOfCachedBlocks > cacheSize){
             sizeOfCachedBlocks -= blocksInCache.get(0).getBlock().blockSize;
+            if(countTransactions){
+                Block block = blocksInCache.get(0).getBlock();
+                overallTransactions -= block.transactions.size();
+                interestingTransactions -= transactionStats.get(block.index);
+                transactionStats.remove(block.index);
+            }
             blocksInCache.remove(0);
         }
     }

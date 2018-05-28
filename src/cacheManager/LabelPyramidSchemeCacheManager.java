@@ -128,6 +128,12 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
 
             sizeOfCachedBlocks -= victim.getBlock().blockSize;
             blocksInCache.get(sizeCategory).remove(victim);
+            if(countTransactions){
+                Block block = victim.getBlock();
+                overallTransactions -= block.transactions.size();
+                interestingTransactions -= transactionStats.get(block.index);
+                transactionStats.remove(block.index);
+            }
             numOfCachedBlocks--;
         }
     }

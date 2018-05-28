@@ -77,6 +77,12 @@ public class ThreshHoldWeightCacheManager extends CacheManager{
 
         while (sizeOfCachedBlocks > cacheSize){
             sizeOfCachedBlocks -= blocksInCache.get(0).getBlock().blockSize;
+            if(countTransactions){
+                Block block = blocksInCache.get(0).getBlock();
+                overallTransactions -= block.transactions.size();
+                interestingTransactions -= transactionStats.get(block.index);
+                transactionStats.remove(block.index);
+            }
             blocksInCache.remove(0);
         }
     }
