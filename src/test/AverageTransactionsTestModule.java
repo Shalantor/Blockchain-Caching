@@ -45,15 +45,15 @@ public class AverageTransactionsTestModule {
         //Start,end and step in parentheses
         ArrayList<Integer> sizes = new ArrayList<>();
         int value = 500;
-        while (value <= 4000){
+        /*while (value <= 4000){
             sizes.add(value);
             value += 500;
-        }
+        }*/
 
         //Random Sizes
-        //int[] randomSizes = new int[]{1,1000,1000,2000,2000,4000,
-                //1000,4000,1,2000,1,3000,1,4000,1,5000,};
-        int[] randomSizes = new int[]{};
+        int[] randomSizes = new int[]{1,1000,1000,2000,2000,4000,
+                1000,4000,1,2000,1,3000,1,4000,1,5000,};
+        //int[] randomSizes = new int[]{};
 
         String[] groupOptions = new String[]{"group","no_group"};
 
@@ -165,12 +165,12 @@ public class AverageTransactionsTestModule {
     }
 
     public static String getCacheSizeConfig(Integer size){
-        int configSize = size * 50;
+        int configSize = size * 45;
         return "max_cache_size\t" + configSize +"\n";
     }
 
     public static String getRandomCacheSizeConfig(Integer size,Integer nextSize){
-        int configSize = ((nextSize - size) / 2 ) * 50;
+        int configSize = ((nextSize - size) / 2 ) * 45;
         return "max_cache_size\t" + configSize +"\n";
     }
 
@@ -290,7 +290,7 @@ public class AverageTransactionsTestModule {
             if(mode){
                 minerNode.enableRandomMode();
             }
-            for(int i =0; i < 100; i++){
+            for(int i =0; i < 200; i++){
                 while(true) {
                     /*Add transactions until enough for block*/
                     transaction = getTransaction(testUtilities,distribution);
