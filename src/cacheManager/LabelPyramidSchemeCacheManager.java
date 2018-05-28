@@ -149,15 +149,18 @@ public class LabelPyramidSchemeCacheManager extends CacheManager{
     public boolean checkBlock(Block block, Map<String,Interest> interests){
 
         if(countTransactions){
+            int currentInteresting = 0;
             for(HashMap<String,Object> tr : block.transactions){
                 overallTransactions += 1;
                 for (Map.Entry entry : interests.entrySet()){
                     if(((Interest)entry.getValue()).checkTransaction(tr)){
                         interestingTransactions += 1;
+                        currentInteresting += 1;
                         break;
                     }
                 }
             }
+            transactionStats.put(block.index,currentInteresting);
         }
 
         for (Map.Entry entry : interests.entrySet()){

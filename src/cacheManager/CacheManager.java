@@ -40,6 +40,8 @@ public class CacheManager {
 
     private ArrayList<Block> blocksInCache;
 
+    public HashMap<Integer,Integer> transactionStats = new HashMap<>();
+
     public boolean addBlock(Block block){
         blocksInCache.add(block);
         return true;
