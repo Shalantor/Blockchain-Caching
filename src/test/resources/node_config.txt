@@ -7,4 +7,4 @@ group_content	false	0
 min_block_size	1
 max_block_size	5000
 max_cache_size	112455
-cache_configuration	7	8
+cache_configuration	8	8

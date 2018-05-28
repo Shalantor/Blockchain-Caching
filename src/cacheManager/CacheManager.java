@@ -22,6 +22,7 @@ public class CacheManager {
     private static final int SCORE_RECENCY = 5;
     private static final int SCORE_NO_WEIGHT_CACHE = 6;
     private static final int LABEL_EXPONENTIAL_SIZE = 7;
+    private static final int SCORE_EXPONENTIAL_SIZE = 8;
 
     /*overall blocks with that interest we want to keep*/
     public int interestedBlocks = 0;
@@ -69,6 +70,8 @@ public class CacheManager {
                 return new ThreshHoldCacheManager(timeRestraint,cacheSize,scoreBound);
             case LABEL_EXPONENTIAL_SIZE:
                 return new LabelPyramidSchemeCacheManager(timeRestraint,cacheSize);
+            case SCORE_EXPONENTIAL_SIZE:
+                return new ThresholdPyramidSchemeCacheManager(timeRestraint,cacheSize,scoreBound);
 
         }
         return null;

@@ -37,9 +37,10 @@ public class ThresholdPyramidSchemeCacheManager extends CacheManager {
     //key is size, value is arraylist with blocks
     private HashMap<Integer,ArrayList<HitRateCostBlock>> blocksInCache;
 
-    public ThresholdPyramidSchemeCacheManager(long timeLimit, long cacheSize) {
+    public ThresholdPyramidSchemeCacheManager(long timeLimit, long cacheSize, int scoreBound) {
         this.timeLimit = timeLimit;
         this.cacheSize = cacheSize;
+        this.scoreBound = scoreBound;
         blocksInCache = new HashMap<>();
         bestNodes = new ArrayList<>();
 
@@ -188,7 +189,7 @@ public class ThresholdPyramidSchemeCacheManager extends CacheManager {
         int score = 0;
         for (Map.Entry entry : interests.entrySet()){
             Interest interest = (Interest)entry.getValue();
-            score += interest.checkBlockScore(block);
+            score += interest.weight * interest.checkBlockScore(block);
         }
         return score;
     }
