@@ -19,3 +19,11 @@ In the above described network, results from running the application for its dif
 * MongoDB Database https://www.mongodb.com/
 * Java MongoDB Driver https://mongodb.github.io/mongo-java-driver/
 * External libraries like json.org and apache.commons are bundled in this project
+
+# Node configurations
+READMEs are provided with instructions on how to configure nodes with input files
+
+# Getting Started
+
+* For now open either with IntelliJ or Eclipse or compile manually (Will add gradle as build tool soon)
+* For tests just run one of the test classes in the test folder.
