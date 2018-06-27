@@ -13,4 +13,9 @@ Furthermore, a communication protocol was designed, in order to allow for inform
 
 In the above described network, results from running the application for its different parameters, caching strategies and node configurations were recorded and evaluated. These results include information about the number and the overall size of the saved blocks in each node as well as the percentage of the personally useful data each node has in its local memory in comparison to the overall data that it stores. From those results, conclusions about the most suitable application parameters and the most effective caching strategies can be made.
 
+# Prerequisites
 
+* Java version 1.8 or later
+* MongoDB Database https://www.mongodb.com/
+* Java MongoDB Driver https://mongodb.github.io/mongo-java-driver/
+* External libraries like json.org and apache.commons are bundled in this project
