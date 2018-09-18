@@ -25,5 +25,6 @@ READMEs are provided with instructions on how to configure nodes with input file
 
 # Getting Started
 
-* For now open either with IntelliJ or Eclipse or compile manually (Will add gradle as build tool soon)
+* For now open either with IntelliJ or Eclipse or compile manually 
 * For tests just run one of the test classes in the test folder.
+* If you use gradle, specify the main class you want in the build.gradle file.
