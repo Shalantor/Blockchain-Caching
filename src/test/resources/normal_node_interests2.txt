@@ -1,2 +1,0 @@
-price       double        1    greater    10.0
-sender      string        1    paul     nina
