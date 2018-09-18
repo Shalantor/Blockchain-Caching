@@ -38,3 +38,4 @@ averageHitRate/
 
 # input files
 test/examples/*
+!text/examples/README.md
